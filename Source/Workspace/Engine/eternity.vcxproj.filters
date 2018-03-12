@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Render">
+      <UniqueIdentifier>{045c39d8-3dfb-4f1e-99ca-1d5e79f23694}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{fae13a07-3e95-4a8e-a074-20477ff18430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{27a6ff7b-8226-44d0-9fda-32907c90e9c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO">
+      <UniqueIdentifier>{4c667b7b-53ab-40fa-b7bc-c013e5fab98b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\OpenGL">
+      <UniqueIdentifier>{e53ac907-f513-446a-bd9d-952a6e09a680}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Engine\eternity.h" />
+    <ClInclude Include="..\..\Engine\Render\RenderWindow.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Mesh.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\VertexBuffer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\VertexType.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\RenderSystem.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLVertexBuffer.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGL.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLRenderSystem.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLVertexType.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\IO\Resource.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\IO\ResourceObject.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\IO\ResourceSystem.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\Application.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\System.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Shader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\ShaderProgram.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLShaderProgram.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\MathTypes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Scene.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\RenderPass.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLDeferredRenderPass.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\MeshComponent.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\RenderComponent.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\CameraComponent.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\Transform.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\Component.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Engine\Render\RenderWindow.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\glew\src\glew.c">
+      <Filter>External</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\VertexType.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLVertexBuffer.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\RenderSystem.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLRenderSystem.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLVertexType.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\VertexBuffer.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\IO\Resource.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\IO\ResourceObject.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\Mesh.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\IO\ResourceSystem.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\Application.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLShaderProgram.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\ShaderProgram.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\Scene.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLDeferredRenderPass.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\MeshComponent.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\CameraComponent.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\Transform.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\RenderComponent.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
