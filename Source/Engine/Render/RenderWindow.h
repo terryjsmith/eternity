@@ -28,6 +28,11 @@ public:
 	* Swap window buffers
 	*/
 	void SwapBuffer();
+    
+    /**
+     * Get framebuffer width/height
+     */
+    void GetFramebufferSize(int& width, int& height);
 
 protected:
 	// Window width and height

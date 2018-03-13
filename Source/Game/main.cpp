@@ -23,8 +23,12 @@ int main(int argc, char** argv) {
 	// Specify resource directories
 	resourceSystem->AddSearchPath("Resources/Shaders");
 
+    // Get framebuffer size (retina is different)
+    int framebufferWidth, framebufferHeight;
+    window->GetFramebufferSize(framebufferWidth, framebufferHeight);
+    
 	// Send window width and height to render system for setup
-	renderSystem->Setup(800, 600);
+	renderSystem->Setup(framebufferWidth, framebufferHeight);
 
 	// Create a scene
 	Scene* scene = new Scene();

@@ -70,3 +70,8 @@ void RenderWindow::ProcessEvents() {
 void RenderWindow::SwapBuffer() {
 	glfwSwapBuffers((GLFWwindow*)m_window);
 }
+
+void RenderWindow::GetFramebufferSize(int& width, int& height) {
+    width = m_framebufferWidth;
+    height = m_framebufferHeight;
+}
