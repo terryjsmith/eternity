@@ -20,7 +20,9 @@ public:
 
 protected:
 	std::vector<MeshComponent*> m_children;
-	GIGA_VARIABLE(Scriptable, Serializable) Mesh* m_mesh;
+
+	GIGA_VARIABLE(Scriptable, Serializable) 
+	Mesh* m_mesh;
 };
 
 #endif
