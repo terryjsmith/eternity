@@ -37,7 +37,7 @@ void OpenGLDeferredRenderPass::Render(Scene* scene) {
 	m_program->Set("viewprojMatrix", vpMatrix);
 
 	// Set viewport
-	glViewport(0, 0, m_windowWidth, m_windowHeight);
+	GL_CHECK(glViewport(0, 0, m_windowWidth, m_windowHeight));
 
 	// Clear our buffer
 	GL_CHECK(glClear(GL_COLOR_BUFFER_BIT));

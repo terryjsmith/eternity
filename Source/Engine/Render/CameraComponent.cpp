@@ -5,6 +5,7 @@
 CameraComponent::CameraComponent() {
 	m_fnear = 0.1f;
 	m_ffar = 100.0f;
+    m_fov = 45.0f;
 }
 
 void CameraComponent::SetViewport(int windowWidth, int windowHeight) {
