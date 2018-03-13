@@ -1,4 +1,6 @@
 
+#pragma once
+
 // Disable compiler warnings about using STL and dynamic linking
 #pragma warning(disable:4251)
 
@@ -25,6 +27,18 @@
 		#define GIGA_API __declspec(dllimport)
 	#endif
 #endif
+
+// Export for the generator
+#ifndef GIGA_CLASS
+#define GIGA_FUNCTION(...)
+#define GIGA_CLASS(...)
+#define GIGA_VARIABLE(...)
+#endif
+
+enum {
+	Serializable = 1,
+	Scriptable
+};
 
 // STD library
 #include <memory>

@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game", "Game\game.vcxproj",
 		{C0A006DC-E12F-4B15-A85C-2B11A99AF160} = {C0A006DC-E12F-4B15-A85C-2B11A99AF160}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "generator", "Generator\generator.vcxproj", "{A1E1B996-FF12-4D42-BB39-8A85E9617D49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +36,14 @@ Global
 		{16B56806-6259-4254-BD24-7869317F1DE6}.Release|x64.Build.0 = Release|x64
 		{16B56806-6259-4254-BD24-7869317F1DE6}.Release|x86.ActiveCfg = Release|Win32
 		{16B56806-6259-4254-BD24-7869317F1DE6}.Release|x86.Build.0 = Release|Win32
+		{A1E1B996-FF12-4D42-BB39-8A85E9617D49}.Debug|x64.ActiveCfg = Debug|x64
+		{A1E1B996-FF12-4D42-BB39-8A85E9617D49}.Debug|x64.Build.0 = Debug|x64
+		{A1E1B996-FF12-4D42-BB39-8A85E9617D49}.Debug|x86.ActiveCfg = Debug|Win32
+		{A1E1B996-FF12-4D42-BB39-8A85E9617D49}.Debug|x86.Build.0 = Debug|Win32
+		{A1E1B996-FF12-4D42-BB39-8A85E9617D49}.Release|x64.ActiveCfg = Release|x64
+		{A1E1B996-FF12-4D42-BB39-8A85E9617D49}.Release|x64.Build.0 = Release|x64
+		{A1E1B996-FF12-4D42-BB39-8A85E9617D49}.Release|x86.ActiveCfg = Release|Win32
+		{A1E1B996-FF12-4D42-BB39-8A85E9617D49}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
