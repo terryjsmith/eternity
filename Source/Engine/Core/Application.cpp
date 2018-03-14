@@ -1,7 +1,9 @@
 
 #include <Core/Application.h>
 #include <IO/ResourceSystem.h>
+#include <Core/MessageSystem.h>
 #include <Render/Shader.h>
+#include <Core/Error.h>
 
 Application* Application::m_instance = 0;
 
@@ -18,6 +20,8 @@ void Application::Startup() {
 	}
 
 	// Register messages
+	MessageSystem* messageSystem = GetSystem<MessageSystem>();
+	Error::MSGTYPE_ERROR = messageSystem->RegisterMessageType<Error>("Error");
 
 	// Register resource types
 	ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();

@@ -1,5 +1,6 @@
 
 #include <IO/ResourceSystem.h>
+#include <Core/Error.h>
 
 ResourceObject* ResourceSystem::LoadResource(std::string filename, std::string type) {
 	// Check to see if we've loaded this resource
@@ -15,7 +16,7 @@ ResourceObject* ResourceSystem::LoadResource(std::string filename, std::string t
 		std::string fullpath = FindResourcePath(filename);
 		if (fullpath.empty()) {
 			// Error
-			// ErrorSystem::Process(new Error(ERROR_WARN, (char*)"Unable to locate resource file", filename));
+			Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to locate resource file", filename), true);
 			return(0);
 		}
 		

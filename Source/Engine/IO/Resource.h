@@ -3,6 +3,7 @@
 #define resource_h
 
 #include <eternity.h>
+#include <Core/GigaObject.h>
 
 /**
 * File opening modes (can/should be OR'd together)
@@ -14,10 +15,12 @@ enum {
 	FILEMODE_APPEND = 8,
 };
 
-class GIGA_API Resource {
+class GIGA_API Resource : public GigaObject {
 public:
 	Resource();
 	~Resource();
+
+	GIGA_CLASS_NAME("Resource");
 
 	/**
 	 * Set filename

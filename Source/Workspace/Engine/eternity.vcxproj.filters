@@ -97,6 +97,18 @@
     <ClInclude Include="..\..\Engine\Core\Component.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\Message.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\MessageSystem.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\GigaObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\Error.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Engine\Render\RenderWindow.cpp">
@@ -161,6 +173,18 @@
     </ClCompile>
     <ClCompile Include="..\..\Engine\Render\RenderComponent.cpp">
       <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\GigaObject.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\Message.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\Error.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\MessageSystem.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

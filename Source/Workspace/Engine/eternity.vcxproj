@@ -21,7 +21,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\Engine\Core\Application.h" />
     <ClInclude Include="..\..\Engine\Core\Component.h" />
+    <ClInclude Include="..\..\Engine\Core\Error.h" />
+    <ClInclude Include="..\..\Engine\Core\GigaObject.h" />
     <ClInclude Include="..\..\Engine\Core\MathTypes.h" />
+    <ClInclude Include="..\..\Engine\Core\Message.h" />
+    <ClInclude Include="..\..\Engine\Core\MessageSystem.h" />
     <ClInclude Include="..\..\Engine\Core\System.h" />
     <ClInclude Include="..\..\Engine\Core\Transform.h" />
     <ClInclude Include="..\..\Engine\eternity.h" />
@@ -49,6 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Engine\Core\Application.cpp" />
+    <ClCompile Include="..\..\Engine\Core\Error.cpp" />
+    <ClCompile Include="..\..\Engine\Core\GigaObject.cpp" />
+    <ClCompile Include="..\..\Engine\Core\Message.cpp" />
+    <ClCompile Include="..\..\Engine\Core\MessageSystem.cpp" />
     <ClCompile Include="..\..\Engine\Core\Transform.cpp" />
     <ClCompile Include="..\..\Engine\IO\Resource.cpp" />
     <ClCompile Include="..\..\Engine\IO\ResourceObject.cpp" />

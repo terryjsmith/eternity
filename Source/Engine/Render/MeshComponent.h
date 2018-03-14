@@ -12,8 +12,9 @@ public:
 	MeshComponent() = default;
 	~MeshComponent() = default;
 
-	GIGA_FUNCTION(Scriptable)
-	void Instantiate(Mesh* mesh);
+	GIGA_CLASS_NAME("MeshComponent");
+
+	GIGA_FUNCTION(Scriptable) void Instantiate(Mesh* mesh);
 
 	std::vector<MeshComponent*>& GetChildren() { return m_children; }
 	Mesh* GetMesh() { return m_mesh; }
@@ -21,8 +22,7 @@ public:
 protected:
 	std::vector<MeshComponent*> m_children;
 
-	GIGA_VARIABLE(Scriptable, Serializable) 
-	Mesh* m_mesh;
+	GIGA_VARIABLE(Scriptable, Serializable) Mesh* m_mesh;
 };
 
 #endif

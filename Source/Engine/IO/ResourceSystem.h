@@ -11,6 +11,8 @@ public:
 	ResourceSystem() = default;
 	~ResourceSystem() = default;
 
+	GIGA_CLASS_NAME("ResourceSystem");
+
 	// Internal function to call a C++ constructor
 	typedef ResourceObject* (*ResourceObjectCreateFunc)();
 

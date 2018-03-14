@@ -11,6 +11,8 @@ public:
 	CameraComponent();
 	~CameraComponent() = default;
 
+	GIGA_CLASS_NAME("CameraComponent");
+
 	void SetViewport(int windowWidth, int windowHeight);
 
 	matrix4 GetViewMatrix();

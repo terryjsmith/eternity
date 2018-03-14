@@ -6,10 +6,12 @@
 #include <Render/CameraComponent.h>
 #include <Render/MeshComponent.h>
 
-class GIGA_API Scene {
+class GIGA_API Scene : public GigaObject {
 public:
 	Scene() = default;
 	~Scene() = default;
+
+	GIGA_CLASS_NAME("Scene");
 
 	void AddMesh(MeshComponent* mesh);
 	std::vector<MeshComponent*>& GetMeshes() { return m_meshes; }

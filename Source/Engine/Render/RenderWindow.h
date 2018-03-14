@@ -3,14 +3,17 @@
 #define renderwindow_h
 
 #include <eternity.h>
+#include <Core/GigaObject.h>
 
 /**
  * Basic platform-specific window
  */
-class GIGA_API RenderWindow {
+class GIGA_API RenderWindow : public GigaObject {
 public:
 	RenderWindow() = default;
 	~RenderWindow() = default;
+
+	GIGA_CLASS_NAME("RenderWindow");
 
 	void Create(std::string name, int width, int height, bool fullscreen);
 

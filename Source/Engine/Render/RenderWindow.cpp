@@ -1,5 +1,6 @@
 
 #include <Render/RenderWindow.h>
+#include <Core/Error.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -34,7 +35,7 @@ void RenderWindow::Create(std::string name, int width, int height, bool fullscre
 	m_window = glfwCreateWindow(fullscreen ? w : width, fullscreen ? h : height, name.c_str(), fullscreen ? primary : NULL, NULL);
 	if (m_window == NULL) {
 		glfwTerminate();
-		//Message::Broadcast(Error::MSGTYPE_ERROR, new Error(Error::ERROR_FATAL, "Unable to create window."));
+		Message::Broadcast(new Error(Error::ERROR_FATAL, "Unable to create window."), true);
 		return;
 	}
 
@@ -52,7 +53,7 @@ void RenderWindow::Create(std::string name, int width, int height, bool fullscre
 		glewExperimental = true;
 		GLenum err = glewInit();
 		if (GLEW_OK != err) {
-			//Message::Broadcast(Error::MSGTYPE_ERROR, new Error(Error::ERROR_FATAL, "Unable to initialize GLEW."));
+			Message::Broadcast(new Error(Error::ERROR_FATAL, "Unable to initialize GLEW."), true);
 			return;
 		}
 #endif

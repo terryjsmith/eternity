@@ -4,10 +4,11 @@
 
 #include <eternity.h>
 #include <IO/Resource.h>
+#include <Core/GigaObject.h>
 
 class ResourceSystem;
 
-class GIGA_API ResourceObject {
+class GIGA_API ResourceObject : public GigaObject {
 public:
 	ResourceObject() = default;
 	virtual ~ResourceObject();

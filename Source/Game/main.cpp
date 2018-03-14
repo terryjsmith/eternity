@@ -6,6 +6,7 @@
 #include <Render/OpenGL/OpenGLShaderProgram.h>
 #include <Render/Scene.h>
 #include <IO/ResourceSystem.h>
+#include <Core/MessageSystem.h>
 #include <Core/Application.h>
 
 int main(int argc, char** argv) {
@@ -14,6 +15,7 @@ int main(int argc, char** argv) {
 
 	OpenGLRenderSystem* renderSystem = application->CreateSystem<OpenGLRenderSystem>();
 	ResourceSystem* resourceSystem = application->CreateSystem<ResourceSystem>();
+	MessageSystem* messageSystem = application->CreateSystem<MessageSystem>();
 
 	application->Startup();
 

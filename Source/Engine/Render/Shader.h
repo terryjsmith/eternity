@@ -9,6 +9,8 @@ class GIGA_API Shader : public ResourceObject {
 public:
 	Shader() = default;
 	~Shader() = default;
+
+	GIGA_CLASS_NAME("Shader");
 };
 
 #endif

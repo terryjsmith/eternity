@@ -12,6 +12,8 @@ public:
 	RenderSystem() = default;
 	virtual ~RenderSystem() = default;
 
+	GIGA_CLASS_NAME("RenderSystem");
+
 	/**
 	 * Separate initialize to setup framebuffers
 	 */

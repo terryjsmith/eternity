@@ -3,8 +3,9 @@
 #define system_h
 
 #include <eternity.h>
+#include <Core/GigaObject.h>
 
-class GIGA_API System {
+class GIGA_API System : public GigaObject {
 public:
 	System() = default;
 	virtual ~System() = default;

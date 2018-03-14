@@ -1,6 +1,7 @@
 
 #include <Render/OpenGL/OpenGLShaderProgram.h>
 #include <Render/OpenGL/OpenGL.h>
+#include <Core/Error.h>
 
 void OpenGLShaderProgram::Bind() {
 	if (m_program == 0) {
@@ -31,7 +32,7 @@ void OpenGLShaderProgram::Bind() {
 			GL_CHECK(glGetShaderInfoLog(m_vshader, (int)length, (int*)&length, (char*)errstr.c_str()));
 
 			// ... and throw an error
-			// Message::Broadcast(Error::MSGTYPE_ERROR, new Error(Error::ERROR_WARN, errstr, vertexSource->GetResource()->GetFilename()));
+			Message::Broadcast(new Error(Error::ERROR_WARN, errstr, m_vertexShader->GetResource()->filename), true);
 			GIGA_ASSERT(false, "Error compiling shader source.");
 		}
 
@@ -59,7 +60,7 @@ void OpenGLShaderProgram::Bind() {
 			GL_CHECK(glGetShaderInfoLog(m_fshader, (int)length, (int*)&length, (char*)errstr.c_str()));
 
 			// ... and throw an error
-			// Message::Broadcast(Error::MSGTYPE_ERROR, new Error(Error::ERROR_WARN, errstr, fragmentSource->GetResource()->GetFilename()));
+			Message::Broadcast(new Error(Error::ERROR_WARN, errstr, m_fragmentShader->GetResource()->filename), true);
 			GIGA_ASSERT(false, "Error compiling shader source.");
 		}
 
@@ -80,8 +81,8 @@ void OpenGLShaderProgram::Bind() {
 			glGetProgramInfoLog(m_program, length, &length, (char*)errstr.c_str());
 
 			// ... and throw an error
+			Message::Broadcast(new Error(Error::ERROR_WARN, errstr), true);
 			GIGA_ASSERT(false, "Error compiling shader program.");
-			// Message::Broadcast(Error::MSGTYPE_ERROR, new Error(Error::ERROR_WARN, errstr));
 		}
 
 		// Once we get here, it's time to figure out which attributes and uniforms we have
