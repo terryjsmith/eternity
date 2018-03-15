@@ -12,7 +12,7 @@ public:
 	RenderComponent();
 	virtual ~RenderComponent() = default;
 
-	GIGA_FUNCTION(Scriptable) Transform* GetTransform() { return m_transform; }
+	Transform* GetTransform() { return m_transform; }
 
 protected:
 	Transform* m_transform;

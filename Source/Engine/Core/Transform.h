@@ -16,31 +16,31 @@ public:
 
 	void SetParent(Transform* transform);
 
-	GIGA_FUNCTION(Scriptable) vector3 GetLocalPosition() { return m_position; }
-	GIGA_FUNCTION(Scriptable) vector3 GetWorldPosition();
+	vector3 GetLocalPosition() { return m_position; }
+	vector3 GetWorldPosition();
 
-	GIGA_FUNCTION(Scriptable) void SetLocalPosition(vector3 position);
-	GIGA_FUNCTION(Scriptable) void SetWorldPosition(vector3 position);
+	void SetLocalPosition(vector3 position);
+	void SetWorldPosition(vector3 position);
 
-	GIGA_FUNCTION(Scriptable) vector3 GetLocalScaling() { return m_scaling; }
-	GIGA_FUNCTION(Scriptable) vector3 GetWorldScaling();
+	vector3 GetLocalScaling() { return m_scaling; }
+	vector3 GetWorldScaling();
 
-	GIGA_FUNCTION(Scriptable) void SetLocalScaling(vector3 scaling);
-	GIGA_FUNCTION(Scriptable) void SetWorldScaling(vector3 scaling);
+	void SetLocalScaling(vector3 scaling);
+	void SetWorldScaling(vector3 scaling);
 
-	GIGA_FUNCTION(Scriptable) quaternion GetLocalRotation() { return m_rotation; }
-	GIGA_FUNCTION(Scriptable) quaternion GetWorldRotation();
+	quaternion GetLocalRotation() { return m_rotation; }
+	quaternion GetWorldRotation();
 
-	GIGA_FUNCTION(Scriptable) void SetLocalRotation(quaternion rotation);
-	GIGA_FUNCTION(Scriptable) void SetWorldRotation(quaternion rotation);
+	void SetLocalRotation(quaternion rotation);
+	void SetWorldRotation(quaternion rotation);
 
-	GIGA_FUNCTION(Scriptable) vector3 GetUp();
-	GIGA_FUNCTION(Scriptable) vector3 GetRight();
-	GIGA_FUNCTION(Scriptable) vector3 GetForward();
+	vector3 GetUp();
+	vector3 GetRight();
+	vector3 GetForward();
 
-	GIGA_FUNCTION(Scriptable) void Move(vector3 amount);
-	GIGA_FUNCTION(Scriptable) void Rotate(vector3 axis, float degrees);
-	GIGA_FUNCTION(Scriptable) void Scale(vector3 amount);
+	void Move(vector3 amount);
+	void Rotate(vector3 axis, float degrees);
+	void Scale(vector3 amount);
 
 	matrix4 GetMatrix();
 
