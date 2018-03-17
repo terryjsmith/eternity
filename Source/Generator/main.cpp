@@ -3,13 +3,20 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
+
+#include "MetaClass.h"
 
 using namespace std;
 
 bool haveClass = false;
-bool haveFunction = false;
-bool haveVariable = false;
+
 CXTranslationUnit unit;
+std::map<std::string, bool> GigaClasses;
+std::string currentClassName;
+std::string currentMetaName;
+std::map<std::string, MetaClass*> classes;
+MetaClass* currentMetaClass = 0;
 
 ostream& operator<<(ostream& stream, const CXString& str)
 {
@@ -42,37 +49,65 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 	CXString str = clang_getCursorSpelling(c);
 	std::string name = clang_getCString(str);
 
-	if (haveFunction && cursor == CXCursor_CXXMethod) {
+	if (cursor == CXCursor_ClassDecl && haveClass == false) {
+
+	}
+
+	if (cursor == CXCursor_ClassDecl) {
+		currentClassName = name;
+	}
+
+	if (name.empty() == false) {
+		size_t pos = name.find("class ");
+		if (pos != name.npos) {
+			name = name.substr(pos + 6);
+		}
+	}
+
+	if ((cursor == CXCursor_CXXBaseSpecifier && name.find("GigaObject") != name.npos) || (GigaClasses.find(name) != GigaClasses.end())) {
+		//cout << "Found GIGA base class named '" << currentClassName.c_str() << "'" << endl;
+		GigaClasses[currentClassName] = true;
+	}
+
+	if (currentMetaName.empty() == false && cursor == CXCursor_CXXMethod) {
 		cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
-		haveFunction = false;
+		MetaClass::MetaFunction* func = new MetaClass::MetaFunction();
+		func->name = name;
+
+		currentMetaClass->functions.push_back(func);
 	}
 
 	if (haveClass && cursor == CXCursor_ClassDecl) {
 		cout << "Found GIGA class named '" << name.c_str() << "'" << endl;
 		haveClass = false;
+		currentMetaName = name;
+
+		if (classes.find(name) == classes.end()) {
+			MetaClass* m = new MetaClass;
+			m->name = name;
+
+			classes[name] = m;
+			currentMetaClass = m;
+		}
 	}
 
-	if (haveVariable && cursor == CXCursor_FieldDecl) {
+	if (currentMetaName.empty() == false && cursor == CXCursor_FieldDecl) {
 		cout << "Found GIGA variable named '" << name.c_str() << "'" << endl;
-		haveVariable = false;
+
+		MetaClass::MetaVariable* var = new MetaClass::MetaVariable();
+		var->name = name;
+
+		currentMetaClass->variables.push_back(var);
 	}
 
 	if (cursor == CXCursor_FunctionDecl && name == "GCLASS") {
 		haveClass = true;
 	}
 
-	if (cursor == CXCursor_CXXMethod && name == "GFUNCTION") {
-		haveFunction = true;
-	}
-
-	if (cursor == CXCursor_CXXMethod && name == "GVARIABLE") {
-		haveVariable = true;
-	}
-
-	if (haveClass || haveFunction || haveVariable) {
+	/*if (currentMetaName.empty() == false) {
 		cout << "Cursor '" << clang_getCursorSpelling(c) << "' of kind '"
 			<< clang_getCursorKindSpelling(clang_getCursorKind(c)) << "'\n";
-	}
+	}*/
 
 	clang_disposeString(str);
 	return CXChildVisit_Recurse;
