@@ -17,6 +17,24 @@ std::string currentClassName;
 std::string currentMetaName;
 std::map<std::string, MetaClass*> classes;
 MetaClass* currentMetaClass = 0;
+std::map<int, int> typeMappings;
+
+// Supported types
+enum Type {
+    VAR_INT = 1,
+    VAR_UINT,
+    VAR_BOOL,
+    VAR_FLOAT,
+    VAR_VECTOR2,
+    VAR_VECTOR3,
+    VAR_VECTOR4,
+    VAR_MATRIX4,
+    VAR_QUATERNION,
+    VAR_STRING,
+    VAR_OBJECT,
+    VAR_ARRAY,
+    VAR_LASTTYPE
+};
 
 ostream& operator<<(ostream& stream, const CXString& str)
 {
@@ -25,28 +43,41 @@ ostream& operator<<(ostream& stream, const CXString& str)
 	return stream;
 }
 
-void printToken(CXCursor c) {
-	CXSourceRange srcRange = clang_getCursorExtent(c);
-	CXToken *tokens;
-	unsigned int nbTokens;
-	CXTranslationUnit transUnit = clang_Cursor_getTranslationUnit(c);
-
-	clang_tokenize(unit, srcRange, &tokens, &nbTokens);
-
-	for (int i = 0; i < nbTokens; ++i)
-	{
-		CXToken currentToken = tokens[i];
-		CXString tokenStr = clang_getTokenSpelling(transUnit, currentToken);
-		printf("Token: %s\n", clang_getCString(tokenStr));
-		clang_disposeString(tokenStr);
-	}
-
-	clang_disposeTokens(transUnit, tokens, nbTokens);
+int map_internal_type(CXType kind, std::string rettype) {
+    int internalType = 0;
+    if(typeMappings.find(kind.kind) != typeMappings.end()) {
+        internalType = typeMappings[kind.kind];
+    }
+    
+    if(internalType == 0 && kind.kind == CXTypeKind::CXType_Typedef) {
+        if(rettype == "vector2") {
+            internalType = VAR_VECTOR2;
+        }
+        
+        if(rettype == "vector3") {
+            internalType = VAR_VECTOR3;
+        }
+        
+        if(rettype == "vector4") {
+            internalType = VAR_VECTOR4;
+        }
+        
+        if(rettype == "quaternion") {
+            internalType = VAR_QUATERNION;
+        }
+        
+        if(rettype == "matrix4") {
+            internalType = VAR_MATRIX4;
+        }
+    }
+    
+    return(internalType);
 }
 
 CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data) {
 	CXCursorKind cursor = clang_getCursorKind(c);
 	CXString str = clang_getCursorSpelling(c);
+    CXType type = clang_getCursorType(c);
 	std::string name = clang_getCString(str);
 
 	if (cursor == CXCursor_ClassDecl && haveClass == false) {
@@ -71,10 +102,40 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 
 	if (currentMetaName.empty() == false && cursor == CXCursor_CXXMethod) {
 		cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
-		MetaClass::MetaFunction* func = new MetaClass::MetaFunction();
-		func->name = name;
+        
+        CXType returnType = clang_getResultType(type);
+        std::string rettype = clang_getCString(clang_getTypeSpelling(returnType));
+        cout << "Return type '" << rettype.c_str() << "'" << endl;
+        
+        int internalType = map_internal_type(returnType, rettype);
+        
+        if(internalType != 0) {
+            MetaClass::MetaFunction* func = new MetaClass::MetaFunction();
+            func->name = name;
+            func->returnType = internalType;
+            
+            int num_args = clang_Cursor_getNumArguments(c);
+            for(int i = 0; i < num_args; i++) {
+                CXCursor arg = clang_Cursor_getArgument(c, i);
+                CXString name = clang_getCursorSpelling(arg);
+                std::string arg_name = clang_getCString(name);
+            
+                CXType arg_type = clang_getArgType(type, i);
+                std::string argtype = clang_getCString(clang_getTypeSpelling(arg_type));
+                
+                int intArgType = map_internal_type(arg_type, argtype);
+                if(intArgType != 0) {
+                    func->args[argtype] = intArgType;
+                }
+                else {
+                    int error = 1;
+                }
+            
+                cout << "Arg " << i << " type '" << argtype.c_str() << "'" << endl;
+            }
 
-		currentMetaClass->functions.push_back(func);
+            currentMetaClass->functions.push_back(func);
+        }
 	}
 
 	if (haveClass && cursor == CXCursor_ClassDecl) {
@@ -94,20 +155,31 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 	if (currentMetaName.empty() == false && cursor == CXCursor_FieldDecl) {
 		cout << "Found GIGA variable named '" << name.c_str() << "'" << endl;
 
-		MetaClass::MetaVariable* var = new MetaClass::MetaVariable();
-		var->name = name;
-
-		currentMetaClass->variables.push_back(var);
+        std::string typestr = clang_getCString(clang_getTypeSpelling(type));
+        int internalType = map_internal_type(type, typestr);
+        
+        if(internalType != 0) {
+            MetaClass::MetaVariable* var = new MetaClass::MetaVariable();
+            var->name = name;
+            var->type = internalType;
+            
+            currentMetaClass->variables.push_back(var);
+        }
+        else {
+            int error = 1;
+        }
+        
+        cout << "Type '" << typestr.c_str() << "'" << endl;
 	}
 
 	if (cursor == CXCursor_FunctionDecl && name == "GCLASS") {
 		haveClass = true;
 	}
 
-	/*if (currentMetaName.empty() == false) {
+	if (currentMetaName.empty() == false) {
 		cout << "Cursor '" << clang_getCursorSpelling(c) << "' of kind '"
 			<< clang_getCursorKindSpelling(clang_getCursorKind(c)) << "'\n";
-	}*/
+	}
 
 	clang_disposeString(str);
 	return CXChildVisit_Recurse;
@@ -122,6 +194,15 @@ int main(int argc, char** argv) {
 	args.push_back("-I../Source/Engine");
 	args.push_back("-x");
 	args.push_back("c++");
+    
+    // Create type mappings
+    typeMappings[CXTypeKind::CXType_Void] = -1;
+    typeMappings[CXTypeKind::CXType_Bool] = VAR_BOOL;
+    typeMappings[CXTypeKind::CXType_Int] = VAR_INT;
+    typeMappings[CXTypeKind::CXType_UInt] = VAR_UINT;
+    typeMappings[CXTypeKind::CXType_Float] = VAR_FLOAT;
+    typeMappings[CXTypeKind::CXType_Pointer] = VAR_OBJECT;
+    typeMappings[CXTypeKind::CXType_SChar] = VAR_STRING;
 
 	int flags = CXTranslationUnit_Incomplete | CXTranslationUnit_KeepGoing | CXTranslationUnit_DetailedPreprocessingRecord;
 

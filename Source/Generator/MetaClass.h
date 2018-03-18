@@ -13,7 +13,8 @@ public:
 
 	struct MetaFunction {
 		std::string name;
-		std::string signature;
+        int returnType;
+        std::map<std::string, int> args;
 	};
 
 	struct MetaVariable {
