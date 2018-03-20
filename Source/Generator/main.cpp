@@ -90,6 +90,11 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 		currentClassName = name;
 	}
 
+	if (cursor == CXCursor_ClassDecl && haveNewClass) {
+		haveNewClass = false;
+		currentMetaName.clear();
+	}
+
 	if (name.empty() == false) {
 		size_t pos = name.find("class ");
 		if (pos != name.npos) {
@@ -102,8 +107,18 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 		GigaClasses[currentClassName] = true;
 	}
 
-	if (currentMetaName.empty() == false && cursor == CXCursor_CXXMethod) {
-		//cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
+	MetaClass* mc = 0;
+	if (currentMetaName.empty() == false) {
+		std::map<std::string, MetaClass*>::iterator it = classes.begin();
+		for (; it != classes.end(); it++) {
+			if (it->second->name == currentMetaName) {
+				mc = it->second;
+			}
+		}
+	}
+
+	if (currentMetaName.empty() == false && cursor == CXCursor_CXXMethod && mc == 0) {
+		cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
         
         CXType returnType = clang_getResultType(type);
         std::string rettype = clang_getCString(clang_getTypeSpelling(returnType));
@@ -147,7 +162,6 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 
 	if (haveClass && cursor == CXCursor_ClassDecl) {
 		cout << "Found GIGA class named '" << name.c_str() << "'" << endl;
-		haveClass = false;
 		currentMetaName = name;
 
 		if (classes.find(name) == classes.end()) {
@@ -179,14 +193,13 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
         cout << "Type '" << typestr.c_str() << "'" << endl;
 	}
 
-	if (cursor == CXCursor_FunctionDecl && name == "GCLASS") {
-		haveClass = true;
-	}
-
 	if (cursor == CXCursor_ClassDecl && haveClass) {
 		haveNewClass = true;
 		haveClass = false;
-		currentMetaName.clear();
+	}
+
+	if (cursor == CXCursor_FunctionDecl && name == "GCLASS") {
+		haveClass = true;
 	}
 
 	clang_disposeString(str);
