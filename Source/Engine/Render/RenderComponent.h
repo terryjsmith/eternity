@@ -6,7 +6,6 @@
 #include <Core/Transform.h>
 #include <Core/Component.h>
 
-GIGA_CLASS(Scriptable)
 class GIGA_API RenderComponent : public Component {
 public:
 	RenderComponent();

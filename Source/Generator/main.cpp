@@ -6,11 +6,15 @@
 #include <map>
 
 #include "MetaClass.h"
+#include "Directory.h"
 
 using namespace std;
 
 bool haveClass = false;
+bool haveNewClass = false;
 
+std::vector<const char*> args;
+CXIndex index = 0;
 CXTranslationUnit unit;
 std::map<std::string, bool> GigaClasses;
 std::string currentClassName;
@@ -18,6 +22,8 @@ std::string currentMetaName;
 std::map<std::string, MetaClass*> classes;
 MetaClass* currentMetaClass = 0;
 std::map<int, int> typeMappings;
+std::map <int, std::string> functionMappings;
+std::string precompiled_header;
 
 // Supported types
 enum Type {
@@ -80,10 +86,6 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
     CXType type = clang_getCursorType(c);
 	std::string name = clang_getCString(str);
 
-	if (cursor == CXCursor_ClassDecl && haveClass == false) {
-
-	}
-
 	if (cursor == CXCursor_ClassDecl) {
 		currentClassName = name;
 	}
@@ -101,11 +103,10 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 	}
 
 	if (currentMetaName.empty() == false && cursor == CXCursor_CXXMethod) {
-		cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
+		//cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
         
         CXType returnType = clang_getResultType(type);
         std::string rettype = clang_getCString(clang_getTypeSpelling(returnType));
-        cout << "Return type '" << rettype.c_str() << "'" << endl;
         
         int internalType = map_internal_type(returnType, rettype);
         
@@ -113,19 +114,25 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
             MetaClass::MetaFunction* func = new MetaClass::MetaFunction();
             func->name = name;
             func->returnType = internalType;
+			func->objectType = name;
             
             int num_args = clang_Cursor_getNumArguments(c);
             for(int i = 0; i < num_args; i++) {
                 CXCursor arg = clang_Cursor_getArgument(c, i);
-                CXString name = clang_getCursorSpelling(arg);
-                std::string arg_name = clang_getCString(name);
+                CXString n = clang_getCursorSpelling(arg);
+                std::string arg_name = clang_getCString(n);
             
                 CXType arg_type = clang_getArgType(type, i);
                 std::string argtype = clang_getCString(clang_getTypeSpelling(arg_type));
                 
                 int intArgType = map_internal_type(arg_type, argtype);
                 if(intArgType != 0) {
-                    func->args[argtype] = intArgType;
+					MetaClass::MetaFunction::MetaArgument* a = new MetaClass::MetaFunction::MetaArgument();
+					a->name = arg_name;
+					a->type = intArgType;
+					a->objectType = argtype;
+                    
+					func->args.push_back(a);
                 }
                 else {
                     int error = 1;
@@ -176,19 +183,65 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 		haveClass = true;
 	}
 
-	if (currentMetaName.empty() == false) {
-		cout << "Cursor '" << clang_getCursorSpelling(c) << "' of kind '"
-			<< clang_getCursorKindSpelling(clang_getCursorKind(c)) << "'\n";
+	if (cursor == CXCursor_ClassDecl && haveClass) {
+		haveNewClass = true;
+		haveClass = false;
+		currentMetaName.clear();
 	}
 
 	clang_disposeString(str);
 	return CXChildVisit_Recurse;
 }
 
-int main(int argc, char** argv) {
-	CXIndex index = clang_createIndex(0, 0);
+void ProcessDirectory(Directory* dir) {
+	std::vector<Directory*>::iterator di = dir->subdirectories.begin();
+	for (; di != dir->subdirectories.end(); di++) {
+		ProcessDirectory(*di);
+	}
 
-	std::vector<const char*> args;
+	std::vector<std::string>::iterator fi = dir->files.begin();
+	for (; fi != dir->files.end(); fi++) {
+		std::string filename = dir->path + "/" + (*fi);
+		size_t pos = filename.find_last_of(".");
+		std::string extension = filename.substr(pos, filename.length() - pos);
+
+		if (extension.compare(".h") != 0) {
+			continue;
+		}
+
+		int flags = CXTranslationUnit_SkipFunctionBodies | (precompiled_header.empty() ?  CXTranslationUnit_ForSerialization : 0);
+
+		clang_parseTranslationUnit2(
+			index,
+			filename.c_str(), args.data(), args.size(),
+			nullptr, 0,
+			flags, &unit);
+		if (unit == nullptr) {
+			cerr << "Unable to parse translation unit. Quitting." << endl;
+			exit(-1);
+		}
+
+		CXCursor cursor = clang_getTranslationUnitCursor(unit);
+		clang_visitChildren(cursor, visitor, nullptr);
+
+		if (precompiled_header.empty()) {
+			clang_saveTranslationUnit(unit, "generator.pch", clang_defaultSaveOptions(unit));
+			precompiled_header = "generator.pch";
+
+			args.push_back("-include-pch");
+			args.push_back(precompiled_header.c_str());
+		}
+
+		clang_disposeTranslationUnit(unit);
+
+		haveClass = false;
+		currentMetaName.clear();
+	}
+}
+
+int main(int argc, char** argv) {
+	index = clang_createIndex(0, 0);
+
 	args.push_back("-include");
 	args.push_back("../Source/Generator/Defines.h");
 	args.push_back("-I../Source/Engine");
@@ -204,22 +257,94 @@ int main(int argc, char** argv) {
     typeMappings[CXTypeKind::CXType_Pointer] = VAR_OBJECT;
     typeMappings[CXTypeKind::CXType_SChar] = VAR_STRING;
 
-	int flags = CXTranslationUnit_Incomplete | CXTranslationUnit_KeepGoing | CXTranslationUnit_DetailedPreprocessingRecord;
+	// Mappings to functions
+	functionMappings[VAR_INT] = "Int";
+	functionMappings[VAR_UINT] = "UInt";
+	functionMappings[VAR_BOOL] = "Bool";
+	functionMappings[VAR_FLOAT] = "Float";
+	functionMappings[VAR_VECTOR2] = "Vector2";
+	functionMappings[VAR_VECTOR3] = "Vector3";
+	functionMappings[VAR_VECTOR4] = "Vector4";
+	functionMappings[VAR_MATRIX4] = "Matrix4";
+	functionMappings[VAR_QUATERNION] = "Quaternion";
+	functionMappings[VAR_STRING] = "String";
+	functionMappings[VAR_OBJECT] = "Object";		
 
-	clang_parseTranslationUnit2(
-		index,
-		"../Source/Engine/Render/MeshComponent.h", args.data(), args.size(),
-		nullptr, 0,
-		CXTranslationUnit_None, &unit);
-	if (unit == nullptr) 	{
-		cerr << "Unable to parse translation unit. Quitting." << endl;
-		exit(-1);
+	std::string path = Directory::GetCurrent();
+	path = path.substr(0, path.find_last_of("/\\"));
+
+	Directory* dir = new Directory();
+	dir->Open(path +"/Source/Engine");
+
+	ProcessDirectory(dir);
+
+	std::vector<std::string> classNames;
+	std::string output = "#include <Core/MetaSystem.h>\n\n";
+
+	// Write new functions for each meta class
+	std::map<std::string, MetaClass*>::iterator it = classes.begin();
+	for (; it != classes.end(); it++) {
+		MetaClass* cl = it->second;
+		
+		// Functions
+		std::vector<MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
+		for (; fi != cl->functions.end(); fi++) {
+			output += "Variant* meta_" + cl->name + "_" + (*fi)->name + "(GigaObject* obj, int argc, Variant** argv) {\n";
+			
+			// Validate data
+			std::vector<MetaClass::MetaFunction::MetaArgument*>::iterator ai = (*fi)->args.begin();
+			int argc = 0;
+			for (; ai != (*fi)->args.end(); ai++) {
+				output += "\tGIGA_ASSERT(argv[" + std::to_string(argc) + "]->Is" + functionMappings[(*ai)->type] + "(), \"Incorrect type for argument " + std::to_string(argc) + ".\");\n\n";
+				argc++;
+			}
+
+			// Cast object
+			output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(obj);\n";
+			output += "\tGIGA_ASSERT(cobj != 0, \"Object is not of the correct type.\");\n\n";
+
+			// Function call
+			output += "\treturn(new Variant(cobj->" + (*fi)->name + "(";
+			ai = (*fi)->args.begin();
+			argc = 0;
+			for (; ai != (*fi)->args.end(); ai++) {
+				output += "argv[" + std::to_string(argc) + "]->As" + functionMappings[(*ai)->type];
+				if ((*ai)->type == VAR_OBJECT) {
+					output += "<" + (*ai)->objectType + ">";
+				}
+				output += "(),";
+				argc++;
+			}
+			// Trim final comma
+			if (argc > 0) {
+				output = output.substr(0, output.length() - 1);
+			}
+			else {
+				output += ")";
+			}
+
+			output += ")));\n}\n\n";
+		}
 	}
 
-	CXCursor cursor = clang_getTranslationUnitCursor(unit);
-	clang_visitChildren(cursor, visitor, nullptr);
+	// Registration
+	output += "void RegisterMetaFunctions() {\n\tMetaSystem* metaSystem = GetSystem<MetaSystem>();\n\n";
+	it = classes.begin();
+	for (; it != classes.end(); it++) {
+		MetaClass* cl = it->second;
 
-	clang_disposeTranslationUnit(unit);
+		std::vector<MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
+		for (; fi != cl->functions.end(); fi++) {
+			output += "\tmetaSystem->RegisterFunction(\"" + cl->name + "\", \"" + (*fi)->name + "\", meta_" + cl->name + "_" + (*fi)->name + ");\n";
+		}
+		output += "\n";
+	}
+	output += "}\n\n";
+
+	FILE* fp = fopen("output.txt", "w");
+	fwrite(output.data(), output.size(), 1, fp);
+	fclose(fp);
+
 	clang_disposeIndex(index);
 
 	return(0);

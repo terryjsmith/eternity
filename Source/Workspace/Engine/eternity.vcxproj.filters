@@ -109,6 +109,15 @@
     <ClInclude Include="..\..\Engine\Core\Error.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\MetaSystem.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\Variant.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\IO\Directory.h">
+      <Filter>IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Engine\Render\RenderWindow.cpp">
@@ -185,6 +194,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Engine\Core\MessageSystem.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\Variant.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\MetaSystem.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\IO\Directory.cpp">
+      <Filter>IO</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

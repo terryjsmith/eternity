@@ -1,5 +1,7 @@
 
 #include <Core/GigaObject.h>
+#include <Core/MetaSystem.h>
+#include <Core/Application.h>
 
 void GigaObject::LockMutex() {
 	m_mutex->lock();
@@ -11,4 +13,19 @@ bool GigaObject::TryLockMutex() {
 
 void GigaObject::UnlockMutex() {
 	m_mutex->unlock();
+}
+
+Variant* GigaObject::Call(std::string func, int argc, Variant** argv) {
+	MetaSystem* metaSystem = GetSystem<MetaSystem>();
+
+	std::string className = this->GetGigaName();
+	CallableFunction c = metaSystem->FindFunction(className, func);
+
+	GIGA_ASSERT(c != 0, "Callable function not found.");
+
+	return(c(this, argc, argv));
+}
+
+std::string GigaObject::ToString() {
+	return(this->GetGigaName() + "[]");
 }

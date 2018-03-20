@@ -26,9 +26,12 @@
     <ClInclude Include="..\..\Engine\Core\MathTypes.h" />
     <ClInclude Include="..\..\Engine\Core\Message.h" />
     <ClInclude Include="..\..\Engine\Core\MessageSystem.h" />
+    <ClInclude Include="..\..\Engine\Core\MetaSystem.h" />
     <ClInclude Include="..\..\Engine\Core\System.h" />
     <ClInclude Include="..\..\Engine\Core\Transform.h" />
+    <ClInclude Include="..\..\Engine\Core\Variant.h" />
     <ClInclude Include="..\..\Engine\eternity.h" />
+    <ClInclude Include="..\..\Engine\IO\Directory.h" />
     <ClInclude Include="..\..\Engine\IO\Resource.h" />
     <ClInclude Include="..\..\Engine\IO\ResourceObject.h" />
     <ClInclude Include="..\..\Engine\IO\ResourceSystem.h" />
@@ -57,7 +60,10 @@
     <ClCompile Include="..\..\Engine\Core\GigaObject.cpp" />
     <ClCompile Include="..\..\Engine\Core\Message.cpp" />
     <ClCompile Include="..\..\Engine\Core\MessageSystem.cpp" />
+    <ClCompile Include="..\..\Engine\Core\MetaSystem.cpp" />
     <ClCompile Include="..\..\Engine\Core\Transform.cpp" />
+    <ClCompile Include="..\..\Engine\Core\Variant.cpp" />
+    <ClCompile Include="..\..\Engine\IO\Directory.cpp" />
     <ClCompile Include="..\..\Engine\IO\Resource.cpp" />
     <ClCompile Include="..\..\Engine\IO\ResourceObject.cpp" />
     <ClCompile Include="..\..\Engine\IO\ResourceSystem.cpp" />
@@ -90,7 +96,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>

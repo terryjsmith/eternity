@@ -14,7 +14,14 @@ public:
 	struct MetaFunction {
 		std::string name;
         int returnType;
-        std::map<std::string, int> args;
+		std::string objectType;
+
+		struct MetaArgument {
+			std::string name;
+			int type;
+			std::string objectType;
+		};
+        std::vector<MetaArgument*> args;
 	};
 
 	struct MetaVariable {

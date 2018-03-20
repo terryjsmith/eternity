@@ -31,6 +31,7 @@
 *.out
 *.app
 *.bin
+*.txt
 
 # MacOS
 *.DS_Store

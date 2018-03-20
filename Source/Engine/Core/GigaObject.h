@@ -4,7 +4,11 @@
 
 #include <eternity.h>
 
+class GigaObject;
+class Variant;
+
 #define GIGA_CLASS_NAME(str) virtual std::string GetGigaName() { return str; } 
+typedef Variant*(*CallableFunction)(GigaObject* obj, int argc, Variant** argv);
 
 /**
 * Base object class for all other objects in the system
@@ -19,6 +23,16 @@ public:
 	 * Use GIGA_CLASS_NAME("name") to set
 	 */
 	virtual std::string GetGigaName() = 0;
+
+	/**
+	 * Call a function on this object by passing a variable number of variants
+	 */
+	Variant* Call(std::string func, int argc, Variant** argv);
+
+	/**
+	 * Convert object to string
+	 */
+	virtual std::string ToString();
 
 	/**
 	* Lock this object to the thread (or try to)

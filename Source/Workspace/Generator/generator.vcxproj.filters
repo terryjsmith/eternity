@@ -18,12 +18,18 @@
     <ClCompile Include="..\..\Generator\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Generator\Directory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Generator\Defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Generator\MetaClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Generator\Directory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
