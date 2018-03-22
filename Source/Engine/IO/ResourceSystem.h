@@ -6,6 +6,7 @@
 #include <Core/System.h>
 #include <IO/ResourceObject.h>
 
+GIGA_CLASS(StaticObject)
 class GIGA_API ResourceSystem : public System {
 public:
 	ResourceSystem() = default;
@@ -24,12 +25,12 @@ public:
 	/**
 	* Load a resource
 	*/
-	ResourceObject* LoadResource(std::string filename, std::string type);
+    GIGA_FUNCTION() ResourceObject* LoadResource(std::string filename, std::string type);
 
 	/**
 	* Add a directory/path to search to find files
 	*/
-	void AddSearchPath(std::string path);
+	GIGA_FUNCTION() void AddSearchPath(std::string path);
 
 	/**
 	* Iterate over search paths to find full path by filename

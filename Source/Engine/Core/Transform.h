@@ -6,7 +6,7 @@
 #include <Core/MathTypes.h>
 #include <Core/GigaObject.h>
 
-GIGA_CLASS(Scriptable)
+GIGA_CLASS()
 class GIGA_API Transform : public GigaObject {
 public:
 	Transform();
@@ -14,37 +14,37 @@ public:
 
 	GIGA_CLASS_NAME("Transform");
 
-	void SetParent(Transform* transform);
+    GIGA_FUNCTION() void SetParent(Transform* transform);
+    GIGA_FUNCTION() vector3 GetLocalPosition() { return m_position; }
+    
+    GIGA_FUNCTION() vector3 GetWorldPosition();
 
-	vector3 GetLocalPosition() { return m_position; }
-	vector3 GetWorldPosition();
+    GIGA_FUNCTION() void SetLocalPosition(vector3 position);
+    GIGA_FUNCTION() void SetWorldPosition(vector3 position);
 
-	void SetLocalPosition(vector3 position);
-	void SetWorldPosition(vector3 position);
+    GIGA_FUNCTION() vector3 GetLocalScaling() { return m_scaling; }
+    GIGA_FUNCTION() vector3 GetWorldScaling();
 
-	vector3 GetLocalScaling() { return m_scaling; }
-	vector3 GetWorldScaling();
+	GIGA_FUNCTION() void SetLocalScaling(vector3 scaling);
+	GIGA_FUNCTION() void SetWorldScaling(vector3 scaling);
 
-	void SetLocalScaling(vector3 scaling);
-	void SetWorldScaling(vector3 scaling);
+	GIGA_FUNCTION() quaternion GetLocalRotation() { return m_rotation; }
+	GIGA_FUNCTION() quaternion GetWorldRotation();
 
-	quaternion GetLocalRotation() { return m_rotation; }
-	quaternion GetWorldRotation();
+	GIGA_FUNCTION() void SetLocalRotation(quaternion rotation);
+	GIGA_FUNCTION() void SetWorldRotation(quaternion rotation);
 
-	void SetLocalRotation(quaternion rotation);
-	void SetWorldRotation(quaternion rotation);
+	GIGA_FUNCTION() vector3 GetUp();
+	GIGA_FUNCTION() vector3 GetRight();
+	GIGA_FUNCTION() vector3 GetForward();
 
-	vector3 GetUp();
-	vector3 GetRight();
-	vector3 GetForward();
-
-	void Move(vector3 amount);
-	void Rotate(vector3 axis, float degrees);
-	void Scale(vector3 amount);
+	GIGA_FUNCTION() void Move(vector3 amount);
+	GIGA_FUNCTION() void Rotate(vector3 axis, float degrees);
+	GIGA_FUNCTION() void Scale(vector3 amount);
 
 	matrix4 GetMatrix();
 
-	void SetRoot(bool root) { m_root = root; }
+	GIGA_FUNCTION() void SetRoot(bool root) { m_root = root; }
 
 protected:
 	Transform* m_parent;

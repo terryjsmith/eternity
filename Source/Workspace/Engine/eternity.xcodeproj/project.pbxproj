@@ -54,6 +54,18 @@
 		5ECE173A20584AD600C5DA14 /* VertexBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE170B20584AD600C5DA14 /* VertexBuffer.h */; };
 		5ECE173B20584AD600C5DA14 /* VertexType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE170C20584AD600C5DA14 /* VertexType.cpp */; };
 		5ECE173C20584AD600C5DA14 /* VertexType.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE170D20584AD600C5DA14 /* VertexType.h */; };
+		5ECE179B2063477200C5DA14 /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE178F2063477200C5DA14 /* Error.cpp */; };
+		5ECE179C2063477200C5DA14 /* Error.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE17902063477200C5DA14 /* Error.h */; };
+		5ECE179D2063477200C5DA14 /* GigaObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE17912063477200C5DA14 /* GigaObject.cpp */; };
+		5ECE179E2063477200C5DA14 /* GigaObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE17922063477200C5DA14 /* GigaObject.h */; };
+		5ECE179F2063477200C5DA14 /* Message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE17932063477200C5DA14 /* Message.cpp */; };
+		5ECE17A02063477200C5DA14 /* Message.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE17942063477200C5DA14 /* Message.h */; };
+		5ECE17A12063477200C5DA14 /* MessageSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE17952063477200C5DA14 /* MessageSystem.cpp */; };
+		5ECE17A22063477200C5DA14 /* MessageSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE17962063477200C5DA14 /* MessageSystem.h */; };
+		5ECE17A32063477200C5DA14 /* MetaSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE17972063477200C5DA14 /* MetaSystem.cpp */; };
+		5ECE17A42063477200C5DA14 /* MetaSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE17982063477200C5DA14 /* MetaSystem.h */; };
+		5ECE17A52063477200C5DA14 /* Variant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE17992063477200C5DA14 /* Variant.cpp */; };
+		5ECE17A62063477200C5DA14 /* Variant.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE179A2063477200C5DA14 /* Variant.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,6 +124,18 @@
 		5ECE175A20584F3E00C5DA14 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		5ECE175B20584F3E00C5DA14 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5ECE176E20584F8F00C5DA14 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = ../../ThirdParty/glfw/lib/libglfw3.a; sourceTree = "<group>"; };
+		5ECE178F2063477200C5DA14 /* Error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Error.cpp; sourceTree = "<group>"; };
+		5ECE17902063477200C5DA14 /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
+		5ECE17912063477200C5DA14 /* GigaObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GigaObject.cpp; sourceTree = "<group>"; };
+		5ECE17922063477200C5DA14 /* GigaObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GigaObject.h; sourceTree = "<group>"; };
+		5ECE17932063477200C5DA14 /* Message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Message.cpp; sourceTree = "<group>"; };
+		5ECE17942063477200C5DA14 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		5ECE17952063477200C5DA14 /* MessageSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageSystem.cpp; sourceTree = "<group>"; };
+		5ECE17962063477200C5DA14 /* MessageSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageSystem.h; sourceTree = "<group>"; };
+		5ECE17972063477200C5DA14 /* MetaSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MetaSystem.cpp; sourceTree = "<group>"; };
+		5ECE17982063477200C5DA14 /* MetaSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaSystem.h; sourceTree = "<group>"; };
+		5ECE17992063477200C5DA14 /* Variant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Variant.cpp; sourceTree = "<group>"; };
+		5ECE179A2063477200C5DA14 /* Variant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Variant.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,10 +175,22 @@
 				5ECE16DC20584AD600C5DA14 /* Application.cpp */,
 				5ECE16DD20584AD600C5DA14 /* Application.h */,
 				5ECE16DE20584AD600C5DA14 /* Component.h */,
+				5ECE178F2063477200C5DA14 /* Error.cpp */,
+				5ECE17902063477200C5DA14 /* Error.h */,
+				5ECE17912063477200C5DA14 /* GigaObject.cpp */,
+				5ECE17922063477200C5DA14 /* GigaObject.h */,
 				5ECE16DF20584AD600C5DA14 /* MathTypes.h */,
+				5ECE17932063477200C5DA14 /* Message.cpp */,
+				5ECE17942063477200C5DA14 /* Message.h */,
+				5ECE17952063477200C5DA14 /* MessageSystem.cpp */,
+				5ECE17962063477200C5DA14 /* MessageSystem.h */,
+				5ECE17972063477200C5DA14 /* MetaSystem.cpp */,
+				5ECE17982063477200C5DA14 /* MetaSystem.h */,
 				5ECE16E020584AD600C5DA14 /* System.h */,
 				5ECE16E120584AD600C5DA14 /* Transform.cpp */,
 				5ECE16E220584AD600C5DA14 /* Transform.h */,
+				5ECE17992063477200C5DA14 /* Variant.cpp */,
+				5ECE179A2063477200C5DA14 /* Variant.h */,
 			);
 			name = Core;
 			path = ../../Engine/Core;
@@ -246,31 +282,37 @@
 			files = (
 				5ECE171B20584AD600C5DA14 /* ResourceSystem.h in Headers */,
 				5ECE172120584AD600C5DA14 /* MeshComponent.h in Headers */,
+				5ECE17A62063477200C5DA14 /* Variant.h in Headers */,
 				5ECE171520584AD600C5DA14 /* eternity.h in Headers */,
 				5ECE171020584AD600C5DA14 /* Component.h in Headers */,
 				5ECE170F20584AD600C5DA14 /* Application.h in Headers */,
 				5ECE171420584AD600C5DA14 /* Transform.h in Headers */,
 				5ECE173C20584AD600C5DA14 /* VertexType.h in Headers */,
+				5ECE179E2063477200C5DA14 /* GigaObject.h in Headers */,
 				5ECE173320584AD600C5DA14 /* RenderWindow.h in Headers */,
 				5ECE171D20584AD600C5DA14 /* CameraComponent.h in Headers */,
 				5ECE172E20584AD600C5DA14 /* RenderComponent.h in Headers */,
 				5ECE171720584AD600C5DA14 /* Resource.h in Headers */,
 				5ECE171F20584AD600C5DA14 /* Mesh.h in Headers */,
 				5ECE172C20584AD600C5DA14 /* OpenGLVertexType.h in Headers */,
+				5ECE17A42063477200C5DA14 /* MetaSystem.h in Headers */,
 				5ECE173A20584AD600C5DA14 /* VertexBuffer.h in Headers */,
 				5ECE173520584AD600C5DA14 /* Scene.h in Headers */,
 				5ECE172420584AD600C5DA14 /* OpenGLDeferredRenderPass.h in Headers */,
+				5ECE17A22063477200C5DA14 /* MessageSystem.h in Headers */,
 				5ECE173120584AD600C5DA14 /* RenderSystem.h in Headers */,
 				5ECE172620584AD600C5DA14 /* OpenGLRenderSystem.h in Headers */,
 				5ECE172F20584AD600C5DA14 /* RenderPass.h in Headers */,
 				5ECE171920584AD600C5DA14 /* ResourceObject.h in Headers */,
 				5ECE172220584AD600C5DA14 /* OpenGL.h in Headers */,
+				5ECE17A02063477200C5DA14 /* Message.h in Headers */,
 				5ECE171120584AD600C5DA14 /* MathTypes.h in Headers */,
 				5ECE173820584AD600C5DA14 /* ShaderProgram.h in Headers */,
 				5ECE172A20584AD600C5DA14 /* OpenGLVertexBuffer.h in Headers */,
 				5ECE173620584AD600C5DA14 /* Shader.h in Headers */,
 				5ECE171220584AD600C5DA14 /* System.h in Headers */,
 				5ECE172820584AD600C5DA14 /* OpenGLShaderProgram.h in Headers */,
+				5ECE179C2063477200C5DA14 /* Error.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,9 +374,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5ECE179D2063477200C5DA14 /* GigaObject.cpp in Sources */,
+				5ECE17A52063477200C5DA14 /* Variant.cpp in Sources */,
+				5ECE17A32063477200C5DA14 /* MetaSystem.cpp in Sources */,
 				5ECE171320584AD600C5DA14 /* Transform.cpp in Sources */,
 				5ECE171A20584AD600C5DA14 /* ResourceSystem.cpp in Sources */,
 				5ECE172020584AD600C5DA14 /* MeshComponent.cpp in Sources */,
+				5ECE179F2063477200C5DA14 /* Message.cpp in Sources */,
 				5ECE173420584AD600C5DA14 /* Scene.cpp in Sources */,
 				5ECE172720584AD600C5DA14 /* OpenGLShaderProgram.cpp in Sources */,
 				5ECE170E20584AD600C5DA14 /* Application.cpp in Sources */,
@@ -347,8 +393,10 @@
 				5ECE171620584AD600C5DA14 /* Resource.cpp in Sources */,
 				5ECE173020584AD600C5DA14 /* RenderSystem.cpp in Sources */,
 				5ECE172320584AD600C5DA14 /* OpenGLDeferredRenderPass.cpp in Sources */,
+				5ECE179B2063477200C5DA14 /* Error.cpp in Sources */,
 				5ECE173B20584AD600C5DA14 /* VertexType.cpp in Sources */,
 				5ECE172D20584AD600C5DA14 /* RenderComponent.cpp in Sources */,
+				5ECE17A12063477200C5DA14 /* MessageSystem.cpp in Sources */,
 				5ECE173720584AD600C5DA14 /* ShaderProgram.cpp in Sources */,
 				5ECE172B20584AD600C5DA14 /* OpenGLVertexType.cpp in Sources */,
 				5ECE172520584AD600C5DA14 /* OpenGLRenderSystem.cpp in Sources */,

@@ -10,20 +10,21 @@
 
 using namespace std;
 
-bool haveClass = false;
-bool haveNewClass = false;
-
 std::vector<const char*> args;
-CXIndex index = 0;
+CXIndex cindex = 0;
 CXTranslationUnit unit;
 std::map<std::string, bool> GigaClasses;
+std::string currentGigaClassName;
 std::string currentClassName;
-std::string currentMetaName;
 std::map<std::string, MetaClass*> classes;
 MetaClass* currentMetaClass = 0;
 std::map<int, int> typeMappings;
 std::map <int, std::string> functionMappings;
 std::string precompiled_header;
+
+bool grabNextFunction = false;
+bool grabNextVar = false;
+bool grabNextClass = false;
 
 // Supported types
 enum Type {
@@ -86,38 +87,23 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
     CXType type = clang_getCursorType(c);
 	std::string name = clang_getCString(str);
 
-	if (cursor == CXCursor_ClassDecl) {
-		currentClassName = name;
-	}
-
-	if (cursor == CXCursor_ClassDecl && haveNewClass) {
-		haveNewClass = false;
-		currentMetaName.clear();
-	}
-
 	if (name.empty() == false) {
 		size_t pos = name.find("class ");
 		if (pos != name.npos) {
 			name = name.substr(pos + 6);
 		}
 	}
+    
+    if (cursor == CXCursor_ClassDecl) {
+        currentClassName = name;
+    }
 
 	if ((cursor == CXCursor_CXXBaseSpecifier && name.find("GigaObject") != name.npos) || (GigaClasses.find(name) != GigaClasses.end())) {
 		//cout << "Found GIGA base class named '" << currentClassName.c_str() << "'" << endl;
 		GigaClasses[currentClassName] = true;
 	}
 
-	MetaClass* mc = 0;
-	if (currentMetaName.empty() == false) {
-		std::map<std::string, MetaClass*>::iterator it = classes.begin();
-		for (; it != classes.end(); it++) {
-			if (it->second->name == currentMetaName) {
-				mc = it->second;
-			}
-		}
-	}
-
-	if (currentMetaName.empty() == false && cursor == CXCursor_CXXMethod && mc == 0) {
+	if (grabNextFunction && cursor == CXCursor_CXXMethod && currentMetaClass) {
 		cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
         
         CXType returnType = clang_getResultType(type);
@@ -156,13 +142,27 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
                 cout << "Arg " << i << " type '" << argtype.c_str() << "'" << endl;
             }
 
-            currentMetaClass->functions.push_back(func);
+            currentMetaClass->functions[name] = func;
         }
+        
+        grabNextFunction = false;
 	}
+    
+    if (cursor == CXCursor_CXXMethod && name.compare("GFUNCTION") == 0) {
+        grabNextFunction = true;
+    }
+    
+    if(cursor == CXCursor_FunctionDecl && currentGigaClassName.empty() == false) {
+        int error = 1;
+    }
+    
+    if (cursor == CXCursor_FunctionDecl && name.compare("GCLASS") == 0) {
+        grabNextClass = true;
+    }
 
-	if (haveClass && cursor == CXCursor_ClassDecl) {
+	if (grabNextClass && cursor == CXCursor_ClassDecl) {
 		cout << "Found GIGA class named '" << name.c_str() << "'" << endl;
-		currentMetaName = name;
+		currentGigaClassName = name;
 
 		if (classes.find(name) == classes.end()) {
 			MetaClass* m = new MetaClass;
@@ -171,9 +171,11 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 			classes[name] = m;
 			currentMetaClass = m;
 		}
+        
+        grabNextClass = false;
 	}
 
-	if (currentMetaName.empty() == false && cursor == CXCursor_FieldDecl) {
+	if (grabNextVar && cursor == CXCursor_FieldDecl && currentMetaClass) {
 		cout << "Found GIGA variable named '" << name.c_str() << "'" << endl;
 
         std::string typestr = clang_getCString(clang_getTypeSpelling(type));
@@ -184,34 +186,25 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
             var->name = name;
             var->type = internalType;
             
-            currentMetaClass->variables.push_back(var);
+            currentMetaClass->variables[name] = var;
         }
         else {
             int error = 1;
         }
         
+        grabNextVar = false;
         cout << "Type '" << typestr.c_str() << "'" << endl;
 	}
-
-	if (cursor == CXCursor_ClassDecl && haveClass) {
-		haveNewClass = true;
-		haveClass = false;
-	}
-
-	if (cursor == CXCursor_FunctionDecl && name == "GCLASS") {
-		haveClass = true;
-	}
+    
+    if (cursor == CXCursor_CXXMethod && name.compare("GVARIABLE") == 0) {
+        grabNextVar = true;
+    }
 
 	clang_disposeString(str);
 	return CXChildVisit_Recurse;
 }
 
 void ProcessDirectory(Directory* dir) {
-	std::vector<Directory*>::iterator di = dir->subdirectories.begin();
-	for (; di != dir->subdirectories.end(); di++) {
-		ProcessDirectory(*di);
-	}
-
 	std::vector<std::string>::iterator fi = dir->files.begin();
 	for (; fi != dir->files.end(); fi++) {
 		std::string filename = dir->path + "/" + (*fi);
@@ -222,11 +215,11 @@ void ProcessDirectory(Directory* dir) {
 			continue;
 		}
 
-		int flags = CXTranslationUnit_SkipFunctionBodies | (precompiled_header.empty() ?  CXTranslationUnit_ForSerialization : 0);
+		int flags = (precompiled_header.empty() ?  CXTranslationUnit_ForSerialization : 0);
 
 		clang_parseTranslationUnit2(
-			index,
-			filename.c_str(), args.data(), args.size(),
+			cindex,
+			filename.c_str(), args.data(), (int)args.size(),
 			nullptr, 0,
 			flags, &unit);
 		if (unit == nullptr) {
@@ -246,14 +239,18 @@ void ProcessDirectory(Directory* dir) {
 		}
 
 		clang_disposeTranslationUnit(unit);
-
-		haveClass = false;
-		currentMetaName.clear();
+        currentGigaClassName.clear();
+        currentMetaClass = 0;
 	}
+    
+    std::vector<Directory*>::iterator di = dir->subdirectories.begin();
+    for (; di != dir->subdirectories.end(); di++) {
+        ProcessDirectory(*di);
+    }
 }
 
 int main(int argc, char** argv) {
-	index = clang_createIndex(0, 0);
+	cindex = clang_createIndex(0, 0);
 
 	args.push_back("-include");
 	args.push_back("../Source/Generator/Defines.h");
@@ -300,14 +297,14 @@ int main(int argc, char** argv) {
 		MetaClass* cl = it->second;
 		
 		// Functions
-		std::vector<MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
+		std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
 		for (; fi != cl->functions.end(); fi++) {
-			output += "Variant* meta_" + cl->name + "_" + (*fi)->name + "(GigaObject* obj, int argc, Variant** argv) {\n";
+			output += "Variant* meta_" + cl->name + "_" + fi->second->name + "(GigaObject* obj, int argc, Variant** argv) {\n";
 			
 			// Validate data
-			std::vector<MetaClass::MetaFunction::MetaArgument*>::iterator ai = (*fi)->args.begin();
+			std::vector<MetaClass::MetaFunction::MetaArgument*>::iterator ai = fi->second->args.begin();
 			int argc = 0;
-			for (; ai != (*fi)->args.end(); ai++) {
+			for (; ai != fi->second->args.end(); ai++) {
 				output += "\tGIGA_ASSERT(argv[" + std::to_string(argc) + "]->Is" + functionMappings[(*ai)->type] + "(), \"Incorrect type for argument " + std::to_string(argc) + ".\");\n\n";
 				argc++;
 			}
@@ -317,10 +314,10 @@ int main(int argc, char** argv) {
 			output += "\tGIGA_ASSERT(cobj != 0, \"Object is not of the correct type.\");\n\n";
 
 			// Function call
-			output += "\treturn(new Variant(cobj->" + (*fi)->name + "(";
-			ai = (*fi)->args.begin();
+			output += "\treturn(new Variant(cobj->" + fi->first + "(";
+			ai = fi->second->args.begin();
 			argc = 0;
-			for (; ai != (*fi)->args.end(); ai++) {
+			for (; ai != fi->second->args.end(); ai++) {
 				output += "argv[" + std::to_string(argc) + "]->As" + functionMappings[(*ai)->type];
 				if ((*ai)->type == VAR_OBJECT) {
 					output += "<" + (*ai)->objectType + ">";
@@ -346,9 +343,9 @@ int main(int argc, char** argv) {
 	for (; it != classes.end(); it++) {
 		MetaClass* cl = it->second;
 
-		std::vector<MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
+        std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
 		for (; fi != cl->functions.end(); fi++) {
-			output += "\tmetaSystem->RegisterFunction(\"" + cl->name + "\", \"" + (*fi)->name + "\", meta_" + cl->name + "_" + (*fi)->name + ");\n";
+			output += "\tmetaSystem->RegisterFunction(\"" + cl->name + "\", \"" + fi->first + "\", meta_" + cl->name + "_" + fi->first + ");\n";
 		}
 		output += "\n";
 	}
@@ -358,7 +355,7 @@ int main(int argc, char** argv) {
 	fwrite(output.data(), output.size(), 1, fp);
 	fclose(fp);
 
-	clang_disposeIndex(index);
+	clang_disposeIndex(cindex);
 
 	return(0);
 }

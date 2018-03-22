@@ -35,9 +35,14 @@
 #define GIGA_VARIABLE(...)
 #endif
 
-enum {
-	Serializable = 1,
-	Scriptable
+enum ClassOptions {
+	StaticObject = 1
+};
+
+enum VarOptions {
+    Get = 1,
+    Set,
+    Serializable
 };
 
 // STD library

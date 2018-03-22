@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Generator/main.cpp"
-            timestampString = "543029143.3644789"
+            timestampString = "543378189.914212"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
             landmarkName = "main(int argc, char** argv)"
             landmarkType = "9">
          </BreakpointContent>
@@ -74,28 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Generator/main.cpp"
-            timestampString = "543028802.841208"
+            timestampString = "543378189.914212"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
-            landmarkName = "visitor(CXCursor c, CXCursor parent, CXClientData client_data)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../Generator/main.cpp"
-            timestampString = "543029143.3644789"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
-            landmarkName = "visitor(CXCursor c, CXCursor parent, CXClientData client_data)"
+            startingLineNumber = "291"
+            endingLineNumber = "291"
+            landmarkName = "main(int argc, char** argv)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

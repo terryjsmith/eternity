@@ -6,7 +6,7 @@
 #include <Render/Mesh.h>
 #include <Render/RenderComponent.h>
 
-GIGA_CLASS(Scriptable)
+GIGA_CLASS()
 class GIGA_API MeshComponent : public RenderComponent {
 public:
 	MeshComponent() = default;
@@ -14,7 +14,7 @@ public:
 
 	GIGA_CLASS_NAME("MeshComponent");
 
-	void Instantiate(Mesh* mesh);
+	GIGA_FUNCTION() void Instantiate(Mesh* mesh);
 
 	std::vector<MeshComponent*>& GetChildren() { return m_children; }
 	Mesh* GetMesh() { return m_mesh; }

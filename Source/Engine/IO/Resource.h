@@ -15,6 +15,7 @@ enum {
 	FILEMODE_APPEND = 8,
 };
 
+GIGA_CLASS()
 class GIGA_API Resource : public GigaObject {
 public:
 	Resource();
@@ -30,13 +31,13 @@ public:
 	/**
 	 * Load/unload
 	 */
-	void Load();
-	void Unload();
+	GIGA_FUNCTION() void Load();
+	GIGA_FUNCTION() void Unload();
 
 	/**
 	 * Get raw data
 	 */
-	unsigned char* GetData();
+	GIGA_FUNCTION() unsigned char* GetData();
 
 	/**
 	 * Get data as string
@@ -90,16 +91,16 @@ public:
 
 public:
 	// Just the filename + extension
-	std::string filename;
+    GIGA_VARIABLE(Get) std::string filename;
 
 	// File extension
-	std::string extension;
+	GIGA_VARIABLE(Get) std::string extension;
 
 	// Full path including filename
-	std::string fullPath;
+	GIGA_VARIABLE(Get) std::string fullPath;
 
 	// The size of the file/data
-	unsigned int filesize;
+	GIGA_VARIABLE(Get) unsigned int filesize;
 
 protected:
 	// Loaded data

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5ECE17872058537000C5DA14 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE17862058537000C5DA14 /* main.cpp */; };
 		5ECE178A2058545500C5DA14 /* libclang.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ECE17892058545500C5DA14 /* libclang.dylib */; };
+		5ECE178E2061DD0F00C5DA14 /* Directory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE178C2061DD0F00C5DA14 /* Directory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,8 @@
 		5ECE17862058537000C5DA14 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../Generator/main.cpp; sourceTree = "<group>"; };
 		5ECE17892058545500C5DA14 /* libclang.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libclang.dylib; path = ../../ThirdParty/clang/lib/libclang.dylib; sourceTree = "<group>"; };
 		5ECE178B205DDD5D00C5DA14 /* MetaClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MetaClass.h; path = ../../Generator/MetaClass.h; sourceTree = "<group>"; };
+		5ECE178C2061DD0F00C5DA14 /* Directory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Directory.cpp; path = ../../Generator/Directory.cpp; sourceTree = "<group>"; };
+		5ECE178D2061DD0F00C5DA14 /* Directory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Directory.h; path = ../../Generator/Directory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +50,8 @@
 			isa = PBXGroup;
 			children = (
 				5ECE17852058537000C5DA14 /* Defines.h */,
+				5ECE178C2061DD0F00C5DA14 /* Directory.cpp */,
+				5ECE178D2061DD0F00C5DA14 /* Directory.h */,
 				5ECE17862058537000C5DA14 /* main.cpp */,
 				5ECE178B205DDD5D00C5DA14 /* MetaClass.h */,
 				5ECE177C2058534100C5DA14 /* Products */,
@@ -129,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5ECE17872058537000C5DA14 /* main.cpp in Sources */,
+				5ECE178E2061DD0F00C5DA14 /* Directory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

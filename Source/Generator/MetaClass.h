@@ -31,8 +31,8 @@ public:
 
 public:
 	std::string name;
-	std::vector<MetaFunction*> functions;
-	std::vector<MetaVariable*> variables;
+    std::map<std::string, MetaFunction*> functions;
+	std::map<std::string, MetaVariable*> variables;
 };
 
 #endif

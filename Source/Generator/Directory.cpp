@@ -6,6 +6,8 @@
 #define GetCurrentDir _getcwd
 #else
 #include <unistd.h>
+#include <assert.h>
+#include <dirent.h>
 #define GetCurrentDir getcwd
 #endif
 
@@ -58,5 +60,29 @@ void Directory::Open(std::string path) {
 
 	FindClose(handle);
 #else
+    DIR *dir;
+    struct dirent *dp;
+    
+    if((dir = opendir (path.c_str())) == NULL) {
+        return;
+    }
+    
+    while ((dp = readdir (dir)) != NULL) {
+        std::string filename = dp->d_name;
+        if(dp->d_type == DT_DIR) {
+            if(filename.compare(".") == 0 || filename.compare("..") == 0) {
+                continue;
+            }
+            
+            Directory* subdir = new Directory();
+            subdir->Open(path + "/" + filename);
+            
+            subdirectories.push_back(subdir);
+        }
+        
+        if(dp->d_type == DT_REG) {
+            files.push_back(filename);
+        }
+    }
 #endif
 }
