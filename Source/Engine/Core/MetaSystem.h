@@ -4,6 +4,7 @@
 
 #include <eternity.h>
 #include <Core/System.h>
+#include <Core/Variant.h>
 #include <Core/GigaObject.h>
 
 class GIGA_API MetaSystem : public System {

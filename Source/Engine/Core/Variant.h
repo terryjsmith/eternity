@@ -8,6 +8,7 @@
 
 class GIGA_API Variant {
 public:
+	Variant();
 	virtual ~Variant();
 
 	// Supported types
@@ -66,6 +67,7 @@ public:
 	Variant(vector2 value);
 	Variant(vector3 value);
 	Variant(vector4 value);
+	Variant(quaternion value);
 	Variant(std::string value);
 	Variant(GigaObject* value);
 	Variant(const Variant& value);
@@ -103,6 +105,7 @@ public:
 	bool IsQuaternion();
 	bool IsString();
 	bool IsObject();
+	bool IsNull();
 
 	/**
 	* Convert value to string
@@ -124,17 +127,13 @@ public:
 	quaternion AsQuaternion();
 	std::string AsString();
 	GigaObject* AsObject();
-	template<class T> T* AsObject() {
+	template<class T> T AsObject() {
 		if (m_type == VAR_OBJECT) {
-			return(dynamic_cast<T*>(m_data.obj));
+			return(dynamic_cast<T>(m_data.obj));
 		}
 
 		return(0);
 	}
-
-protected:
-	// Make default constructor private so it needs to have a value
-	Variant() = default;
 
 protected:
 	int m_type;

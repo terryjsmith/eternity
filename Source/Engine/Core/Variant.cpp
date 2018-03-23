@@ -1,6 +1,10 @@
 
 #include <Core/Variant.h>
 
+Variant::Variant() {
+	m_type = 0;
+}
+
 Variant::~Variant() {
 	if (m_type == VAR_STRING) {
 		free(m_data.str);
@@ -40,6 +44,10 @@ Variant::Variant(vector3 value) {
 }
 
 Variant::Variant(vector4 value) {
+	*this = value;
+}
+
+Variant::Variant(quaternion value) {
 	*this = value;
 }
 
@@ -193,6 +201,10 @@ bool Variant::IsString() {
 
 bool Variant::IsObject() {
 	return(m_type == VAR_OBJECT);
+}
+
+bool Variant::IsNull() {
+	return(m_type == 0);
 }
 
 std::string Variant::ToString() {
