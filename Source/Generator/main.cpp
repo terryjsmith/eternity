@@ -10,7 +10,10 @@
 
 #ifdef WIN32
 #include <direct.h>
-#define mymkdir _mkdir
+#define mymkdir(path) _mkdir(path)
+#else
+#include <sys/stat.h>
+#define mymkdir(path) mkdir(path, ACCESSPERMS)
 #endif
 
 using namespace std;
@@ -19,6 +22,7 @@ std::vector<const char*> args;
 CXIndex cindex = 0;
 CXTranslationUnit unit;
 std::map<std::string, bool> GigaClasses;
+std::map<std::string, std::string> inheritance;
 std::string currentGigaClassName;
 std::string currentClassName;
 std::map<std::string, MetaClass*> classes;
@@ -107,11 +111,11 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
     
     if (cursor == CXCursor_ClassDecl) {
         currentClassName = name;
+        grabNextClass = true;
     }
 
-	if ((cursor == CXCursor_CXXBaseSpecifier && name.find("GigaObject") != name.npos) || (GigaClasses.find(name) != GigaClasses.end())) {
-		//cout << "Found GIGA base class named '" << currentClassName.c_str() << "'" << endl;
-		GigaClasses[currentClassName] = true;
+    if (cursor == CXCursor_CXXBaseSpecifier) {
+        inheritance[currentClassName] = name;
 	}
 
 	if (grabNextFunction && cursor == CXCursor_CXXMethod && currentMetaClass) {
@@ -164,7 +168,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
     
     if (cursor == CXCursor_CXXMethod && name.compare("GFUNCTION") == 0) {
         grabNextFunction = true;
-		return CXChildVisit_Recurse;
+		return CXChildVisit_Continue;
     }
     
     if(cursor == CXCursor_FunctionDecl && currentGigaClassName.empty() == false) {
@@ -179,6 +183,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 	if (grabNextClass && cursor == CXCursor_ClassDecl) {
 		cout << "Found GIGA class named '" << name.c_str() << "'" << endl;
 		currentGigaClassName = name;
+        grabNextClass = false;
 
 		if (classes.find(name) == classes.end()) {
 			addedData = true;
@@ -188,11 +193,11 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 
 			classes[name] = m;
 			currentMetaClass = m;
+            
+            return CXChildVisit_Recurse;
 		}
-        
-        grabNextClass = false;
 
-		return CXChildVisit_Recurse;
+		return CXChildVisit_Continue;
 	}
 
 	if (grabNextVar && cursor == CXCursor_FieldDecl && currentMetaClass) {
@@ -285,12 +290,41 @@ void ProcessDirectory(Directory* dir) {
     }
 }
 
+void AddInheritedClasses(MetaClass* cl, std::string name) {
+    // Check if this class inherits from another
+    std::map<std::string, std::string>::iterator it = inheritance.find(name);
+    if(it != inheritance.end()) {
+        // Get that class
+        MetaClass* cl2 = classes[it->second];
+        
+        // If it does, add any meta functions from that class to this class too
+        std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl2->functions.begin();
+        for(; fi != cl2->functions.end(); fi++) {
+            cl->functions[fi->second->name] = fi->second;
+        }
+        
+        // Same for variables
+        std::map<std::string, MetaClass::MetaVariable*>::iterator vi = cl2->variables.begin();
+        for(; vi != cl2->variables.end(); vi++) {
+            cl->variables[vi->second->name] = vi->second;
+        }
+        
+        // Also check if that class inherits from another
+        AddInheritedClasses(cl, it->second);
+    }
+}
+
 int main(int argc, char** argv) {
 	cindex = clang_createIndex(0, 0);
 
 	args.push_back("-include");
 	args.push_back("../Source/Generator/Defines.h");
 	args.push_back("-I../Source/Engine");
+#ifndef WIN32
+    args.push_back("-I/usr/local/include");
+    args.push_back("-I/usr/include");
+    args.push_back("-I/usr/include/c++/4.2.1");
+#endif
 	args.push_back("-x");
 	args.push_back("c++");
     
@@ -349,6 +383,9 @@ int main(int argc, char** argv) {
 	std::map<std::string, MetaClass*>::iterator it = classes.begin();
 	for (; it != classes.end(); it++) {
 		MetaClass* cl = it->second;
+        
+        // Process inheritance
+        AddInheritedClasses(cl, cl->name);
 		
 		// Functions
 		std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();

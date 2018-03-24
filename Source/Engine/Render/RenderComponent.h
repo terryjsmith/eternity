@@ -11,7 +11,7 @@ public:
 	RenderComponent();
 	virtual ~RenderComponent() = default;
 
-	Transform* GetTransform() { return m_transform; }
+	GIGA_FUNCTION() Transform* GetTransform() { return m_transform; }
 
 protected:
 	Transform* m_transform;
