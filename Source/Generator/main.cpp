@@ -26,6 +26,8 @@ std::map<std::string, std::string> inheritance;
 std::string currentGigaClassName;
 std::string currentClassName;
 std::map<std::string, MetaClass*> classes;
+std::map<std::string, bool> exportGigaClasses;
+bool exportGigaClass = false;
 MetaClass* currentMetaClass = 0;
 std::map<int, int> typeMappings;
 std::map <int, std::string> functionMappings;
@@ -177,6 +179,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
     
     if (cursor == CXCursor_FunctionDecl && name.compare("GCLASS") == 0) {
         grabNextClass = true;
+        exportGigaClass = true;
 		return CXChildVisit_Recurse;
     }
 
@@ -184,20 +187,31 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 		cout << "Found GIGA class named '" << name.c_str() << "'" << endl;
 		currentGigaClassName = name;
         grabNextClass = false;
+        
+        if(exportGigaClass == true) {
+            exportGigaClasses[name] = true;
+        }
 
-		if (classes.find(name) == classes.end()) {
-			addedData = true;
-
-			MetaClass* m = new MetaClass;
-			m->name = name;
-
-			classes[name] = m;
-			currentMetaClass = m;
+        std::map<std::string, MetaClass*>::iterator ci = classes.find(name);
+		if (ci == classes.end() || exportGigaClass) {
+            addedData = true;
             
-            return CXChildVisit_Recurse;
+            if(ci != classes.end()) {
+                currentMetaClass = ci->second;
+            }
+            else {
+                MetaClass* m = new MetaClass;
+                m->name = name;
+
+                classes[name] = m;
+                currentMetaClass = m;
+            }
+            
+            exportGigaClass = false;
 		}
 
-		return CXChildVisit_Continue;
+        exportGigaClass = false;
+		return CXChildVisit_Recurse;
 	}
 
 	if (grabNextVar && cursor == CXCursor_FieldDecl && currentMetaClass) {
@@ -381,8 +395,13 @@ int main(int argc, char** argv) {
 
 	// Write new functions for each meta class
 	std::map<std::string, MetaClass*>::iterator it = classes.begin();
-	for (; it != classes.end(); it++) {
+    for (; it != classes.end(); it++) {
 		MetaClass* cl = it->second;
+        
+        std::map<std::string, bool>::iterator ei = exportGigaClasses.find(cl->name);
+        if(ei == exportGigaClasses.end()) {
+            continue;
+        }
         
         // Process inheritance
         AddInheritedClasses(cl, cl->name);
@@ -448,12 +467,20 @@ int main(int argc, char** argv) {
 	it = classes.begin();
 	for (; it != classes.end(); it++) {
 		MetaClass* cl = it->second;
+        
+        std::map<std::string, bool>::iterator ei = exportGigaClasses.find(cl->name);
+        if(ei == exportGigaClasses.end()) {
+            continue;
+        }
 
         std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
 		for (; fi != cl->functions.end(); fi++) {
 			output += "\tmetaSystem->RegisterFunction(\"" + cl->name + "\", \"" + fi->first + "\", meta_" + cl->name + "_" + fi->first + ");\n";
 		}
-		output += "\n";
+        
+        if(cl->functions.size()) {
+            output += "\n";
+        }
 	}
 	output += "}\n\n";
 
