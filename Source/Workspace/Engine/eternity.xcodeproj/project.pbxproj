@@ -334,6 +334,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5ECE16D820584A6600C5DA14 /* Build configuration list for PBXNativeTarget "eternity" */;
 			buildPhases = (
+				5ECE17AA206A7C1300C5DA14 /* ShellScript */,
 				5ECE16D020584A6600C5DA14 /* Sources */,
 				5ECE16D120584A6600C5DA14 /* Frameworks */,
 				5ECE16D220584A6600C5DA14 /* Headers */,
@@ -379,6 +380,22 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5ECE17AA206A7C1300C5DA14 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/Users/terryjsmith/Documents/Projects/eternity/Bin\n/Users/terryjsmith/Documents/Projects/eternity/Bin/generator ${PROJECT_DIR}";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5ECE16D020584A6600C5DA14 /* Sources */ = {

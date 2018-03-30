@@ -1,30 +1,28 @@
 #include <Core/MetaSystem.h>
 #include <Core/Application.h>
-#include <Core/Application.h>
-#include <Core/Component.h>
-#include <Core/Error.h>
-#include <Core/MessageSystem.h>
-#include <Core/MetaSystem.h>
 #include <Core/Transform.h>
-#include <IO/Directory.h>
 #include <IO/Resource.h>
-#include <IO/ResourceObject.h>
-#include <IO/ResourceSystem.h>
 #include <Render/CameraComponent.h>
-#include <Render/Mesh.h>
 #include <Render/MeshComponent.h>
-#include <Render/RenderComponent.h>
-#include <Render/RenderPass.h>
-#include <Render/RenderSystem.h>
-#include <Render/RenderWindow.h>
-#include <Render/Scene.h>
-#include <Render/Shader.h>
-#include <Render/ShaderProgram.h>
-#include <Render/OpenGL/OpenGLDeferredRenderPass.h>
-#include <Render/OpenGL/OpenGLRenderSystem.h>
-#include <Render/OpenGL/OpenGLShaderProgram.h>
-#include <Render/OpenGL/OpenGLVertexBuffer.h>
-#include <Render/OpenGL/OpenGLVertexType.h>
+
+Variant* meta_CameraComponent_GetTransform(GigaObject* obj, int argc, Variant** argv) {
+	CameraComponent* cobj = dynamic_cast<CameraComponent*>(obj);
+	GIGA_ASSERT(cobj != 0, "Object is not of the correct type.");
+
+	return(new Variant(cobj->GetTransform()));
+}
+
+Variant* meta_CameraComponent_SetViewport(GigaObject* obj, int argc, Variant** argv) {
+	GIGA_ASSERT(argv[0]->IsInt(), "Incorrect type for argument 0.");
+
+	GIGA_ASSERT(argv[1]->IsInt(), "Incorrect type for argument 1.");
+
+	CameraComponent* cobj = dynamic_cast<CameraComponent*>(obj);
+	GIGA_ASSERT(cobj != 0, "Object is not of the correct type.");
+
+	cobj->SetViewport(argv[0]->AsInt(),argv[1]->AsInt());
+	return(new Variant(0));
+}
 
 Variant* meta_MeshComponent_GetTransform(GigaObject* obj, int argc, Variant** argv) {
 	MeshComponent* cobj = dynamic_cast<MeshComponent*>(obj);
@@ -271,6 +269,9 @@ Variant* meta_Transform_SetWorldScaling(GigaObject* obj, int argc, Variant** arg
 
 void RegisterMetaFunctions() {
 	MetaSystem* metaSystem = GetSystem<MetaSystem>();
+
+	metaSystem->RegisterFunction("CameraComponent", "GetTransform", meta_CameraComponent_GetTransform);
+	metaSystem->RegisterFunction("CameraComponent", "SetViewport", meta_CameraComponent_SetViewport);
 
 	metaSystem->RegisterFunction("MeshComponent", "GetTransform", meta_MeshComponent_GetTransform);
 	metaSystem->RegisterFunction("MeshComponent", "Instantiate", meta_MeshComponent_Instantiate);

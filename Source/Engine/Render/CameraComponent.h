@@ -6,6 +6,7 @@
 #include <Core/MathTypes.h>
 #include <Render/RenderComponent.h>
 
+GIGA_CLASS()
 class GIGA_API CameraComponent : public RenderComponent {
 public:
 	CameraComponent();
@@ -13,7 +14,7 @@ public:
 
 	GIGA_CLASS_NAME("CameraComponent");
 
-	void SetViewport(int windowWidth, int windowHeight);
+	GIGA_FUNCTION() void SetViewport(int windowWidth, int windowHeight);
 
 	matrix4 GetViewMatrix();
 	matrix4 GetProjectionMatrix();

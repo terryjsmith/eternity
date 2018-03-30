@@ -10,17 +10,21 @@
 		5ECE17872058537000C5DA14 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE17862058537000C5DA14 /* main.cpp */; };
 		5ECE178A2058545500C5DA14 /* libclang.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ECE17892058545500C5DA14 /* libclang.dylib */; };
 		5ECE178E2061DD0F00C5DA14 /* Directory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE178C2061DD0F00C5DA14 /* Directory.cpp */; };
+		5ECE17AB206A804800C5DA14 /* generator in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5ECE177B2058534100C5DA14 /* generator */; };
+		5ECE17AC206A804B00C5DA14 /* libclang.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5ECE17892058545500C5DA14 /* libclang.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		5ECE17792058534100C5DA14 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			buildActionMask = 12;
+			dstPath = /Users/terryjsmith/Documents/Projects/eternity/Bin;
 			dstSubfolderSpec = 0;
 			files = (
+				5ECE17AC206A804B00C5DA14 /* libclang.dylib in CopyFiles */,
+				5ECE17AB206A804800C5DA14 /* generator in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 

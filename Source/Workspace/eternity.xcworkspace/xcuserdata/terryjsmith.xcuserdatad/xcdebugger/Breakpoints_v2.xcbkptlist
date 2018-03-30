@@ -58,12 +58,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Generator/main.cpp"
-            timestampString = "543778443.0458519"
+            timestampString = "543852503.321285"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
-            landmarkName = "main(int argc, char** argv)"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
+            landmarkName = "ProcessDirectory(Directory* dir)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Generator/main.cpp"
+            timestampString = "543852503.321285"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
+            landmarkName = "visitor(CXCursor c, CXCursor parent, CXClientData client_data)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
