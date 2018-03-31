@@ -166,6 +166,9 @@
       <AdditionalLibraryDirectories>../../ThirdParty/glfw/lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;legacy_stdio_definitions.lib;OpenGL32.lib;WS2_32.lib;WinMM.Lib;AdvAPI32.Lib;Crypt32.Lib;Dbghelp.lib;ShLwApi.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>$(TargetDir)generator.exe $(ProjectDir)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
