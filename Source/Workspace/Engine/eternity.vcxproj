@@ -27,9 +27,11 @@
     <ClInclude Include="..\..\Engine\Core\Message.h" />
     <ClInclude Include="..\..\Engine\Core\MessageSystem.h" />
     <ClInclude Include="..\..\Engine\Core\MetaSystem.h" />
+    <ClInclude Include="..\..\Engine\Core\Quaternion.h" />
     <ClInclude Include="..\..\Engine\Core\System.h" />
     <ClInclude Include="..\..\Engine\Core\Transform.h" />
     <ClInclude Include="..\..\Engine\Core\Variant.h" />
+    <ClInclude Include="..\..\Engine\Core\Vector3.h" />
     <ClInclude Include="..\..\Engine\eternity.h" />
     <ClInclude Include="..\..\Engine\IO\Directory.h" />
     <ClInclude Include="..\..\Engine\IO\Resource.h" />
@@ -166,6 +168,9 @@
       <AdditionalLibraryDirectories>../../ThirdParty/glfw/lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;legacy_stdio_definitions.lib;OpenGL32.lib;WS2_32.lib;WinMM.Lib;AdvAPI32.Lib;Crypt32.Lib;Dbghelp.lib;ShLwApi.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>$(TargetDir)generator.exe $(ProjectDir)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

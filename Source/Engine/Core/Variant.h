@@ -65,7 +65,6 @@ public:
 	Variant(bool value);
 	Variant(float value);
 	Variant(vector2 value);
-	Variant(vector3 value);
 	Variant(vector4 value);
 	Variant(quaternion value);
 	Variant(std::string value);
@@ -82,7 +81,6 @@ public:
 	Variant& operator =(bool rhs);
 	Variant& operator =(float rhs);
 	Variant& operator =(vector2 rhs);
-	Variant& operator =(vector3 rhs);
 	Variant& operator =(vector4 rhs);
 	Variant& operator =(quaternion rhs);
 	Variant& operator =(std::string rhs);
@@ -122,7 +120,6 @@ public:
 	bool AsBool();
 	float AsFloat();
 	vector2 AsVector2();
-	vector3 AsVector3();
 	vector4 AsVector4();
 	quaternion AsQuaternion();
 	std::string AsString();

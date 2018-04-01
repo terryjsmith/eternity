@@ -121,6 +121,12 @@
     <ClInclude Include="..\..\Engine\IO\Directory.h">
       <Filter>IO</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\Vector3.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\Quaternion.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Engine\Render\RenderWindow.cpp">
