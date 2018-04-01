@@ -15,10 +15,10 @@ void CameraComponent::SetViewport(int windowWidth, int windowHeight) {
 matrix4 CameraComponent::GetViewMatrix() {
 	Transform* transform = GetTransform();
 	quaternion rotation = transform->GetWorldRotation();
-	vector3 position = transform->GetWorldPosition();
+	Vector3 position = transform->GetWorldPosition();
 
-	vector3 look = rotation * vector3(0, 0, -1);
-	vector3 up = rotation * vector3(0, 1, 0);
+	Vector3 look = rotation * Vector3(0.0f, 0.0f, -1.0f);
+	Vector3 up = rotation * Vector3(0, 1, 0);
 
 	return(glm::lookAt(position, position + look, up));
 }

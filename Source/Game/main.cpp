@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 	CameraComponent* camera = new CameraComponent();
 	scene->SetCamera(camera);
 
-	camera->GetTransform()->SetWorldPosition(vector3(0, 0, 4));
+	camera->GetTransform()->SetWorldPosition(Vector3(0, 0, 4));
 
 	// Create a description of our vertex data
 	VertexType* type = renderSystem->CreateVertexType();
