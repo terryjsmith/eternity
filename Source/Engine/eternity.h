@@ -36,7 +36,7 @@
 #endif
 
 enum ClassOptions {
-	StaticObject = 1
+	Singleton = 1
 };
 
 enum VarOptions {

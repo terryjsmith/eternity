@@ -2,6 +2,7 @@
 #include <Core/Application.h>
 #include <IO/ResourceSystem.h>
 #include <Core/MessageSystem.h>
+#include <Core/MetaSystem.h>
 #include <Render/Shader.h>
 #include <Core/Error.h>
 
@@ -26,6 +27,10 @@ void Application::Startup() {
 	// Register resource types
 	ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
 	resourceSystem->RegisterResourceType<Shader>("Shader");
+
+	// Register singletons
+	MetaSystem* metaSystem = GetSystem<MetaSystem>();
+	metaSystem->RegisterSingleton("ResourceSystem", resourceSystem);
 }
 
 void Application::Shutdown() {

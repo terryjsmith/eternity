@@ -27,6 +27,7 @@ std::string currentGigaClassName;
 std::string currentClassName;
 std::map<std::string, MetaClass*> classes;
 std::map<std::string, bool> exportGigaClasses;
+std::map<std::string, bool> singletonClasses;
 bool exportGigaClass = false;
 MetaClass* currentMetaClass = 0;
 std::map<int, int> typeMappings;
@@ -34,6 +35,11 @@ std::map <int, std::string> functionMappings;
 std::string precompiled_header;
 std::vector<std::string> addlIncludes;
 bool addedData = false;
+bool pullOptions = false;
+bool markSingleton = false;
+bool markGet = false;
+bool markSet = false;
+bool markSerialize = false;
 
 bool grabNextFunction = false;
 bool grabNextVar = false;
@@ -46,7 +52,7 @@ enum Type {
     VAR_BOOL,
     VAR_FLOAT,
     VAR_VECTOR2,
-    VAR_VECTOR3,
+	VAR_VECTOR3,
     VAR_VECTOR4,
     VAR_MATRIX4,
     VAR_QUATERNION,
@@ -110,6 +116,31 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 			name = name.substr(pos + 6);
 		}
 	}
+
+	if (pullOptions && cursor == CXCursor_EnumConstantDecl) {
+		if (strcmp("Singleton", name.c_str()) == 0) {
+			markSingleton = true;
+		}
+
+		if (strcmp("Get", name.c_str()) == 0) {
+			markGet = true;
+		}
+
+		if (strcmp("Set", name.c_str()) == 0) {
+			markSet = true;
+		}
+
+		if (strcmp("Serialize", name.c_str()) == 0) {
+			markSerialize = true;
+		}
+
+		pullOptions = false;
+		return CXChildVisit_Continue;
+	}
+
+	if (pullOptions && (cursor == CXCursor_CompoundStmt || cursor == CXCursor_DeclStmt || cursor == CXCursor_EnumDecl)) {
+		return CXChildVisit_Recurse;
+	}
     
     if (cursor == CXCursor_ClassDecl) {
         currentClassName = name;
@@ -121,7 +152,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 	}
 
 	if (grabNextFunction && cursor == CXCursor_CXXMethod && currentMetaClass) {
-		cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
+		//cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
         
         CXType returnType = clang_getResultType(type);
         std::string rettype = clang_getCString(clang_getTypeSpelling(returnType));
@@ -156,7 +187,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
                     int error = 1;
                 }
             
-                cout << "Arg " << i << " type '" << argtype.c_str() << "'" << endl;
+                //cout << "Arg " << i << " type '" << argtype.c_str() << "'" << endl;
             }
 
             currentMetaClass->functions[name] = func;
@@ -178,17 +209,24 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
     if (cursor == CXCursor_FunctionDecl && name.compare("GCLASS") == 0) {
         grabNextClass = true;
         exportGigaClass = true;
+		pullOptions = true;
+		markSingleton = false;
 		return CXChildVisit_Recurse;
     }
 
 	if (grabNextClass && cursor == CXCursor_ClassDecl) {
-		cout << "Found GIGA class named '" << name.c_str() << "'" << endl;
+		//cout << "Found GIGA class named '" << name.c_str() << "'" << endl;
 		currentGigaClassName = name;
         grabNextClass = false;
         
         if(exportGigaClass == true) {
             exportGigaClasses[name] = true;
         }
+		
+		if (markSingleton) {
+			singletonClasses[name] = true;
+			markSingleton = false;
+		}
 
         std::map<std::string, MetaClass*>::iterator ci = classes.find(name);
 		if (ci == classes.end() || exportGigaClass) {
@@ -198,15 +236,12 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
                 currentMetaClass = ci->second;
             }
             else {
-                if(exportGigaClass) {
-                    
-                }
-                
                 MetaClass* m = new MetaClass;
                 m->name = name;
+				m->singleton = false;
 
                 classes[name] = m;
-                currentMetaClass = m;
+				currentMetaClass = m;
             }
             
             exportGigaClass = false;
@@ -220,7 +255,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 	}
 
 	if (grabNextVar && cursor == CXCursor_FieldDecl && currentMetaClass) {
-		cout << "Found GIGA variable named '" << name.c_str() << "'" << endl;
+		//cout << "Found GIGA variable named '" << name.c_str() << "'" << endl;
 
         std::string typestr = clang_getCString(clang_getTypeSpelling(type));
         int internalType = map_internal_type(type, typestr);
@@ -229,6 +264,22 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
             MetaClass::MetaVariable* var = new MetaClass::MetaVariable();
             var->name = name;
             var->type = internalType;
+			var->get = var->set = var->serialize = false;
+
+			if (markGet) {
+				var->get = true;
+				markGet = false;
+			}
+
+			if (markSet) {
+				var->set = true;
+				markSet = false;
+			}
+
+			if (markSerialize) {
+				var->serialize = true;
+				markSerialize = false;
+			}
             
             currentMetaClass->variables[name] = var;
         }
@@ -237,7 +288,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
         }
         
         grabNextVar = false;
-        cout << "Type '" << typestr.c_str() << "'" << endl;
+        //cout << "Type '" << typestr.c_str() << "'" << endl;
 
 		return CXChildVisit_Continue;
 	}
@@ -435,10 +486,28 @@ int main(int argc, char** argv) {
         if(ei == exportGigaClasses.end()) {
             continue;
         }
+
+		std::map<std::string, bool>::iterator singleton = singletonClasses.find(cl->name);
+		if (singleton != singletonClasses.end()) {
+			cl->singleton = true;
+		}
         
         // Process inheritance
         AddInheritedClasses(cl, cl->name);
-		
+
+		// Variables
+		std::map<std::string, MetaClass::MetaVariable*>::iterator vi = cl->variables.begin();
+		for (; vi != cl->variables.end(); vi++) {
+			if (vi->second->get) {
+				output += "Variant* meta_" + cl->name + "_" + vi->second->name + "_get(GigaObject* obj) {\n";
+				output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(obj);\n";
+				output += "\tGIGA_ASSERT(cobj != 0, \"Object is not of the correct type.\");\n\n";
+
+				output += "\treturn(new Variant(cobj->" + vi->second->name + "));\n";
+				output += "}\n\n";
+			}
+		}
+
 		// Functions
 		std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
 		for (; fi != cl->functions.end(); fi++) {
@@ -448,13 +517,24 @@ int main(int argc, char** argv) {
 			std::vector<MetaClass::MetaFunction::MetaArgument*>::iterator ai = fi->second->args.begin();
 			int argc = 0;
 			for (; ai != fi->second->args.end(); ai++) {
-				output += "\tGIGA_ASSERT(argv[" + std::to_string(argc) + "]->Is" + functionMappings[(*ai)->type] + "(), \"Incorrect type for argument " + std::to_string(argc) + ".\");\n\n";
+				output += "\tGIGA_ASSERT(argv[" + std::to_string(argc) + "]->Is" + functionMappings[(*ai)->type] + "(), \"Incorrect type for argument " + std::to_string(argc) + ".\");\n";
 				argc++;
 			}
 
+			output += "\n";
+
 			// Cast object
-			output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(obj);\n";
-			output += "\tGIGA_ASSERT(cobj != 0, \"Object is not of the correct type.\");\n\n";
+			if (cl->singleton == false) {
+				output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(obj);\n";
+				output += "\tGIGA_ASSERT(cobj != 0, \"Object is not of the correct type.\");\n";
+			}
+			else {
+				output += "\tMetaSystem* metaSystem = GetSystem<MetaSystem>();\n";
+				output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(metaSystem->GetSingleton(\"" + cl->name + "\"));\n";
+				output += "\tGIGA_ASSERT(cobj != 0, \"Singleton class type not found.\");\n";
+			}
+
+			output += "\n";
 
 			if (fi->second->returnType != -1) {
 				output += "\treturn(new Variant(";
@@ -505,6 +585,8 @@ int main(int argc, char** argv) {
         if(ei == exportGigaClasses.end()) {
             continue;
         }
+
+		output += "\tmetaSystem->RegisterClassName<" + cl->name + ">(\"" + cl->name + "\");\n";
 
         std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
 		for (; fi != cl->functions.end(); fi++) {

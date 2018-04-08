@@ -27,12 +27,14 @@ public:
 	struct MetaVariable {
 		std::string name;
 		std::string type;
+		bool get, set, serialize;
 	};
 
 public:
 	std::string name;
     std::map<std::string, MetaFunction*> functions;
 	std::map<std::string, MetaVariable*> variables;
+	bool singleton;
 };
 
 #endif

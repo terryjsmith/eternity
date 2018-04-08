@@ -6,7 +6,7 @@
 #include <Core/System.h>
 #include <IO/ResourceObject.h>
 
-GIGA_CLASS(StaticObject)
+GIGA_CLASS(Singleton)
 class GIGA_API ResourceSystem : public System {
 public:
 	ResourceSystem() = default;

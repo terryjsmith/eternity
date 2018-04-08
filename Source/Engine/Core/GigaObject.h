@@ -8,6 +8,7 @@ class GigaObject;
 class Variant;
 
 #define GIGA_CLASS_NAME(str) virtual std::string GetGigaName() { return str; } 
+
 typedef Variant*(*CallableFunction)(GigaObject* obj, int argc, Variant** argv);
 
 /**
