@@ -3,8 +3,8 @@
 #include <glm/gtx/transform.hpp>
 
 Transform::Transform() {
-	m_position = Vector3(0, 0, 0);
-	m_scaling = Vector3(1, 1, 1);
+	m_position = vector3(0, 0, 0);
+	m_scaling = vector3(1, 1, 1);
 	m_rotation = quaternion(1, 0, 0, 0);
 }
 
@@ -21,8 +21,8 @@ void Transform::SetParent(Transform* transform) {
 	}
 }
 
-Vector3 Transform::GetWorldPosition() {
-	Vector3 sum = m_position;
+vector3 Transform::GetWorldPosition() {
+	vector3 sum = m_position;
 	if (m_parent) {
 		sum += m_parent->GetWorldPosition();
 	}
@@ -30,8 +30,8 @@ Vector3 Transform::GetWorldPosition() {
 	return(sum);
 }
 
-Vector3 Transform::GetWorldScaling() {
-	Vector3 sum = m_scaling;
+vector3 Transform::GetWorldScaling() {
+	vector3 sum = m_scaling;
 	if (m_parent) {
 		sum += m_parent->GetWorldScaling();
 	}
@@ -48,7 +48,7 @@ quaternion Transform::GetWorldRotation() {
 	return(sum);
 }
 
-void Transform::SetLocalPosition(Vector3 position) {
+void Transform::SetLocalPosition(vector3 position) {
 	if (m_root && m_parent) {
 		m_parent->SetLocalPosition(position);
 		return;
@@ -57,7 +57,7 @@ void Transform::SetLocalPosition(Vector3 position) {
 	m_position = position;
 }
 
-void Transform::SetWorldPosition(Vector3 position) {
+void Transform::SetWorldPosition(vector3 position) {
 	if (m_root && m_parent) {
 		m_parent->SetWorldPosition(position);
 		return;
@@ -66,12 +66,12 @@ void Transform::SetWorldPosition(Vector3 position) {
 	m_position = position;
 
 	if (m_parent) {
-		Vector3 other = m_parent->GetWorldPosition();
+		vector3 other = m_parent->GetWorldPosition();
 		m_position = m_position - other;
 	}
 }
 
-void Transform::SetLocalScaling(Vector3 scaling) {
+void Transform::SetLocalScaling(vector3 scaling) {
 	if (m_root && m_parent) {
 		m_parent->SetLocalScaling(scaling);
 		return;
@@ -80,7 +80,7 @@ void Transform::SetLocalScaling(Vector3 scaling) {
 	m_scaling = scaling;
 }
 
-void Transform::SetWorldScaling(Vector3 scaling) {
+void Transform::SetWorldScaling(vector3 scaling) {
 	if (m_root && m_parent) {
 		m_parent->SetWorldScaling(scaling);
 		return;
@@ -89,7 +89,7 @@ void Transform::SetWorldScaling(Vector3 scaling) {
 	m_scaling = scaling;
 
 	if (m_parent) {
-		Vector3 other = m_parent->GetWorldScaling();
+		vector3 other = m_parent->GetWorldScaling();
 		m_scaling = m_scaling - other;
 	}
 }
@@ -126,19 +126,19 @@ matrix4 Transform::GetMatrix() {
 	return(modelMatrix);
 }
 
-Vector3 Transform::GetUp() {
-	return(Vector3(0, 1, 0) * m_rotation);
+vector3 Transform::GetUp() {
+	return(vector3(0, 1, 0) * m_rotation);
 }
 
-Vector3 Transform::GetRight() {
-	return(Vector3(1, 0, 0) * m_rotation);
+vector3 Transform::GetRight() {
+	return(vector3(1, 0, 0) * m_rotation);
 }
 
-Vector3 Transform::GetForward() {
-	return(Vector3(0, 0, -1) * m_rotation);
+vector3 Transform::GetForward() {
+	return(vector3(0, 0, -1) * m_rotation);
 }
 
-void Transform::Move(Vector3 amount) {
+void Transform::Move(vector3 amount) {
 	if (m_root && m_parent) {
 		m_parent->Move(amount);
 		return;
@@ -147,7 +147,7 @@ void Transform::Move(Vector3 amount) {
 	m_position += amount;
 }
 
-void Transform::Rotate(Vector3 axis, float degrees) {
+void Transform::Rotate(vector3 axis, float degrees) {
 	if (m_root && m_parent) {
 		m_parent->Rotate(axis, degrees);
 		return;
@@ -157,7 +157,7 @@ void Transform::Rotate(Vector3 axis, float degrees) {
 	m_rotation = m_rotation * delta;
 }
 
-void Transform::Scale(Vector3 amount) {
+void Transform::Scale(vector3 amount) {
 	if (m_root && m_parent) {
 		m_parent->Scale(amount);
 		return;

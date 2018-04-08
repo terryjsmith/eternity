@@ -39,6 +39,10 @@ Variant::Variant(vector2 value) {
 	*this = value;
 }
 
+Variant::Variant(vector3 value) {
+	*this = value;
+}
+
 Variant::Variant(vector4 value) {
 	*this = value;
 }
@@ -99,6 +103,14 @@ Variant& Variant::operator =(vector2 rhs) {
 	m_type = VAR_VECTOR2;
 	m_data.f1 = rhs.x;
 	m_data.f2 = rhs.y;
+	return *this;
+}
+
+Variant& Variant::operator =(vector3 rhs) {
+	m_type = VAR_VECTOR4;
+	m_data.f1 = rhs.x;
+	m_data.f2 = rhs.y;
+	m_data.f3 = rhs.z;
 	return *this;
 }
 
@@ -343,6 +355,14 @@ vector2 Variant::AsVector2() {
 	}
 
 	return(vector2(0, 0));
+}
+
+vector3 Variant::AsVector3() {
+	if (m_type == VAR_VECTOR3) {
+		return vector3(m_data.f1, m_data.f2, m_data.f3);
+	}
+
+	return(vector3(0, 0, 0));
 }
 
 vector4 Variant::AsVector4() {

@@ -28,7 +28,7 @@ public:
 	*/
 	void Set(std::string name, float value);
 	void Set(std::string name, vector2 value);
-	void Set(std::string name, Vector3 value);
+	void Set(std::string name, vector3 value);
 	void Set(std::string name, vector4 value);
 	void Set(std::string name, int value);
 	void Set(std::string name, unsigned int value);

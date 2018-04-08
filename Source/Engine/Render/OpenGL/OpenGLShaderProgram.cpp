@@ -188,7 +188,7 @@ void OpenGLShaderProgram::Set(std::string name, float value) {
 	GL_CHECK(glUniform1f(location, value));
 }
 
-void OpenGLShaderProgram::Set(std::string name, Vector3 value) {
+void OpenGLShaderProgram::Set(std::string name, vector3 value) {
 	char* cname = (char*)name.c_str();
 	int location = Uniform(cname);
 	if (location < 0) {
@@ -199,8 +199,7 @@ void OpenGLShaderProgram::Set(std::string name, Vector3 value) {
 		return;
 	}
 
-	glm::vec3 vec = *value;
-	GL_CHECK(glUniform3fv(location, 1, &(vec)[0]));
+	GL_CHECK(glUniform3fv(location, 1, &(value)[0]));
 }
 
 void OpenGLShaderProgram::Set(std::string name, vector2 value) {
