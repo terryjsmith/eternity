@@ -22,6 +22,7 @@ public:
 		m_vector.x = other.m_vector.x;
 		m_vector.y = other.m_vector.y;
 		m_vector.z = other.m_vector.z;
+        return(vec);
 	}
 
 	Vector3 operator-(const Vector3& other) {

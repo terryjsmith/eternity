@@ -393,7 +393,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/Users/terryjsmith/Documents/Projects/eternity/Bin\n/Users/terryjsmith/Documents/Projects/eternity/Bin/generator ${PROJECT_DIR}";
+			shellScript = "export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/Users/terryjsmith/Documents/Projects/eternity/Bin\n/Users/terryjsmith/Documents/Projects/eternity/Bin/generator /Users/terryjsmith/Documents/Projects/eternity/Source/Workspace/eternity";
 		};
 /* End PBXShellScriptBuildPhase section */
 
