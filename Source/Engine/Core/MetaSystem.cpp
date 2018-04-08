@@ -15,3 +15,25 @@ CallableFunction MetaSystem::FindFunction(std::string className, std::string fun
 
 	return(0);
 }
+
+GigaObject* MetaSystem::CreateObject(std::string className) {
+	std::map<std::string, GigaObject* (*)()>::iterator it = m_constructors.find(className);
+	if (it != m_constructors.end()) {
+		return(it->second());
+	}
+
+	return(0);
+}
+
+void MetaSystem::RegisterSingleton(std::string className, GigaObject* instance) {
+	m_singletons[className] = instance;
+}
+
+GigaObject* MetaSystem::GetSingleton(std::string className) {
+	std::map<std::string, GigaObject*>::iterator it = m_singletons.find(className);
+	if (it != m_singletons.end()) {
+		return(it->second);
+	}
+
+	return(0);
+}

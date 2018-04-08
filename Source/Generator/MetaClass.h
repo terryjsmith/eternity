@@ -33,6 +33,7 @@ public:
 	std::string name;
     std::map<std::string, MetaFunction*> functions;
 	std::map<std::string, MetaVariable*> variables;
+	bool singleton;
 };
 
 #endif
