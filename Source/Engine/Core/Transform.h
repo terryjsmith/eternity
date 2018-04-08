@@ -36,7 +36,7 @@ public:
 
 	GIGA_FUNCTION() vector3 GetUp();
 	GIGA_FUNCTION() vector3 GetRight();
-	GIGA_FUNCTION() vector3 GetForward();
+	GIGA_FUNCTION() vector3 GetLook();
 
 	GIGA_FUNCTION() void Move(vector3 amount);
 	GIGA_FUNCTION() void Rotate(vector3 axis, float degrees);

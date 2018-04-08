@@ -134,7 +134,7 @@ vector3 Transform::GetRight() {
 	return(vector3(1, 0, 0) * m_rotation);
 }
 
-vector3 Transform::GetForward() {
+vector3 Transform::GetLook() {
 	return(vector3(0, 0, -1) * m_rotation);
 }
 

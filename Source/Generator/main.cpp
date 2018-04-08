@@ -37,6 +37,9 @@ std::vector<std::string> addlIncludes;
 bool addedData = false;
 bool pullOptions = false;
 bool markSingleton = false;
+bool markGet = false;
+bool markSet = false;
+bool markSerialize = false;
 
 bool grabNextFunction = false;
 bool grabNextVar = false;
@@ -117,6 +120,18 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 	if (pullOptions && cursor == CXCursor_EnumConstantDecl) {
 		if (strcmp("Singleton", name.c_str()) == 0) {
 			markSingleton = true;
+		}
+
+		if (strcmp("Get", name.c_str()) == 0) {
+			markGet = true;
+		}
+
+		if (strcmp("Set", name.c_str()) == 0) {
+			markSet = true;
+		}
+
+		if (strcmp("Serialize", name.c_str()) == 0) {
+			markSerialize = true;
 		}
 
 		pullOptions = false;
@@ -223,6 +238,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
             else {
                 MetaClass* m = new MetaClass;
                 m->name = name;
+				m->singleton = false;
 
                 classes[name] = m;
 				currentMetaClass = m;
@@ -248,6 +264,22 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
             MetaClass::MetaVariable* var = new MetaClass::MetaVariable();
             var->name = name;
             var->type = internalType;
+			var->get = var->set = var->serialize = false;
+
+			if (markGet) {
+				var->get = true;
+				markGet = false;
+			}
+
+			if (markSet) {
+				var->set = true;
+				markSet = false;
+			}
+
+			if (markSerialize) {
+				var->serialize = true;
+				markSerialize = false;
+			}
             
             currentMetaClass->variables[name] = var;
         }
@@ -461,7 +493,20 @@ int main(int argc, char** argv) {
         
         // Process inheritance
         AddInheritedClasses(cl, cl->name);
-		
+
+		// Variables
+		std::map<std::string, MetaClass::MetaVariable*>::iterator vi = cl->variables.begin();
+		for (; vi != cl->variables.end(); vi++) {
+			if (vi->second->get) {
+				output += "Variant* meta_" + cl->name + "_" + vi->second->name + "_get(GigaObject* obj) {\n";
+				output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(obj);\n";
+				output += "\tGIGA_ASSERT(cobj != 0, \"Object is not of the correct type.\");\n\n";
+
+				output += "\treturn(new Variant(cobj->" + vi->second->name + "));\n";
+				output += "}\n\n";
+			}
+		}
+
 		// Functions
 		std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
 		for (; fi != cl->functions.end(); fi++) {

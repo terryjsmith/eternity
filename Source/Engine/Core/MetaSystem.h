@@ -23,6 +23,11 @@ public:
 	CallableFunction FindFunction(std::string className, std::string functionName);
 
 	/**
+	 * Register a class-specific variable name
+	 */
+	void RegisterVariable(std::string varName);
+
+	/**
 	 * Create a new object of type className
 	 */
 	GigaObject* CreateObject(std::string className);
