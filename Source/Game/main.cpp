@@ -10,7 +10,25 @@
 #include <Core/MetaSystem.h>
 #include <Core/MessageSystem.h>
 #include <IO/Keyboard.h>
+#include <Core/Timer.h>
 #include <Core/Application.h>
+
+bool moveForward = false;
+
+enum {
+	MOVE_FORWARD = 1,
+	MOVE_BACKWARD,
+	TURN_LEFT,
+	TURN_RIGHT
+};
+
+void OnCommand(GigaObject* obj, Message* message) {
+	Command* cmd = (Command*)message;
+
+	if (cmd->GetMessageType() == MOVE_FORWARD) {
+		moveForward = cmd->GetType();
+	}
+}
 
 int main(int argc, char** argv) {
 	Application* application = Application::GetInstance();
@@ -27,6 +45,8 @@ int main(int argc, char** argv) {
 	RenderWindow* window = new RenderWindow();
 	window->Create("Test Window", 800, 600, false);
 
+	application->SetPrimaryWindow(window);
+
 	// Specify resource directories
 	resourceSystem->AddSearchPath("Resources/Shaders");
 
@@ -39,6 +59,7 @@ int main(int argc, char** argv) {
 
 	// Create a scene
 	Scene* scene = new Scene();
+	renderSystem->SetCurrentScene(scene);
 
 	// Create a camera
 	CameraComponent* camera = new CameraComponent();
@@ -70,16 +91,44 @@ int main(int argc, char** argv) {
 
 	scene->AddMesh(meshComponent);
     
+	// Register command mapping
+	Command::RegisterCommandType("MOVE_FORWARD", MOVE_FORWARD);
+
     // Create a keyboard
     Keyboard* keyboard = new Keyboard();
     keyboard->Initialize();
     
     inputSystem->RegisterInputDevice(keyboard);
 
+	// Register a key mapping
+	inputSystem->RegisterInputMapping(keyboard, KEY_UP, "MOVE_FORWARD");
+
+	// Register to receive commands
+	messageSystem->RegisterCallback(0, "Command", OnCommand);
+
+	Timer* gameTimer = new Timer();
+	gameTimer->Start();
+
+	float delta = 0.0f;
+
 	while (window->IsClosing() == false) {
+		delta = gameTimer->Duration();
+		gameTimer->Reset();
+
+		application->Update(delta);
+
+		if (moveForward) {
+			RenderSystem* renderSystem = GetSystem<RenderSystem>();
+			Scene* scene = renderSystem->GetCurrentScene();
+			CameraComponent* camera = scene->GetCamera();
+
+			Transform* transform = camera->GetTransform();
+			transform->Move(transform->GetLook() * delta);
+		}
+
 		window->ProcessEvents();
 
-		renderSystem->Render(scene);
+		renderSystem->Render();
 		window->SwapBuffer();
 	}
 

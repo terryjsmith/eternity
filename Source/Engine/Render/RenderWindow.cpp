@@ -4,8 +4,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-bool RenderWindow::m_initialized = false;
-
 void RenderWindow::Create(std::string name, int width, int height, bool fullscreen) {
 	// If we do not have a window yet, initialize it
 	if (m_initialized == false) {

@@ -5,13 +5,13 @@ MessageSystem::MessageSystem() {
 	m_idCounter = 0;
 }
 
-void MessageSystem::Update() {
+void MessageSystem::Update(float delta) {
 	int count = m_messages.size();
 
 	for (int i = 0; i < count; i++) {
 		for (std::vector<MessageHandler*>::iterator callback = m_handlers.begin(); callback != m_handlers.end(); callback++) {
 			if ((*callback)->type == m_messages[i]->type) {
-				(*callback)->cb((*callback)->obj, (*callback)->type, m_messages[i]);
+				(*callback)->cb((*callback)->obj, m_messages[i]);
 			}
 		}
 	}
@@ -33,7 +33,7 @@ void MessageSystem::Broadcast(Message* msg, bool synchronized) {
 		// Iterate over all listeners and dispatch, no queueing
 		for (std::vector<MessageHandler*>::iterator callback = m_handlers.begin(); callback != m_handlers.end(); callback++) {
 			if ((*callback)->type == msg->type) {
-				(*callback)->cb((*callback)->obj, (*callback)->type, msg);
+				(*callback)->cb((*callback)->obj, msg);
 			}
 		}
 
@@ -43,9 +43,13 @@ void MessageSystem::Broadcast(Message* msg, bool synchronized) {
 	m_messages.push_back(msg);
 }
 
-void MessageSystem::RegisterCallback(GigaObject* obj, uint32_t type, MessageHandlingCallback cb) {
+void MessageSystem::RegisterCallback(GigaObject* obj, std::string type, MessageHandlingCallback cb) {
+	// Get the mapping
+	std::map<std::string, uint32_t>::iterator it = m_idMapping.find(type);
+	GIGA_ASSERT(it != m_idMapping.end(), "Message mapping not found.");
+
 	MessageHandler* handler = new MessageHandler();
-	handler->type = type;
+	handler->type = it->second;
 	handler->cb = cb;
 	handler->obj = obj;
 

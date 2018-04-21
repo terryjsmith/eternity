@@ -4,11 +4,11 @@
 
 #include <eternity.h>
 #include <Core/System.h>
-#include <Render/RenderWindow.h>
+#include <Core/Window.h>
 
 class GIGA_API Application {
 public:
-	Application() = default;
+	Application();
 	~Application() = default;
 
 	struct RegisteredSystem {
@@ -26,6 +26,11 @@ public:
 	* Startup (called after systems are created)
 	*/
 	void Startup();
+
+	/**
+	 * Update all systems
+	 */
+	void Update(float delta);
 
 	/**
 	* Shutdown
@@ -67,6 +72,12 @@ public:
 	}
 
 	/**
+	 * Get/set primary window
+	 */
+	void SetPrimaryWindow(Window* window) { m_primaryWindow = window; }
+	Window* GetPrimaryWindow() { return m_primaryWindow; }
+
+	/**
 	* Get singleton instance
 	*/
 	static Application* GetInstance();
@@ -79,7 +90,7 @@ protected:
 	static Application* m_instance;
     
     // Primary render window
-    RenderWindow
+	Window* m_primaryWindow;
 };
 
 // Short-hand class to find sub-systems in the Application class

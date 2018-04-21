@@ -38,10 +38,6 @@ public:
 		ERROR_FATAL
 	};
 
-public:
-	// Message levels
-	static uint32_t MSGTYPE_ERROR;
-
 protected:
 	// Error level
 	int m_level;

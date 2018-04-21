@@ -3,12 +3,12 @@
 #define renderwindow_h
 
 #include <eternity.h>
-#include <Core/GigaObject.h>
+#include <Core/Window.h>
 
 /**
  * Basic platform-specific window
  */
-class GIGA_API RenderWindow : public GigaObject {
+class GIGA_API RenderWindow : public Window {
 public:
 	RenderWindow() = default;
 	~RenderWindow() = default;
@@ -38,20 +38,8 @@ public:
     void GetFramebufferSize(int& width, int& height);
 
 protected:
-	// Window width and height
-	int m_width, m_height;
-
 	// Frame width and height (different for retina)
 	int m_framebufferWidth, m_framebufferHeight;
-
-	bool m_fullscreen;
-	std::string m_name;
-
-	// Whether GLFW and other window libraries are initialized yet
-	static bool m_initialized;
-
-	// Internal window pointer
-	void *m_window;
 };
 
 #endif

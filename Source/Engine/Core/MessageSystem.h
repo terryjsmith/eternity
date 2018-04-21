@@ -9,7 +9,7 @@
 /**
 * Message handling callback
 */
-typedef void(*MessageHandlingCallback)(GigaObject* obj, uint32_t type, Message* message);
+typedef void(*MessageHandlingCallback)(GigaObject* obj, Message* message);
 
 class GIGA_API MessageSystem : public System {
 public:
@@ -21,7 +21,7 @@ public:
 	/**
 	 * Update (process messages)
 	 */
-	void Update();
+	void Update(float delta);
 
 	/**
 	 * Send a message to all registered listeners
@@ -41,7 +41,7 @@ public:
 	/**
 	 * Register a callback
 	 */
-	void RegisterCallback(GigaObject* obj, uint32_t type, MessageHandlingCallback cb);
+	void RegisterCallback(GigaObject* obj, std::string type, MessageHandlingCallback cb);
 
 protected:
 	// Current message queue (flushed after handling)

@@ -22,7 +22,7 @@ public:
 	/**
 	* Draw things on the screen
 	*/
-	void Render(Scene* scene);
+	void Render();
 
 protected:
 	// Default render passes

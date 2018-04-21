@@ -17,6 +17,6 @@ VertexType* OpenGLRenderSystem::CreateVertexType() {
 	return(new OpenGLVertexType());
 }
 
-void OpenGLRenderSystem::Render(Scene* scene) {
-	m_deferredRenderPass->Render(scene);
+void OpenGLRenderSystem::Render() {
+	m_deferredRenderPass->Render(m_currentScene);
 }

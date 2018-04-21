@@ -44,13 +44,6 @@ public:
      */
     GIGA_FUNCTION() std::string FindInputMapping(InputDevice* device, int button);
     
-    /**
-     * Scripting integration
-     
-    static Variant* GetInputDevice(Variant* object, int argc, Variant** argv);
-    static Variant* RegisterInputMapping(Variant* object, int argc, Variant** argv);
-    static Variant* FindInputMapping(Variant* object, int argc, Variant** argv);*/
-    
 private:
     struct InputMapping {
         int button;

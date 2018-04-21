@@ -14,6 +14,7 @@ public:
 	struct MetaFunction {
 		std::string name;
         int returnType;
+		bool isStatic;
 		std::string objectType;
 
 		struct MetaArgument {

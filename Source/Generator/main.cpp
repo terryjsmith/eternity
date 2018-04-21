@@ -159,6 +159,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
         }
         
         CXType returnType = clang_getResultType(type);
+		bool isStatic = clang_CXXMethod_isStatic(c);
         std::string rettype = clang_getCString(clang_getTypeSpelling(returnType));
         
         int internalType = map_internal_type(returnType, rettype);
@@ -168,6 +169,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
             func->name = name;
             func->returnType = internalType;
 			func->objectType = name;
+			func->isStatic = isStatic;
             
             int num_args = clang_Cursor_getNumArguments(c);
             for(int i = 0; i < num_args; i++) {
@@ -527,28 +529,35 @@ int main(int argc, char** argv) {
 
 			output += "\n";
 
-			// Cast object
-			if (cl->singleton == false) {
-				output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(obj);\n";
-				output += "\tGIGA_ASSERT(cobj != 0, \"Object is not of the correct type.\");\n";
-			}
-			else {
-				output += "\tMetaSystem* metaSystem = GetSystem<MetaSystem>();\n";
-				output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(metaSystem->GetSingleton(\"" + cl->name + "\"));\n";
-				output += "\tGIGA_ASSERT(cobj != 0, \"Singleton class type not found.\");\n";
-			}
+			if (fi->second->isStatic == false) {
+				// Cast object
+				if (cl->singleton == false) {
+					output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(obj);\n";
+					output += "\tGIGA_ASSERT(cobj != 0, \"Object is not of the correct type.\");\n";
+				}
+				else {
+					output += "\tMetaSystem* metaSystem = GetSystem<MetaSystem>();\n";
+					output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(metaSystem->GetSingleton(\"" + cl->name + "\"));\n";
+					output += "\tGIGA_ASSERT(cobj != 0, \"Singleton class type not found.\");\n";
+				}
 
-			output += "\n";
+				output += "\n";
 
-			if (fi->second->returnType != -1) {
-				output += "\treturn(new Variant(";
-			}
-			else {
-				output += "\t";
+				if (fi->second->returnType != -1) {
+					output += "\treturn(new Variant(";
+				}
+				else {
+					output += "\t";
+				}
 			}
 
 			// Function call
-			output += "cobj->" + fi->first + "(";
+			if (fi->second->isStatic == false) {
+				output += "cobj->" + fi->first + "(";
+			}
+			else {
+				output += "\t" + cl->name + "::" + fi->first + "(";
+			}
 			ai = fi->second->args.begin();
 			argc = 0;
 			for (; ai != fi->second->args.end(); ai++) {

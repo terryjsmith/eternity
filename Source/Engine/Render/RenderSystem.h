@@ -9,7 +9,7 @@
 
 class GIGA_API RenderSystem : public System {
 public:
-	RenderSystem() = default;
+	RenderSystem() : m_currentScene(0) { }
 	virtual ~RenderSystem() = default;
 
 	GIGA_CLASS_NAME("RenderSystem");
@@ -28,10 +28,17 @@ public:
 	/**
 	 * Draw things on the screen
 	 */
-	virtual void Render(Scene* scene) { }
+	virtual void Render() { }
+
+	/**
+	 * Get/set current scene
+	 */
+	void SetCurrentScene(Scene* scene) { m_currentScene = scene; }
+	Scene* GetCurrentScene() { return m_currentScene; }
 
 protected:
 	std::vector<RenderPass*> m_renderPasses;
+	Scene* m_currentScene;
 };
 
 #endif

@@ -6,8 +6,14 @@
 #include <IO/InputSystem.h>
 #include <Render/Shader.h>
 #include <Core/Error.h>
+#include <IO/Keyboard.h>
+#include <IO/Command.h>
 
 Application* Application::m_instance = 0;
+
+Application::Application() {
+	m_primaryWindow = 0;
+}
 
 void Application::Initialize() {
 
@@ -26,7 +32,9 @@ void Application::Startup() {
 
 	// Register messages
 	MessageSystem* messageSystem = GetSystem<MessageSystem>();
-	Error::MSGTYPE_ERROR = messageSystem->RegisterMessageType<Error>("Error");
+	messageSystem->RegisterMessageType<Error>("Error");
+	messageSystem->RegisterMessageType<KeyboardMessage>("KeyboardMessage");
+	messageSystem->RegisterMessageType<Command>("Command");
 
 	// Register resource types
 	ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
@@ -36,6 +44,29 @@ void Application::Startup() {
 	MetaSystem* metaSystem = GetSystem<MetaSystem>();
 	metaSystem->RegisterSingleton("ResourceSystem", resourceSystem);
     metaSystem->RegisterSingleton("InputSystem", inputSystem);
+}
+
+void Application::Update(float delta) {
+	std::vector<RegisteredSystem*>::iterator i = m_systems.begin();
+
+	for (; i != m_systems.end(); i++) {
+		if ((*i)->tickRate > 0) {
+			(*i)->accumulator += delta;
+
+			if ((*i)->accumulator > (1.0f / (*i)->tickRate)) {
+				float theta = (1.0f / (*i)->tickRate);
+				(*i)->accumulator -= theta;
+				(*i)->system->Update(theta);
+			}
+		}
+	}
+
+	i = m_systems.begin();
+	for (; i != m_systems.end(); i++) {
+		if ((*i)->tickRate == 0) {
+			(*i)->system->Update(delta);
+		}
+	}
 }
 
 void Application::Shutdown() {
