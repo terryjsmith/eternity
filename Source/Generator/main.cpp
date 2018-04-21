@@ -153,6 +153,10 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 
 	if (grabNextFunction && cursor == CXCursor_CXXMethod && currentMetaClass) {
 		//cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
+        if(name == "Initialize") {
+            grabNextFunction = false;
+            return CXChildVisit_Continue;
+        }
         
         CXType returnType = clang_getResultType(type);
         std::string rettype = clang_getCString(clang_getTypeSpelling(returnType));

@@ -6,7 +6,10 @@
 #include <Render/OpenGL/OpenGLShaderProgram.h>
 #include <Render/Scene.h>
 #include <IO/ResourceSystem.h>
+#include <IO/InputSystem.h>
+#include <Core/MetaSystem.h>
 #include <Core/MessageSystem.h>
+#include <IO/Keyboard.h>
 #include <Core/Application.h>
 
 int main(int argc, char** argv) {
@@ -16,6 +19,8 @@ int main(int argc, char** argv) {
 	OpenGLRenderSystem* renderSystem = application->CreateSystem<OpenGLRenderSystem>();
 	ResourceSystem* resourceSystem = application->CreateSystem<ResourceSystem>();
 	MessageSystem* messageSystem = application->CreateSystem<MessageSystem>();
+    InputSystem* inputSystem = application->CreateSystem<InputSystem>();
+    MetaSystem* metaSystem = application->CreateSystem<MetaSystem>();
 
 	application->Startup();
 
@@ -64,6 +69,12 @@ int main(int argc, char** argv) {
 	meshComponent->Instantiate(mesh);
 
 	scene->AddMesh(meshComponent);
+    
+    // Create a keyboard
+    Keyboard* keyboard = new Keyboard();
+    keyboard->Initialize();
+    
+    inputSystem->RegisterInputDevice(keyboard);
 
 	while (window->IsClosing() == false) {
 		window->ProcessEvents();

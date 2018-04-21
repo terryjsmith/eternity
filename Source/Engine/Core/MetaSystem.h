@@ -11,6 +11,8 @@ class GIGA_API MetaSystem : public System {
 public:
 	MetaSystem() = default;
 	~MetaSystem() = default;
+    
+    GIGA_CLASS_NAME("MetaSystem");
 
 	/**
 	 * Register a class-specific callback

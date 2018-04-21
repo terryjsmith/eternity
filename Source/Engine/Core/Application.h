@@ -4,6 +4,7 @@
 
 #include <eternity.h>
 #include <Core/System.h>
+#include <Render/RenderWindow.h>
 
 class GIGA_API Application {
 public:
@@ -76,6 +77,9 @@ protected:
 
 	// Singleton
 	static Application* m_instance;
+    
+    // Primary render window
+    RenderWindow
 };
 
 // Short-hand class to find sub-systems in the Application class

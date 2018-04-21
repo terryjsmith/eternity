@@ -6,6 +6,8 @@ Transform::Transform() {
 	m_position = vector3(0, 0, 0);
 	m_scaling = vector3(1, 1, 1);
 	m_rotation = quaternion(1, 0, 0, 0);
+    
+    m_parent = 0;
 }
 
 void Transform::SetParent(Transform* transform) {

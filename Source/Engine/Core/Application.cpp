@@ -3,6 +3,7 @@
 #include <IO/ResourceSystem.h>
 #include <Core/MessageSystem.h>
 #include <Core/MetaSystem.h>
+#include <IO/InputSystem.h>
 #include <Render/Shader.h>
 #include <Core/Error.h>
 
@@ -19,6 +20,9 @@ void Application::Startup() {
 		System* sys = (*i)->system;
 		sys->Initialize();
 	}
+    
+    // Get systems
+    InputSystem* inputSystem = GetSystem<InputSystem>();
 
 	// Register messages
 	MessageSystem* messageSystem = GetSystem<MessageSystem>();
@@ -31,6 +35,7 @@ void Application::Startup() {
 	// Register singletons
 	MetaSystem* metaSystem = GetSystem<MetaSystem>();
 	metaSystem->RegisterSingleton("ResourceSystem", resourceSystem);
+    metaSystem->RegisterSingleton("InputSystem", inputSystem);
 }
 
 void Application::Shutdown() {

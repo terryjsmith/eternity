@@ -9,6 +9,8 @@
 	#define NOMINMAX
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
+#else
+    #include <unistd.h>
 #endif
 
 // Engine and library definitions
@@ -16,6 +18,9 @@
 
 // Assertion with error message
 #define GIGA_ASSERT(test, message) { if((test) == false) printf(message); assert(test); }
+
+// Ticks per second for the game's systems
+#define GIGA_TICKS_PER_SECOND       20
 
 // Windows DLL export definition
 #ifndef GIGA_API
