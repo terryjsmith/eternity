@@ -1,28 +1,36 @@
 
 #include <Core/MetaSystem.h>
 
-void MetaSystem::RegisterFunction(std::string className, std::string functionName, CallableFunction c) {
-	std::string key = className + "::" + functionName;
-	m_functions[key] = c;
+void MetaSystem::RegisterFunction(std::string className, std::string functionName, CallableFunction c, bool isStatic) {
+	std::map<std::string, RegisteredClass*>::iterator it = m_classes.find(className);
+	GIGA_ASSERT(it != m_classes.end(), "Class type not registered.");
+
+	std::map<std::string, RegisteredFunction*>::iterator fi = it->second->functions.find(functionName);
+	GIGA_ASSERT(fi == it->second->functions.end(), "Function already registered.");
+
+	RegisteredFunction* fn = new RegisteredFunction();
+	fn->name = functionName;
+	fn->func = c;
+	fn->isStatic = isStatic;
+
+	it->second->functions[functionName] = fn;
 }
 
 CallableFunction MetaSystem::FindFunction(std::string className, std::string functionName) {
-	std::string key = className + "::" + functionName;
-	std::map<std::string, CallableFunction>::iterator it = m_functions.find(key);
-	if (it != m_functions.end()) {
-		return(it->second);
-	}
+	std::map<std::string, RegisteredClass*>::iterator it = m_classes.find(className);
+	GIGA_ASSERT(it != m_classes.end(), "Class type not registered.");
 
-	return(0);
+	std::map<std::string, RegisteredFunction*>::iterator fi = it->second->functions.find(functionName);
+	GIGA_ASSERT(fi != it->second->functions.end(), "Function not registered.");
+
+	return(fi->second->func);
 }
 
 GigaObject* MetaSystem::CreateObject(std::string className) {
-	std::map<std::string, GigaObject* (*)()>::iterator it = m_constructors.find(className);
-	if (it != m_constructors.end()) {
-		return(it->second());
-	}
+	std::map<std::string, RegisteredClass*>::iterator it = m_classes.find(className);
+	GIGA_ASSERT(it != m_classes.end(), "Class type not registered.");
 
-	return(0);
+	return(it->second->ctor());
 }
 
 void MetaSystem::RegisterSingleton(std::string className, GigaObject* instance) {

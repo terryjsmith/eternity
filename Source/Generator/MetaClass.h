@@ -16,6 +16,7 @@ public:
         int returnType;
 		bool isStatic;
 		std::string objectType;
+		bool isConstructor;
 
 		struct MetaArgument {
 			std::string name;

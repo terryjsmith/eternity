@@ -26,6 +26,15 @@ Variant* GigaObject::Call(std::string func, int argc, Variant** argv) {
 	return(c(this, argc, argv));
 }
 
+bool GigaObject::HasFunction(std::string func) {
+	MetaSystem* metaSystem = GetSystem<MetaSystem>();
+
+	std::string className = this->GetGigaName();
+	CallableFunction c = metaSystem->FindFunction(className, func);
+
+	return(c != 0);
+}
+
 std::string GigaObject::ToString() {
 	return(this->GetGigaName() + "[]");
 }

@@ -151,12 +151,14 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
         inheritance[currentClassName] = name;
 	}
 
-	if (grabNextFunction && cursor == CXCursor_CXXMethod && currentMetaClass) {
+	if (((grabNextFunction && cursor == CXCursor_CXXMethod) || (cursor == CXCursor_Constructor)) && currentMetaClass) {
 		//cout << "Found GIGA function named '" << name.c_str() << "'" << endl;
-        if(name == "Initialize") {
-            grabNextFunction = false;
-            return CXChildVisit_Continue;
-        }
+		if (cursor == CXCursor_Constructor) {
+			int num_args = clang_Cursor_getNumArguments(c);
+			if (num_args == 0) {
+				return CXChildVisit_Continue;
+			}
+		}
         
         CXType returnType = clang_getResultType(type);
 		bool isStatic = clang_CXXMethod_isStatic(c);
@@ -170,6 +172,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
             func->returnType = internalType;
 			func->objectType = name;
 			func->isStatic = isStatic;
+			func->isConstructor = (cursor == CXCursor_Constructor);
             
             int num_args = clang_Cursor_getNumArguments(c);
             for(int i = 0; i < num_args; i++) {
@@ -380,6 +383,8 @@ void AddInheritedClasses(MetaClass* cl, std::string name) {
         // If it does, add any meta functions from that class to this class too
         std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl2->functions.begin();
         for(; fi != cl2->functions.end(); fi++) {
+			if (fi->second->isConstructor == true) continue;
+
             cl->functions[fi->second->name] = fi->second;
         }
         
@@ -514,9 +519,61 @@ int main(int argc, char** argv) {
 			}
 		}
 
-		// Functions
+		// Constructors
+		bool hasConstructor = false;
 		std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
 		for (; fi != cl->functions.end(); fi++) {
+			if (fi->second->isConstructor == false) continue;
+
+			hasConstructor = true;
+		}
+
+		if (hasConstructor) {
+			fi = cl->functions.begin();
+			output += "Variant* meta_" + cl->name + "_New(GigaObject* obj, int argc, Variant** argv) {\n";
+
+			for (; fi != cl->functions.end(); fi++) {
+				if (fi->second->isConstructor == false) continue;
+
+				output += "\tif(argc == " + std::to_string(fi->second->args.size()) + ") {\n";
+				std::vector<MetaClass::MetaFunction::MetaArgument*>::iterator ai = fi->second->args.begin();
+				int argc = 0;
+
+				output += "\t\tif(true";
+				for (; ai != fi->second->args.end(); ai++) {
+					output += " && argv[" + std::to_string(argc) + "]->Is" + functionMappings[(*ai)->type] + "()";
+					argc++;
+				}
+				output += ") {\n\t\t\treturn(new Variant(new " + cl->name + "(";
+
+				ai = fi->second->args.begin();
+				argc = 0;
+				for (; ai != fi->second->args.end(); ai++) {
+					output += "argv[" + std::to_string(argc) + "]->As" + functionMappings[(*ai)->type];
+					if ((*ai)->type == VAR_OBJECT) {
+						output += "<" + (*ai)->objectType + ">";
+					}
+					output += "(),";
+					argc++;
+				}
+
+				// Trim final comma
+				if (argc > 0) {
+					output = output.substr(0, output.length() - 1);
+				}
+
+				output += ")));\n\t\t}\n\t}\n";
+			}
+
+			output += "\n\tGIGA_ASSERT(false, \"No matching constructor with those arguments.\");\n\treturn(0);";
+			output += "\n}\n\n";
+		}
+
+		// Functions
+		fi = cl->functions.begin();
+		for (; fi != cl->functions.end(); fi++) {
+			if (fi->second->isConstructor == true) continue;
+
 			output += "Variant* meta_" + cl->name + "_" + fi->second->name + "(GigaObject* obj, int argc, Variant** argv) {\n";
 			
 			// Validate data
@@ -603,7 +660,10 @@ int main(int argc, char** argv) {
 
         std::map<std::string, MetaClass::MetaFunction*>::iterator fi = cl->functions.begin();
 		for (; fi != cl->functions.end(); fi++) {
-			output += "\tmetaSystem->RegisterFunction(\"" + cl->name + "\", \"" + fi->first + "\", meta_" + cl->name + "_" + fi->first + ");\n";
+			std::string funcName = fi->second->isConstructor ? "New" : fi->first;
+			output += "\tmetaSystem->RegisterFunction(\"" + cl->name + "\", \"" + funcName + "\", meta_" + cl->name + "_" + funcName + ", ";
+			output += (fi->second->isStatic) ? "true" : "false";
+			output += "); \n";
 		}
         
         if(cl->functions.size()) {

@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 
 	OpenGLRenderSystem* renderSystem = application->CreateSystem<OpenGLRenderSystem>();
 	ResourceSystem* resourceSystem = application->CreateSystem<ResourceSystem>();
-	MessageSystem* messageSystem = application->CreateSystem<MessageSystem>();
+	MessageSystem* messageSystem = application->CreateSystem<MessageSystem>(20);
     InputSystem* inputSystem = application->CreateSystem<InputSystem>();
     MetaSystem* metaSystem = application->CreateSystem<MetaSystem>();
 

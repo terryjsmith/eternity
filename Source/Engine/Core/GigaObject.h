@@ -31,6 +31,11 @@ public:
 	Variant* Call(std::string func, int argc, Variant** argv);
 
 	/**
+	 * Check for the existence of a callable function
+	 */
+	bool HasFunction(std::string func);
+
+	/**
 	 * Convert object to string
 	 */
 	virtual std::string ToString();
