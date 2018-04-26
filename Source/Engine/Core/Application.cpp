@@ -40,10 +40,12 @@ void Application::Startup() {
 	ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
 	resourceSystem->RegisterResourceType<Shader>("Shader");
 
-	// Register singletons
+	// Register singletons and callback functions 
 	MetaSystem* metaSystem = GetSystem<MetaSystem>();
+	metaSystem->RegisterMetaFunctions();
+
 	metaSystem->RegisterSingleton("ResourceSystem", resourceSystem);
-    metaSystem->RegisterSingleton("InputSystem", inputSystem);
+	metaSystem->RegisterSingleton("InputSystem", inputSystem);
 }
 
 void Application::Update(float delta) {

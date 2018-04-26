@@ -27,9 +27,9 @@ public:
 	CallableFunction FindFunction(std::string className, std::string functionName);
 
 	/**
-	 * Register a class-specific variable name
+	 * Register all meta functions (auto-generated)
 	 */
-	void RegisterVariable(std::string varName);
+	void RegisterMetaFunctions();
 
 	/**
 	 * Create a new object of type className

@@ -18,11 +18,16 @@ public:
 	*/
 	v8::Local<v8::Object> GetJSObject();
 
+	/**
+	 * Get object itself
+	 */
+	GigaObject* GetObject() { return m_obj; }
+
 protected:
-	GigaObject* obj;
+	GigaObject* m_obj;
 
 	// Cached JS variables for various threads
-	std::map<ScriptThread*, v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>>> m_cached;
+	v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> m_var;
 };
 
 #endif

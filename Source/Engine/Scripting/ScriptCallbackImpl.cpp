@@ -1,10 +1,10 @@
 
-#include <Scripting/ScriptObjectImpl.h>
+#include <Scripting/ScriptCallbackImpl.h>
 #include <Scripting/ScriptVariant.h>
 #include <Core/MetaSystem.h>
 #include <Core/Application.h>
 
-void ScriptObjectImpl::New(const v8::FunctionCallbackInfo<v8::Value>& info) {
+void ScriptCallbackImpl::New(const v8::FunctionCallbackInfo<v8::Value>& info) {
 	v8::HandleScope scope(info.GetIsolate());
 
 	// Convert our callback info into SmartValue objects
@@ -50,7 +50,7 @@ void ScriptObjectImpl::New(const v8::FunctionCallbackInfo<v8::Value>& info) {
 	return info.GetReturnValue().Set(info.This());
 }
 
-void ScriptObjectImpl::HandleStaticFunctionCallback(const v8::FunctionCallbackInfo<v8::Value>& info) {
+void ScriptCallbackImpl::HandleStaticFunctionCallback(const v8::FunctionCallbackInfo<v8::Value>& info) {
 	// Turn our info array into a list of passable Variants
 	int argc = info.Length();
 	Variant** argv = (Variant**)malloc(sizeof(Variant*) * argc);

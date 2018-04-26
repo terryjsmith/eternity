@@ -5,10 +5,10 @@
 #include <eternity.h>
 #include <v8.h>
 
-class GIGA_API ScriptObjectImpl {
+class GIGA_API ScriptCallbackImpl {
 public:
-	ScriptObjectImpl() = default;
-	~ScriptObjectImpl() = default;
+	ScriptCallbackImpl() = default;
+	~ScriptCallbackImpl() = default;
 	
 	/**
 	 * Create an implementation from an object type definition
@@ -75,10 +75,19 @@ public:
 	*/
 	v8::Local<v8::Object> CreateJSObject();
 
-	/**
-	* Get the name of the type we're based on
-	*/
-	std::string GetName();
+	struct ScriptObjectType {
+		// Name
+		std::string name;
+
+		// The function template
+		v8::Persistent<v8::FunctionTemplate, v8::CopyablePersistentTraits<v8::FunctionTemplate>> functionTemplate;
+
+		// Our constructor to create new objects of this type
+		v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> constructor;
+	};
+
+protected:
+	std::map<std::string, ScriptObjectType*> m_types;
 };
 
 #endif

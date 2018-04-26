@@ -646,7 +646,7 @@ int main(int argc, char** argv) {
 	}
 
 	// Registration
-	output += "void RegisterMetaFunctions() {\n\tMetaSystem* metaSystem = GetSystem<MetaSystem>();\n\n";
+	output += "void MetaSystem::RegisterMetaFunctions() {\n\tMetaSystem* metaSystem = GetSystem<MetaSystem>();\n\n";
 	it = classes.begin();
 	for (; it != classes.end(); it++) {
 		MetaClass* cl = it->second;
