@@ -5,7 +5,7 @@
 #include <eternity.h>
 #include <v8.h>
 
-class GIGA_API ScriptCallbackImpl {
+class GIGA_API ScriptCallbackHandler {
 public:
 	ScriptCallbackImpl() = default;
 	~ScriptCallbackImpl() = default;

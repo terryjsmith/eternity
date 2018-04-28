@@ -61,8 +61,9 @@
     <ClInclude Include="..\..\Engine\Render\VertexBuffer.h" />
     <ClInclude Include="..\..\Engine\Render\VertexType.h" />
     <ClInclude Include="..\..\Engine\Scripting\Script.h" />
-    <ClInclude Include="..\..\Engine\Scripting\ScriptObjectImpl.h" />
+    <ClInclude Include="..\..\Engine\Scripting\ScriptCallbackImpl.h" />
     <ClInclude Include="..\..\Engine\Scripting\ScriptObject.h" />
+    <ClInclude Include="..\..\Engine\Scripting\ScriptThread.h" />
     <ClInclude Include="..\..\Engine\Scripting\ScriptVariant.h" />
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +101,7 @@
     <ClCompile Include="..\..\Engine\Render\ShaderProgram.cpp" />
     <ClCompile Include="..\..\Engine\Render\VertexBuffer.cpp" />
     <ClCompile Include="..\..\Engine\Render\VertexType.cpp" />
-    <ClCompile Include="..\..\Engine\Scripting\ScriptObjectImpl.cpp" />
+    <ClCompile Include="..\..\Engine\Scripting\ScriptCallbackImpl.cpp" />
     <ClCompile Include="..\..\Engine\Scripting\ScriptVariant.cpp" />
     <ClCompile Include="..\..\ThirdParty\glew\src\glew.c" />
   </ItemGroup>

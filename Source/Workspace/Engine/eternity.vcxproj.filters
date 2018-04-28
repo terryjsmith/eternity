@@ -154,7 +154,10 @@
     <ClInclude Include="..\..\Engine\Scripting\ScriptObject.h">
       <Filter>Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Engine\Scripting\ScriptObjectImpl.h">
+    <ClInclude Include="..\..\Engine\Scripting\ScriptThread.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Scripting\ScriptCallbackImpl.h">
       <Filter>Scripting</Filter>
     </ClInclude>
   </ItemGroup>
@@ -267,7 +270,7 @@
     <ClCompile Include="..\..\Engine\Scripting\ScriptVariant.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Engine\Scripting\ScriptObjectImpl.cpp">
+    <ClCompile Include="..\..\Engine\Scripting\ScriptCallbackImpl.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
   </ItemGroup>
