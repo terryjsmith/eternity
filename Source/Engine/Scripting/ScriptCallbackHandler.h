@@ -3,12 +3,13 @@
 #define scriptobjectimpl_h
 
 #include <eternity.h>
+#include <Core/GigaObject.h>
 #include <v8.h>
 
 class GIGA_API ScriptCallbackHandler {
 public:
-	ScriptCallbackImpl() = default;
-	~ScriptCallbackImpl() = default;
+	ScriptCallbackHandler() = default;
+	~ScriptCallbackHandler() = default;
 	
 	/**
 	 * Create an implementation from an object type definition
@@ -58,36 +59,23 @@ public:
 	/**
 	* Handle object getters (call internal callbacks based on name)
 	*/
-	static void HandleObjectGetter(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info);
+	// static void HandleObjectGetter(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info);
 
 	/**
 	* Handle object setters (call internal callbacks based on name)
 	*/
-	static void HandleObjectSetter(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info);
+	// static void HandleObjectSetter(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info);
 
 	/**
 	* Handle static getter calls (call internal callback based on name)
 	*/
-	static void HandleStaticGetter(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info);
+	// static void HandleStaticGetter(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info);
 
 	/**
 	* Create a JavaScript object to pass back to V8
 	*/
-	v8::Local<v8::Object> CreateJSObject();
-
-	struct ScriptObjectType {
-		// Name
-		std::string name;
-
-		// The function template
-		v8::Persistent<v8::FunctionTemplate, v8::CopyablePersistentTraits<v8::FunctionTemplate>> functionTemplate;
-
-		// Our constructor to create new objects of this type
-		v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> constructor;
-	};
-
-protected:
-	std::map<std::string, ScriptObjectType*> m_types;
+	// v8::Local<v8::Object> CreateJSObject();
+    
 };
 
 #endif

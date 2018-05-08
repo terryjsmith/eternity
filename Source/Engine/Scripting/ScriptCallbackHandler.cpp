@@ -3,6 +3,7 @@
 #include <Scripting/ScriptVariant.h>
 #include <Core/MetaSystem.h>
 #include <Core/Application.h>
+#include <Scripting/ScriptThread.h>
 
 void ScriptCallbackHandler::New(const v8::FunctionCallbackInfo<v8::Value>& info) {
 	v8::HandleScope scope(info.GetIsolate());
@@ -63,40 +64,31 @@ void ScriptCallbackHandler::HandleStaticFunctionCallback(const v8::FunctionCallb
 	ScriptThread* thread = (ScriptThread*)isolate->GetData(0);
 	ScriptComponent* component = thread->GetCurrentScript();
 
-	// Get the script interface we're supposed to connect to
-	ScriptingSystem* ss = GetSystem<ScriptingSystem>();
-
 	v8::Local<v8::Object> holder = info.This();
 	v8::Local<v8::Function> funcHolder = holder.As<v8::Function>();
 	v8::String::Utf8Value thisName(funcHolder->GetName());
-	ScriptableObjectType* interface = ss->GetScriptableObjectType(*thisName);
-
-	if (interface->m_staticObject) {
-		interface->m_staticObject->LockMutex();
-	}
-
-	// Iterate through the callback list, looking for a registered callback function
-	std::vector<ScriptableObjectType::ScriptFunctionCallback*> funcList = interface->GetFunctionList();
-	for (size_t i = 0; i < funcList.size(); i++) {
-		v8::Local<v8::Function> func = info.Callee();
-		v8::String::Utf8Value funcName(func->GetName());
-		if (funcList[i]->funcName == std::string(*funcName)) {
-			if (funcList[i]->func != 0) {
-				ScriptableVariant* scrval = 0;
-				if (funcList[i]->isComponent == false) {
-					scrval = (ScriptableVariant*)(funcList[i]->func(0, argc, argv));
-				}
-				else {
-					scrval = (ScriptableVariant*)(funcList[i]->func2(component, 0, argc, argv));
-				}
-				v8::Local<v8::Value> val = scrval->GetValue();
-				info.GetReturnValue().Set(val);
-				delete scrval;
-
-				break;
-			}
-		}
-	}
+	
+    MetaSystem* metaSystem = GetSystem<MetaSystem>();
+    ScriptVariant* retval = 0;
+    
+    v8::Local<v8::Function> func = info.Callee();
+    v8::String::Utf8Value funcName(func->GetName());
+    
+    GigaObject* singleton = metaSystem->GetSingleton(*thisName);
+    if(singleton) {
+        singleton->LockMutex();
+        retval = (ScriptVariant*)singleton->Call(*funcName, argc, argv);
+        singleton->UnlockMutex();
+    }
+    else {
+        CallableFunction func = metaSystem->FindFunction(*thisName, *funcName);
+        retval = (ScriptVariant*)func(0, argc, argv);
+    }
+    
+    v8::Local<v8::Value> val = retval->GetValue();
+    info.GetReturnValue().Set(val);
+    
+    delete retval;
 
 	// Clean up
 	for (int i = 0; i < argc; i++) {
@@ -104,9 +96,46 @@ void ScriptCallbackHandler::HandleStaticFunctionCallback(const v8::FunctionCallb
 		argv[i] = 0;
 	}
 
-	if (interface->m_staticObject) {
-		interface->m_staticObject->UnlockMutex();
-	}
-
 	free(argv);
+}
+
+void ScriptCallbackHandler::HandleObjectFunctionCallback(const v8::FunctionCallbackInfo<v8::Value>& info) {
+    // Unwrap our object
+    GigaObject* jsobj = Unwrap(info.This());
+    jsobj->LockMutex();
+    
+    // Turn our info array into a list of passable Variants
+    int argc = info.Length();
+    Variant** argv = (Variant**)malloc(sizeof(Variant*) * argc);
+    for (int i = 0; i < argc; i++) {
+        argv[i] = new ScriptVariant(info[i]);
+    }
+    
+    // Get current thread out of isolate
+    v8::Isolate* isolate = v8::Isolate::GetCurrent();
+    ScriptThread* thread = (ScriptThread*)isolate->GetData(0);
+    ScriptComponent* component = thread->GetCurrentScript();
+    
+    MetaSystem* metaSystem = GetSystem<MetaSystem>();
+    ScriptVariant* retval = 0;
+    
+    v8::Local<v8::Function> func = info.Callee();
+    v8::String::Utf8Value funcName(func->GetName());
+    
+    std::string className = jsobj->GetGigaName();
+    CallableFunction callable = metaSystem->FindFunction(className, *funcName);
+    retval = (ScriptVariant*)callable(jsobj, argc, argv);
+    
+    v8::Local<v8::Value> val = retval->GetValue();
+    info.GetReturnValue().Set(val);
+    
+    delete retval;
+    
+    // Clean up
+    for (int i = 0; i < argc; i++) {
+        delete argv[i];
+        argv[i] = 0;
+    }
+    
+    free(argv);
 }

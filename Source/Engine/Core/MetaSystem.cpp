@@ -45,3 +45,13 @@ GigaObject* MetaSystem::GetSingleton(std::string className) {
 
 	return(0);
 }
+
+std::vector<MetaSystem::RegisteredClass*> MetaSystem::GetRegisteredClasses() {
+    std::vector<MetaSystem::RegisteredClass*> classes;
+    std::map<std::string, MetaSystem::RegisteredClass*>::iterator it = m_classes.begin();
+    for(; it != m_classes.end(); it++) {
+        classes.push_back(it->second);
+    }
+    
+    return(classes);
+}

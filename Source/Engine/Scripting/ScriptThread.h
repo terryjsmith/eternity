@@ -4,10 +4,11 @@
 
 #include <eternity.h>
 #include <v8.h>
+#include <Scripting/ScriptComponent.h>
 
 class GIGA_API ScriptThread {
 public:
-	ScriptThread() = default;
+	ScriptThread();
 	~ScriptThread() = default;
 
 	/**
@@ -45,8 +46,27 @@ public:
 	*/
 	void SetCurrentScript(ScriptComponent* component) { m_currentScript = component; }
 	ScriptComponent* GetCurrentScript() { return m_currentScript; }
-
+    
+    /**
+     * Create a JS object of a specific class name
+     */
+    v8::Local<v8::Object> CreateJSObject(std::string className);
+    
+    struct ScriptObjectType {
+        // Name
+        std::string name;
+        
+        // The function template
+        v8::Persistent<v8::FunctionTemplate, v8::CopyablePersistentTraits<v8::FunctionTemplate>> functionTemplate;
+    };
+    
 protected:
+    // Registered script object types
+    std::map<std::string, ScriptObjectType*> m_types;
+    
+    // Cache of objects
+    std::map<GigaObject*, v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>>> m_cached;
+
 	// V8 isolated execution environment (own heap, stack, GC, etc.)
 	v8::Isolate* m_isolate;
 	v8::Locker* m_locker;
@@ -56,7 +76,6 @@ protected:
 
 	// The thread which is currently locking this
 	ScriptThread* m_currentLocker;
-};
 };
 
 #endif

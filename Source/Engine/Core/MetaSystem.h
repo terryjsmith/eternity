@@ -59,6 +59,12 @@ public:
 	 * Get singleton instance
 	 */
 	GigaObject* GetSingleton(std::string className);
+    
+    /**
+     * Get registered classes
+     */
+    struct RegisteredClass;
+    std::vector<RegisteredClass*> GetRegisteredClasses();
 
 	struct RegisteredFunction {
 		std::string name;
