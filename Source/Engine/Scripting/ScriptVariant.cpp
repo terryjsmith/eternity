@@ -1,5 +1,6 @@
 
 #include <Scripting/ScriptVariant.h>
+#include <Scripting/ScriptThread.h>
 
 ScriptVariant::ScriptVariant(v8::Local<v8::Value> value) {
 	*this = value;
@@ -45,7 +46,7 @@ Variant& ScriptVariant::operator =(v8::Local<v8::Value> rhs) {
 		void* valptr = val->GetAlignedPointerFromInternalField(0);
 
 		m_type = VAR_OBJECT;
-		m_data.obj = (ScriptableObject*)valptr;
+		m_data.obj = (GigaObject*)valptr;
 		return *this;
 	}
 
@@ -76,9 +77,9 @@ v8::Local<v8::Value> ScriptVariant::GetValue() {
 		ret = v8::String::NewFromUtf8(isolate, AsString().c_str());
 	}
 	if (IsObject()) {
-		ScriptableObject* obj = AsObject<ScriptableObject>();
+		GigaObject* obj = AsObject();
 		//printf("Returning object of type %s.\n", obj->GetGigaName().c_str());
-		ret = obj->GetJSObject();
+        ret = thread->GetJSObject(obj);
 	}
 	if (IsFunction()) {
 		v8::Local<v8::Object> globalSpace = isolate->GetCurrentContext()->Global();

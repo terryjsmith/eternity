@@ -79,6 +79,27 @@ v8::Local<v8::Object> ScriptThread::CreateJSObject(std::string className) {
     return(handle_scope.Escape(obj));
 }
 
+v8::Local<v8::Object> ScriptThread::GetJSObject(GigaObject* obj) {
+    v8::EscapableHandleScope handle_scope(m_isolate);
+    
+    // Check for a cached value
+    auto it = m_cached.find(obj);
+    if(it != m_cached.end()) {
+        v8::Local<v8::Object> jsobj = it->second.Get(m_isolate);
+        return(handle_scope.Escape(jsobj));
+    }
+    
+    // Otherwise, create one and cache it
+    v8::Local<v8::Object> jsobj = this->CreateJSObject(obj->GetGigaName());
+    ScriptCallbackHandler::Wrap(obj, jsobj);
+    
+    v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> p;
+    p.Reset(m_isolate, jsobj);
+    
+    m_cached[obj] = p;
+    return(handle_scope.Escape(jsobj));
+}
+
 void ScriptThread::Shutdown() {
     if (m_isolate) {
         m_isolate->Dispose();

@@ -22,6 +22,10 @@
 		5E1B4164209BDB73006B7ABB /* ScriptThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B4163209BDB73006B7ABB /* ScriptThread.cpp */; };
 		5E1B4167209BDBA3006B7ABB /* ScriptComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B4165209BDBA3006B7ABB /* ScriptComponent.cpp */; };
 		5E1B4168209BDBA3006B7ABB /* ScriptComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B4166209BDBA3006B7ABB /* ScriptComponent.h */; };
+		5E1B416D20A23357006B7ABB /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B416920A23357006B7ABB /* Timer.cpp */; };
+		5E1B416E20A23357006B7ABB /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B416A20A23357006B7ABB /* Timer.h */; };
+		5E1B416F20A23357006B7ABB /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B416B20A23357006B7ABB /* Window.cpp */; };
+		5E1B417020A23357006B7ABB /* Window.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B416C20A23357006B7ABB /* Window.h */; };
 		5E567C3C2082D2E2000041B9 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E567C3A2082D2E2000041B9 /* Command.cpp */; };
 		5E567C3D2082D2E2000041B9 /* Command.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E567C3B2082D2E2000041B9 /* Command.h */; };
 		5E567C402082D97F000041B9 /* TimeSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E567C3E2082D97F000041B9 /* TimeSystem.cpp */; };
@@ -105,6 +109,10 @@
 		5E1B4163209BDB73006B7ABB /* ScriptThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScriptThread.cpp; path = ../../Engine/Scripting/ScriptThread.cpp; sourceTree = "<group>"; };
 		5E1B4165209BDBA3006B7ABB /* ScriptComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScriptComponent.cpp; path = ../../Engine/Scripting/ScriptComponent.cpp; sourceTree = "<group>"; };
 		5E1B4166209BDBA3006B7ABB /* ScriptComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScriptComponent.h; path = ../../Engine/Scripting/ScriptComponent.h; sourceTree = "<group>"; };
+		5E1B416920A23357006B7ABB /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
+		5E1B416A20A23357006B7ABB /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		5E1B416B20A23357006B7ABB /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
+		5E1B416C20A23357006B7ABB /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		5E567C3A2082D2E2000041B9 /* Command.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Command.cpp; sourceTree = "<group>"; };
 		5E567C3B2082D2E2000041B9 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
 		5E567C3E2082D97F000041B9 /* TimeSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeSystem.cpp; sourceTree = "<group>"; };
@@ -247,12 +255,16 @@
 				5ECE17972063477200C5DA14 /* MetaSystem.cpp */,
 				5ECE17982063477200C5DA14 /* MetaSystem.h */,
 				5ECE16E020584AD600C5DA14 /* System.h */,
+				5E1B416920A23357006B7ABB /* Timer.cpp */,
+				5E1B416A20A23357006B7ABB /* Timer.h */,
 				5E567C3E2082D97F000041B9 /* TimeSystem.cpp */,
 				5E567C3F2082D97F000041B9 /* TimeSystem.h */,
 				5ECE16E120584AD600C5DA14 /* Transform.cpp */,
 				5ECE16E220584AD600C5DA14 /* Transform.h */,
 				5ECE17992063477200C5DA14 /* Variant.cpp */,
 				5ECE179A2063477200C5DA14 /* Variant.h */,
+				5E1B416B20A23357006B7ABB /* Window.cpp */,
+				5E1B416C20A23357006B7ABB /* Window.h */,
 			);
 			name = Core;
 			path = ../../Engine/Core;
@@ -400,7 +412,9 @@
 				5ECE173620584AD600C5DA14 /* Shader.h in Headers */,
 				5ECE171220584AD600C5DA14 /* System.h in Headers */,
 				5ECE172820584AD600C5DA14 /* OpenGLShaderProgram.h in Headers */,
+				5E1B416E20A23357006B7ABB /* Timer.h in Headers */,
 				5ECE179C2063477200C5DA14 /* Error.h in Headers */,
+				5E1B417020A23357006B7ABB /* Window.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,10 +496,12 @@
 				5ECE179D2063477200C5DA14 /* GigaObject.cpp in Sources */,
 				5ECE17A52063477200C5DA14 /* Variant.cpp in Sources */,
 				5ECE17A32063477200C5DA14 /* MetaSystem.cpp in Sources */,
+				5E1B416F20A23357006B7ABB /* Window.cpp in Sources */,
 				5E1B415B209BDAAC006B7ABB /* ScriptCallbackHandler.cpp in Sources */,
 				5ECE171320584AD600C5DA14 /* Transform.cpp in Sources */,
 				5ECE171A20584AD600C5DA14 /* ResourceSystem.cpp in Sources */,
 				5E1B4164209BDB73006B7ABB /* ScriptThread.cpp in Sources */,
+				5E1B416D20A23357006B7ABB /* Timer.cpp in Sources */,
 				5ECE172020584AD600C5DA14 /* MeshComponent.cpp in Sources */,
 				5ECE179F2063477200C5DA14 /* Message.cpp in Sources */,
 				5ECE173420584AD600C5DA14 /* Scene.cpp in Sources */,

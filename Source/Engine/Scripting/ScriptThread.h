@@ -52,6 +52,11 @@ public:
      */
     v8::Local<v8::Object> CreateJSObject(std::string className);
     
+    /**
+     * Check for an existing cached object or create one
+     */
+    v8::Local<v8::Object> GetJSObject(GigaObject* obj);
+    
     struct ScriptObjectType {
         // Name
         std::string name;
