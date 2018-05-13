@@ -163,6 +163,15 @@
     <ClInclude Include="..\..\Engine\Scripting\ScriptComponent.h">
       <Filter>Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\Entity.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\World.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\ComponentSystem.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Engine\Render\RenderWindow.cpp">
@@ -281,6 +290,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Engine\Scripting\ScriptThread.cpp">
       <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\Entity.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\World.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\ComponentSystem.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

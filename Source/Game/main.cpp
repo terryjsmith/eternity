@@ -32,15 +32,16 @@ void OnCommand(GigaObject* obj, Message* message) {
 
 int main(int argc, char** argv) {
 	Application* application = Application::GetInstance();
+	World* world = application->GetWorld();
+
+	OpenGLRenderSystem* renderSystem = world->CreateSystem<OpenGLRenderSystem>();
+	ResourceSystem* resourceSystem = world->CreateSystem<ResourceSystem>();
+	MessageSystem* messageSystem = world->CreateSystem<MessageSystem>(20);
+    InputSystem* inputSystem = world->CreateSystem<InputSystem>();
+    MetaSystem* metaSystem = world->CreateSystem<MetaSystem>();
+
+	world->Initialize();
 	application->Initialize();
-
-	OpenGLRenderSystem* renderSystem = application->CreateSystem<OpenGLRenderSystem>();
-	ResourceSystem* resourceSystem = application->CreateSystem<ResourceSystem>();
-	MessageSystem* messageSystem = application->CreateSystem<MessageSystem>(20);
-    InputSystem* inputSystem = application->CreateSystem<InputSystem>();
-    MetaSystem* metaSystem = application->CreateSystem<MetaSystem>();
-
-	application->Startup();
 
 	RenderWindow* window = new RenderWindow();
 	window->Create("Test Window", 800, 600, false);
@@ -115,7 +116,7 @@ int main(int argc, char** argv) {
 		delta = gameTimer->Duration();
 		gameTimer->Reset();
 
-		application->Update(delta);
+		world->Update(delta);
 
 		if (moveForward) {
 			RenderSystem* renderSystem = GetSystem<RenderSystem>();
@@ -131,6 +132,9 @@ int main(int argc, char** argv) {
 		renderSystem->Render();
 		window->SwapBuffer();
 	}
+
+	world->Shutdown();
+	application->Shutdown();
 
 	delete mesh;
 	delete renderSystem;

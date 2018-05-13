@@ -16,18 +16,7 @@ Application::Application() {
 }
 
 void Application::Initialize() {
-
-}
-
-void Application::Startup() {
-	// Initialize all systems
-	std::vector<RegisteredSystem*>::iterator i = m_systems.begin();
-	for (; i != m_systems.end(); i++) {
-		System* sys = (*i)->system;
-		sys->Initialize();
-	}
-    
-    // Get systems
+	// Get systems
     InputSystem* inputSystem = GetSystem<InputSystem>();
 
 	// Register messages
@@ -48,35 +37,8 @@ void Application::Startup() {
 	metaSystem->RegisterSingleton("InputSystem", inputSystem);
 }
 
-void Application::Update(float delta) {
-	std::vector<RegisteredSystem*>::iterator i = m_systems.begin();
-
-	for (; i != m_systems.end(); i++) {
-		if ((*i)->tickRate > 0) {
-			(*i)->accumulator += delta;
-
-			if ((*i)->accumulator > (1.0f / (*i)->tickRate)) {
-				float theta = (1.0f / (*i)->tickRate);
-				(*i)->accumulator -= theta;
-				(*i)->system->Update(theta);
-			}
-		}
-	}
-
-	i = m_systems.begin();
-	for (; i != m_systems.end(); i++) {
-		if ((*i)->tickRate == 0) {
-			(*i)->system->Update(delta);
-		}
-	}
-}
-
 void Application::Shutdown() {
-	std::vector<RegisteredSystem*>::iterator i = m_systems.begin();
-	for (; i != m_systems.end(); i++) {
-		System* sys = (*i)->system;
-		sys->Shutdown();
-	}
+	
 }
 
 Application* Application::GetInstance() {
@@ -85,4 +47,12 @@ Application* Application::GetInstance() {
 	}
 
 	return(m_instance);
+}
+
+World* Application::GetWorld() {
+	if (m_world == 0) {
+		m_world = new World();
+	}
+
+	return(m_world);
 }
