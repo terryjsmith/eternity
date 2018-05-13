@@ -58,14 +58,22 @@ public:
      * Check for an existing cached object or create one
      */
     v8::Local<v8::Object> GetJSObject(GigaObject* obj);
-    
-    struct ScriptObjectType {
-        // Name
-        std::string name;
-        
-        // The function template
-        v8::Persistent<v8::FunctionTemplate, v8::CopyablePersistentTraits<v8::FunctionTemplate>> functionTemplate;
-    };
+
+	/**
+	 * A stored function definition
+	 */
+	struct ScriptObjectType {
+		// Name
+		std::string name;
+
+		// The function template
+		v8::Persistent<v8::FunctionTemplate, v8::CopyablePersistentTraits<v8::FunctionTemplate>> functionTemplate;
+	};
+
+	/**
+	 * Get object definitions
+	 */
+	std::vector<ScriptObjectType*> GetScriptObjectTypes();
     
 protected:
     // Registered script object types

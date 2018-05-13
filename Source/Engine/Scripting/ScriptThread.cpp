@@ -36,26 +36,6 @@ void ScriptThread::Initialize() {
     std::vector<MetaSystem::RegisteredClass*> classes = metaSystem->GetRegisteredClasses();
     std::vector<MetaSystem::RegisteredClass*>::iterator it = classes.begin();
     
-    v8::Local<v8::ObjectTemplate> globalSpace;
-    v8::Local<v8::Context> context;
-    
-    // Create a global object template
-    globalSpace = v8::ObjectTemplate::New(m_isolate);
-    
-    // Get our context
-    context = v8::Context::New(m_isolate, NULL, globalSpace);
-    m_context.Reset(m_isolate, context);
-    
-    context->Enter();
-    
-    v8::Local<v8::Object> global = m_isolate->GetCurrentContext()->Global();
-    
-    // Add globals
-    std::map<std::string, ScriptVariant*> globals = scriptingSystem->GetGlobals();
-    for(std::map<std::string, ScriptVariant*>::iterator i = globals.begin(); i != globals.end(); i++) {
-        globalSpace->Set(v8::String::NewFromUtf8(m_isolate, i->first.c_str()), i->second->GetValue());
-    }
-    
     // Add classes
     for(; it != classes.end(); it++) {
         // Create type
@@ -86,12 +66,7 @@ void ScriptThread::Initialize() {
         
         // Add to our internal list
         m_types[type->name] = type;
-        
-        // Inject this type name into V8
-        global->Set(v8::String::NewFromUtf8(m_isolate, type->name.c_str()), tpl->GetFunction());
     }
-    
-    context->Exit();
     
     Unlock();
 }
@@ -171,4 +146,14 @@ void ScriptThread::Unlock() {
     
     m_locker = 0;
     m_currentLocker = 0;
+}
+
+std::vector<ScriptThread::ScriptObjectType*> ScriptThread::GetScriptObjectTypes() {
+	std::vector<ScriptThread::ScriptObjectType*> ret;
+	std::map<std::string, ScriptThread::ScriptObjectType*>::iterator it = m_types.begin();
+	for (; it != m_types.end(); it++) {
+		ret.push_back(it->second);
+	}
+
+	return(ret);
 }
