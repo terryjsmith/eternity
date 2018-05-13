@@ -4,6 +4,7 @@
 #include <Core/TimeSystem.h>
 #include <Core/Application.h>
 #include <Scripting/ScriptCallbackHandler.h>
+#include <Scripting/ScriptingSystem.h>
 
 ScriptThread::ScriptThread() {
     m_isolate = 0;
@@ -18,18 +19,42 @@ void ScriptThread::Initialize() {
     create_params.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
     m_isolate = v8::Isolate::New(create_params);
     
+    // Create a stack-allocated handle scope.
+    v8::HandleScope handle_scope(m_isolate);
+    
+    // Catch any errors the script might throw
+    v8::TryCatch try_catch(m_isolate);
+    
     Lock(this);
     m_isolate->SetData(0, this);
     
-    // Get our meta system
+    // Get our systems
     MetaSystem* metaSystem = GetSystem<MetaSystem>();
+    ScriptingSystem* scriptingSystem = GetSystem<ScriptingSystem>();
     
     // Get all meta class objects
     std::vector<MetaSystem::RegisteredClass*> classes = metaSystem->GetRegisteredClasses();
     std::vector<MetaSystem::RegisteredClass*>::iterator it = classes.begin();
-
-    // Enter V8 scope
-    v8::HandleScope handle_scope(m_isolate);
+    
+    v8::Local<v8::ObjectTemplate> globalSpace;
+    v8::Local<v8::Context> context;
+    
+    // Create a global object template
+    globalSpace = v8::ObjectTemplate::New(m_isolate);
+    
+    // Get our context
+    context = v8::Context::New(m_isolate, NULL, globalSpace);
+    m_context.Reset(m_isolate, context);
+    
+    context->Enter();
+    
+    v8::Local<v8::Object> global = m_isolate->GetCurrentContext()->Global();
+    
+    // Add globals
+    std::map<std::string, ScriptVariant*> globals = scriptingSystem->GetGlobals();
+    for(std::map<std::string, ScriptVariant*>::iterator i = globals.begin(); i != globals.end(); i++) {
+        globalSpace->Set(v8::String::NewFromUtf8(m_isolate, i->first.c_str()), i->second->GetValue());
+    }
     
     // Add classes
     for(; it != classes.end(); it++) {
@@ -61,7 +86,12 @@ void ScriptThread::Initialize() {
         
         // Add to our internal list
         m_types[type->name] = type;
+        
+        // Inject this type name into V8
+        global->Set(v8::String::NewFromUtf8(m_isolate, type->name.c_str()), tpl->GetFunction());
     }
+    
+    context->Exit();
     
     Unlock();
 }

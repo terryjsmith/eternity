@@ -4,7 +4,9 @@
 
 #include <eternity.h>
 #include <v8.h>
-#include <Scripting/ScriptComponent.h>
+#include <Core/GigaObject.h>
+
+class ScriptComponent;
 
 class GIGA_API ScriptThread {
 public:
