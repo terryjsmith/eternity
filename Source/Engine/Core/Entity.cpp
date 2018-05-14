@@ -2,6 +2,7 @@
 #include <Core/Entity.h>
 #include <Core/Application.h>
 #include <Core/ComponentSystem.h>
+#include <Core/World.h>
 
 Entity::Entity() {
 	m_active = false;
@@ -29,7 +30,7 @@ void Entity::ID(int id) {
 template<class T>
 Component* Entity::Assign() {
 	// Register with appropriate system
-	World* world = World::GetWorld();
+    World* world = Application::GetInstance()->GetWorld();
 	ComponentSystem<T>* system = world->GetComponentSystem<T>();
 	T* component = system->CreateComponent();
 

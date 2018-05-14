@@ -109,10 +109,4 @@ protected:
 	int m_entityCounter;
 };
 
-// Short-hand class to find sub-systems in the Application class
-template<class T> T* GetSystem() {
-	World* world = Application::GetInstance()->GetWorld();
-	return(world->GetSystem<T>());
-}
-
 #endif

@@ -26,6 +26,12 @@
 		5E1B416E20A23357006B7ABB /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B416A20A23357006B7ABB /* Timer.h */; };
 		5E1B416F20A23357006B7ABB /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B416B20A23357006B7ABB /* Window.cpp */; };
 		5E1B417020A23357006B7ABB /* Window.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B416C20A23357006B7ABB /* Window.h */; };
+		5E1B417720A9195D006B7ABB /* ComponentSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B417120A9195D006B7ABB /* ComponentSystem.cpp */; };
+		5E1B417820A9195D006B7ABB /* ComponentSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B417220A9195D006B7ABB /* ComponentSystem.h */; };
+		5E1B417920A9195D006B7ABB /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B417320A9195D006B7ABB /* Entity.cpp */; };
+		5E1B417A20A9195D006B7ABB /* Entity.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B417420A9195D006B7ABB /* Entity.h */; };
+		5E1B417B20A9195D006B7ABB /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B417520A9195D006B7ABB /* World.cpp */; };
+		5E1B417C20A9195D006B7ABB /* World.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B417620A9195D006B7ABB /* World.h */; };
 		5E567C3C2082D2E2000041B9 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E567C3A2082D2E2000041B9 /* Command.cpp */; };
 		5E567C3D2082D2E2000041B9 /* Command.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E567C3B2082D2E2000041B9 /* Command.h */; };
 		5E567C402082D97F000041B9 /* TimeSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E567C3E2082D97F000041B9 /* TimeSystem.cpp */; };
@@ -113,6 +119,12 @@
 		5E1B416A20A23357006B7ABB /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		5E1B416B20A23357006B7ABB /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		5E1B416C20A23357006B7ABB /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		5E1B417120A9195D006B7ABB /* ComponentSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentSystem.cpp; sourceTree = "<group>"; };
+		5E1B417220A9195D006B7ABB /* ComponentSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentSystem.h; sourceTree = "<group>"; };
+		5E1B417320A9195D006B7ABB /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
+		5E1B417420A9195D006B7ABB /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
+		5E1B417520A9195D006B7ABB /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		5E1B417620A9195D006B7ABB /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		5E567C3A2082D2E2000041B9 /* Command.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Command.cpp; sourceTree = "<group>"; };
 		5E567C3B2082D2E2000041B9 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
 		5E567C3E2082D97F000041B9 /* TimeSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeSystem.cpp; sourceTree = "<group>"; };
@@ -243,6 +255,10 @@
 				5ECE16DC20584AD600C5DA14 /* Application.cpp */,
 				5ECE16DD20584AD600C5DA14 /* Application.h */,
 				5ECE16DE20584AD600C5DA14 /* Component.h */,
+				5E1B417120A9195D006B7ABB /* ComponentSystem.cpp */,
+				5E1B417220A9195D006B7ABB /* ComponentSystem.h */,
+				5E1B417320A9195D006B7ABB /* Entity.cpp */,
+				5E1B417420A9195D006B7ABB /* Entity.h */,
 				5ECE178F2063477200C5DA14 /* Error.cpp */,
 				5ECE17902063477200C5DA14 /* Error.h */,
 				5ECE17912063477200C5DA14 /* GigaObject.cpp */,
@@ -265,6 +281,8 @@
 				5ECE179A2063477200C5DA14 /* Variant.h */,
 				5E1B416B20A23357006B7ABB /* Window.cpp */,
 				5E1B416C20A23357006B7ABB /* Window.h */,
+				5E1B417520A9195D006B7ABB /* World.cpp */,
+				5E1B417620A9195D006B7ABB /* World.h */,
 			);
 			name = Core;
 			path = ../../Engine/Core;
@@ -371,6 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5ECE171B20584AD600C5DA14 /* ResourceSystem.h in Headers */,
+				5E1B417820A9195D006B7ABB /* ComponentSystem.h in Headers */,
 				5ECE172120584AD600C5DA14 /* MeshComponent.h in Headers */,
 				5ECE17A62063477200C5DA14 /* Variant.h in Headers */,
 				5ECE171520584AD600C5DA14 /* eternity.h in Headers */,
@@ -381,6 +400,7 @@
 				5ECE170F20584AD600C5DA14 /* Application.h in Headers */,
 				5ECE171420584AD600C5DA14 /* Transform.h in Headers */,
 				5ECE173C20584AD600C5DA14 /* VertexType.h in Headers */,
+				5E1B417A20A9195D006B7ABB /* Entity.h in Headers */,
 				5ECE179E2063477200C5DA14 /* GigaObject.h in Headers */,
 				5ECE173320584AD600C5DA14 /* RenderWindow.h in Headers */,
 				5E1B4162209BDAAC006B7ABB /* ScriptVariant.h in Headers */,
@@ -389,6 +409,7 @@
 				5ECE172E20584AD600C5DA14 /* RenderComponent.h in Headers */,
 				5ECE171720584AD600C5DA14 /* Resource.h in Headers */,
 				5ECE171F20584AD600C5DA14 /* Mesh.h in Headers */,
+				5E1B417C20A9195D006B7ABB /* World.h in Headers */,
 				5E144865207A86430044E784 /* InputSystem.h in Headers */,
 				5E567C412082D97F000041B9 /* TimeSystem.h in Headers */,
 				5ECE172C20584AD600C5DA14 /* OpenGLVertexType.h in Headers */,
@@ -493,6 +514,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E1B417720A9195D006B7ABB /* ComponentSystem.cpp in Sources */,
 				5ECE179D2063477200C5DA14 /* GigaObject.cpp in Sources */,
 				5ECE17A52063477200C5DA14 /* Variant.cpp in Sources */,
 				5ECE17A32063477200C5DA14 /* MetaSystem.cpp in Sources */,
@@ -500,6 +522,7 @@
 				5E1B415B209BDAAC006B7ABB /* ScriptCallbackHandler.cpp in Sources */,
 				5ECE171320584AD600C5DA14 /* Transform.cpp in Sources */,
 				5ECE171A20584AD600C5DA14 /* ResourceSystem.cpp in Sources */,
+				5E1B417920A9195D006B7ABB /* Entity.cpp in Sources */,
 				5E1B4164209BDB73006B7ABB /* ScriptThread.cpp in Sources */,
 				5E1B416D20A23357006B7ABB /* Timer.cpp in Sources */,
 				5ECE172020584AD600C5DA14 /* MeshComponent.cpp in Sources */,
@@ -507,6 +530,7 @@
 				5ECE173420584AD600C5DA14 /* Scene.cpp in Sources */,
 				5ECE172720584AD600C5DA14 /* OpenGLShaderProgram.cpp in Sources */,
 				5ECE170E20584AD600C5DA14 /* Application.cpp in Sources */,
+				5E1B417B20A9195D006B7ABB /* World.cpp in Sources */,
 				5ECE171E20584AD600C5DA14 /* Mesh.cpp in Sources */,
 				5ECE173920584AD600C5DA14 /* VertexBuffer.cpp in Sources */,
 				5ECE171820584AD600C5DA14 /* ResourceObject.cpp in Sources */,
