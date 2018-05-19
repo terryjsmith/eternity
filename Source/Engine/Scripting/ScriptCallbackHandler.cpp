@@ -6,6 +6,13 @@
 #include <Scripting/ScriptThread.h>
 
 void ScriptCallbackHandler::New(const v8::FunctionCallbackInfo<v8::Value>& info) {
+    v8::Isolate* isolate = v8::Isolate::GetCurrent();
+    int* existing = (int*)isolate->GetData(1);
+    
+    if(existing) {
+        return info.GetReturnValue().Set(info.This());
+    }
+    
 	v8::HandleScope scope(info.GetIsolate());
 
 	// Convert our callback info into SmartValue objects
@@ -32,7 +39,7 @@ void ScriptCallbackHandler::New(const v8::FunctionCallbackInfo<v8::Value>& info)
 		obj = newobj->AsObject();
 	}
 	else {
-		GigaObject* obj = metaSystem->CreateObject(*funcName);
+		obj = metaSystem->CreateObject(*funcName);
 	}
 
 	// Lock mutex on new object
@@ -138,4 +145,5 @@ void ScriptCallbackHandler::HandleObjectFunctionCallback(const v8::FunctionCallb
     }
     
     free(argv);
+    jsobj->UnlockMutex();
 }

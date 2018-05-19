@@ -1,6 +1,7 @@
 
 #include <Scripting/ScriptVariant.h>
 #include <Scripting/ScriptThread.h>
+#include <Scripting/Types/Vector3.h>
 
 ScriptVariant::ScriptVariant(v8::Local<v8::Value> value) {
 	*this = value;
@@ -44,9 +45,25 @@ Variant& ScriptVariant::operator =(v8::Local<v8::Value> rhs) {
 	if (rhs->IsObject() && (rhs->IsFunction() == false)) {
 		v8::Local<v8::Object> val = rhs->ToObject();
 		void* valptr = val->GetAlignedPointerFromInternalField(0);
+        GigaObject* obj = static_cast<GigaObject*>(valptr);
+        bool assigned = false;
+        
+        if(obj->GetGigaName().compare("Vector3") == 0) {
+            m_type = VAR_VECTOR3;
+            
+            Vector3* vec = (Vector3*)valptr;
+            m_data.f1 = vec->x;
+            m_data.f2 = vec->y;
+            m_data.f3 = vec->z;
+            
+            assigned = true;
+        }
 
-		m_type = VAR_OBJECT;
-		m_data.obj = (GigaObject*)valptr;
+        if(assigned == false) {
+            m_type = VAR_OBJECT;
+            m_data.obj = obj;
+        }
+        
 		return *this;
 	}
 
@@ -81,6 +98,10 @@ v8::Local<v8::Value> ScriptVariant::GetValue() {
 		//printf("Returning object of type %s.\n", obj->GetGigaName().c_str());
         ret = thread->GetJSObject(obj);
 	}
+    if (IsVector3()) {
+        Vector3* vec = new Vector3(AsVector3());
+        ret = thread->GetJSObject(vec);
+    }
 	if (IsFunction()) {
 		v8::Local<v8::Object> globalSpace = isolate->GetCurrentContext()->Global();
 		ret = globalSpace->Get(v8::String::NewFromUtf8(isolate, AsString().c_str()));

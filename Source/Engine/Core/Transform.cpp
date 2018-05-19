@@ -129,15 +129,15 @@ matrix4 Transform::GetMatrix() {
 }
 
 vector3 Transform::GetUp() {
-	return(vector3(0, 1, 0) * m_rotation);
+	return(m_rotation * vector3(0, 1, 0));
 }
 
 vector3 Transform::GetRight() {
-	return(vector3(1, 0, 0) * m_rotation);
+	return(m_rotation * vector3(1, 0, 0));
 }
 
 vector3 Transform::GetLook() {
-	return(vector3(0, 0, -1) * m_rotation);
+	return(m_rotation * vector3(0, 0, -1));
 }
 
 void Transform::Move(vector3 amount) {

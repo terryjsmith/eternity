@@ -16,7 +16,7 @@ typedef Variant*(*CallableFunction)(GigaObject* obj, int argc, Variant** argv);
 */
 class GIGA_API GigaObject {
 public:
-	GigaObject() = default;
+	GigaObject();
 	~GigaObject() = default;
 
 	/**
@@ -53,7 +53,7 @@ public:
 
 protected:
 	// Lockable mutex (multi-threading)
-	std::unique_ptr<std::mutex> m_mutex;
+    std::mutex* m_mutex;
 };
 
 #endif

@@ -662,7 +662,7 @@ int main(int argc, char** argv) {
 		for (; fi != cl->functions.end(); fi++) {
 			std::string funcName = fi->second->isConstructor ? "New" : fi->first;
 			output += "\tmetaSystem->RegisterFunction(\"" + cl->name + "\", \"" + funcName + "\", meta_" + cl->name + "_" + funcName + ", ";
-			output += (fi->second->isStatic) ? "true" : "false";
+			output += (fi->second->isStatic || cl->singleton) ? "true" : "false";
 			output += "); \n";
 		}
         

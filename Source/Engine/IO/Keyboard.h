@@ -41,7 +41,7 @@ enum Keys {
 	KEY_R,
 	KEY_S,
 	KEY_T,
-	KEU_U,
+	KEY_U,
 	KEY_V,
 	KEY_W,
 	KEY_X,

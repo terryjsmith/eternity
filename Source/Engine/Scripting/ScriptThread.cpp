@@ -19,12 +19,6 @@ void ScriptThread::Initialize() {
     create_params.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
     m_isolate = v8::Isolate::New(create_params);
     
-    // Create a stack-allocated handle scope.
-    v8::HandleScope handle_scope(m_isolate);
-    
-    // Catch any errors the script might throw
-    v8::TryCatch try_catch(m_isolate);
-    
     Lock(this);
     m_isolate->SetData(0, this);
     
@@ -38,6 +32,9 @@ void ScriptThread::Initialize() {
     
     // Add classes
     for(; it != classes.end(); it++) {
+        // Create a stack-allocated handle scope.
+        v8::HandleScope handle_scope(m_isolate);
+        
         // Create type
         ScriptObjectType* type = new ScriptObjectType();
         type->name = (*it)->name;
@@ -95,8 +92,11 @@ v8::Local<v8::Object> ScriptThread::GetJSObject(GigaObject* obj) {
     }
     
     // Otherwise, create one and cache it
+    int existing = 1;
+    m_isolate->SetData(1, &existing);
     v8::Local<v8::Object> jsobj = this->CreateJSObject(obj->GetGigaName());
     ScriptCallbackHandler::Wrap(obj, jsobj);
+    m_isolate->SetData(1, 0);
     
     v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> p;
     p.Reset(m_isolate, jsobj);
@@ -112,6 +112,10 @@ void ScriptThread::Shutdown() {
 }
 
 void ScriptThread::Lock(ScriptThread* locker) {
+    if(locker == 0) {
+        locker = this;
+    }
+    
     if(m_locker && locker == m_currentLocker) {
         return;
     }

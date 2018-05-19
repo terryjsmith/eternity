@@ -55,3 +55,10 @@ void MessageSystem::RegisterCallback(GigaObject* obj, std::string type, MessageH
 
 	m_handlers.push_back(handler);
 }
+
+uint32_t MessageSystem::GetMessageType(std::string name) {
+    std::map<std::string, uint32_t>::iterator it = m_idMapping.find(name);
+    GIGA_ASSERT(it != m_idMapping.end(), "Message mapping not found.");
+    
+    return(it->second);
+}

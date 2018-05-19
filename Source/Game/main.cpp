@@ -12,23 +12,8 @@
 #include <IO/Keyboard.h>
 #include <Core/Timer.h>
 #include <Core/Application.h>
-
-bool moveForward = false;
-
-enum {
-	MOVE_FORWARD = 1,
-	MOVE_BACKWARD,
-	TURN_LEFT,
-	TURN_RIGHT
-};
-
-void OnCommand(GigaObject* obj, Message* message) {
-	Command* cmd = (Command*)message;
-
-	if (cmd->GetMessageType() == MOVE_FORWARD) {
-		moveForward = cmd->GetType();
-	}
-}
+#include <Core/Entity.h>
+#include <Scripting/ScriptComponent.cpp>
 
 int main(int argc, char** argv) {
 	Application* application = Application::GetInstance();
@@ -39,6 +24,7 @@ int main(int argc, char** argv) {
 	MessageSystem* messageSystem = world->CreateSystem<MessageSystem>(20);
     InputSystem* inputSystem = world->CreateSystem<InputSystem>();
     MetaSystem* metaSystem = world->CreateSystem<MetaSystem>();
+    ScriptingSystem* scriptingSystem = world->CreateSystem<ScriptingSystem>(20);
 
 	world->Initialize();
 	application->Initialize();
@@ -49,8 +35,10 @@ int main(int argc, char** argv) {
 	application->SetPrimaryWindow(window);
 
 	// Specify resource directories
+    resourceSystem->AddSearchPath("Resources");
 	resourceSystem->AddSearchPath("Resources/Shaders");
-
+    resourceSystem->AddSearchPath("Resources/Scripts");
+    
     // Get framebuffer size (retina is different)
     int framebufferWidth, framebufferHeight;
     window->GetFramebufferSize(framebufferWidth, framebufferHeight);
@@ -63,10 +51,11 @@ int main(int argc, char** argv) {
 	renderSystem->SetCurrentScene(scene);
 
 	// Create a camera
-	CameraComponent* camera = new CameraComponent();
-	scene->SetCamera(camera);
+    Entity* camera = world->CreateEntity();
+    CameraComponent* cameraComponent = camera->Assign<CameraComponent>();
+	scene->SetCamera(cameraComponent);
 
-	camera->GetTransform()->SetWorldPosition(vector3(0, 0, 4));
+	cameraComponent->GetTransform()->SetWorldPosition(vector3(0, 0, 4));
 
 	// Create a description of our vertex data
 	VertexType* type = renderSystem->CreateVertexType();
@@ -87,25 +76,31 @@ int main(int argc, char** argv) {
 	mesh->vertexBuffer = renderSystem->CreateVertexBuffer();
 	mesh->vertexBuffer->Create(type, 3, data, false);
 
-	MeshComponent* meshComponent = new MeshComponent();
+    Entity* triangle = world->CreateEntity();
+    MeshComponent* meshComponent = triangle->Assign<MeshComponent>();
 	meshComponent->Instantiate(mesh);
 
 	scene->AddMesh(meshComponent);
-    
-	// Register command mapping
-	Command::RegisterCommandType("MOVE_FORWARD", MOVE_FORWARD);
 
     // Create a keyboard
     Keyboard* keyboard = new Keyboard();
     keyboard->Initialize();
     
     inputSystem->RegisterInputDevice(keyboard);
-
-	// Register a key mapping
-	inputSystem->RegisterInputMapping(keyboard, KEY_UP, "MOVE_FORWARD");
-
-	// Register to receive commands
-	messageSystem->RegisterCallback(0, "Command", OnCommand);
+    
+    scriptingSystem->Lock(0);
+    
+    Script* gamejs = dynamic_cast<Script*>(resourceSystem->LoadResource("game.js", "Script"));
+    ScriptComponent* gameComponent = new ScriptComponent();
+    
+    gameComponent->Initialize(gamejs);
+    
+    Script* clientjs = dynamic_cast<Script*>(resourceSystem->LoadResource("client.js", "Script"));
+    ScriptComponent* clientComponent = camera->Assign<ScriptComponent>();
+    
+    clientComponent->Initialize(clientjs);
+    
+    scriptingSystem->Unlock();
 
 	Timer* gameTimer = new Timer();
 	gameTimer->Start();
@@ -118,14 +113,14 @@ int main(int argc, char** argv) {
 
 		world->Update(delta);
 
-		if (moveForward) {
+		/*if (moveForward) {
 			RenderSystem* renderSystem = GetSystem<RenderSystem>();
 			Scene* scene = renderSystem->GetCurrentScene();
 			CameraComponent* camera = scene->GetCamera();
 
 			Transform* transform = camera->GetTransform();
 			transform->Move(transform->GetLook() * delta);
-		}
+		}*/
 
 		window->ProcessEvents();
 

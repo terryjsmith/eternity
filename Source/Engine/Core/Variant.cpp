@@ -107,7 +107,7 @@ Variant& Variant::operator =(vector2 rhs) {
 }
 
 Variant& Variant::operator =(vector3 rhs) {
-	m_type = VAR_VECTOR4;
+	m_type = VAR_VECTOR3;
 	m_data.f1 = rhs.x;
 	m_data.f2 = rhs.y;
 	m_data.f3 = rhs.z;
@@ -152,11 +152,11 @@ Variant& Variant::operator =(const Variant& rhs) {
 }
 
 bool Variant::IsInt() {
-	return(m_type == VAR_INT32);
+	return(m_type == VAR_INT32 || m_type == VAR_INT64);
 }
 
 bool Variant::IsUInt() {
-	return(m_type == VAR_UINT32);
+	return(m_type == VAR_UINT32 || m_type == VAR_UINT64);
 }
 
 bool Variant::IsInt64() {
@@ -172,7 +172,7 @@ bool Variant::IsBool() {
 }
 
 bool Variant::IsFloat() {
-	return(m_type == VAR_FLOAT);
+	return(m_type == VAR_FLOAT || m_type == VAR_INT32 || m_type == VAR_UINT32);
 }
 
 bool Variant::IsNumeric() {

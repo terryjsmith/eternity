@@ -9,8 +9,11 @@
 #include <v8.h>
 
 class GIGA_API ScriptComponent : public Component {
+public:
     ScriptComponent();
     ~ScriptComponent() = default;
+    
+    GIGA_CLASS_NAME("ScriptComponent");
     
 	/**
 	 * Initialize from a source script
@@ -30,7 +33,9 @@ class GIGA_API ScriptComponent : public Component {
 		v8::Persistent<v8::Function> func;
 	};
 
-protected:
+    /**
+     * Set a global variable inside this script
+     */
 	void SetGlobal(std::string name, Variant* value);
     
 protected:

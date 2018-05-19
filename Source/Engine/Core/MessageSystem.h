@@ -37,6 +37,11 @@ public:
 		m_idMapping[name] = newId;
 		return(newId);
 	}
+    
+    /**
+     * Get registered type
+     */
+    uint32_t GetMessageType(std::string name);
 
 	/**
 	 * Register a callback

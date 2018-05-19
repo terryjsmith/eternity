@@ -122,9 +122,9 @@ public:
 	bool AsBool();
 	float AsFloat();
 	vector2 AsVector2();
-	vector3 AsVector3();
-	vector4 AsVector4();
-	quaternion AsQuaternion();
+    vector3 AsVector3();
+    vector4 AsVector4();
+    quaternion AsQuaternion();
 	std::string AsString();
 	GigaObject* AsObject();
 	template<class T> T AsObject() {

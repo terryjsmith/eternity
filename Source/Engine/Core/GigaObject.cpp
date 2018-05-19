@@ -2,6 +2,11 @@
 #include <Core/GigaObject.h>
 #include <Core/MetaSystem.h>
 #include <Core/Application.h>
+#include <memory>
+
+GigaObject::GigaObject() {
+    m_mutex = new std::mutex;//std::unique_ptr<std::mutex>(new std::mutex());
+}
 
 void GigaObject::LockMutex() {
 	m_mutex->lock();

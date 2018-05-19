@@ -15,6 +15,11 @@ public:
 	~MetaSystem() = default;
     
     GIGA_CLASS_NAME("MetaSystem");
+    
+    /**
+     * Initialize meta functions
+     */
+    void Initialize();
 
 	/**
 	 * Register a class-specific callback

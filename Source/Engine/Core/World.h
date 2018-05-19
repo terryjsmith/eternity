@@ -3,8 +3,9 @@
 #define world_h
 
 #include <eternity.h>
-#include <Core/Entity.h>
 #include <Core/ComponentSystem.h>
+
+class Entity;
 
 /**
 * ECS World - contains all entities, components, and systems
@@ -103,7 +104,7 @@ protected:
 	std::vector<RegisteredSystem*> m_systems;
 
 	// Known entities
-	std::vector<Entity> m_entities;
+	std::vector<Entity*> m_entities;
 
 	// Entity ID counter
 	int m_entityCounter;

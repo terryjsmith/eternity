@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E1B418420A9C62C006B7ABB /* libv8_external_snapshot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E1B417D20A9C62C006B7ABB /* libv8_external_snapshot.a */; };
+		5E1B418520A9C62C006B7ABB /* libv8_libsampler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E1B417E20A9C62C006B7ABB /* libv8_libsampler.a */; };
+		5E1B418620A9C62C006B7ABB /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E1B417F20A9C62C006B7ABB /* libicuuc.a */; };
+		5E1B418720A9C62C006B7ABB /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E1B418020A9C62C006B7ABB /* libicui18n.a */; };
+		5E1B418820A9C62C006B7ABB /* libv8_libplatform.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E1B418120A9C62C006B7ABB /* libv8_libplatform.a */; };
+		5E1B418920A9C62C006B7ABB /* libv8_libbase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E1B418220A9C62C006B7ABB /* libv8_libbase.a */; };
+		5E1B418A20A9C62C006B7ABB /* libv8_base.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E1B418320A9C62C006B7ABB /* libv8_base.a */; };
 		5ECE175120584E9A00C5DA14 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE175020584E9A00C5DA14 /* main.cpp */; };
 		5ECE175420584F0C00C5DA14 /* libeternity.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ECE175320584F0C00C5DA14 /* libeternity.a */; };
 		5ECE176820584F7500C5DA14 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ECE176220584F7500C5DA14 /* Cocoa.framework */; };
@@ -31,6 +38,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E1B417D20A9C62C006B7ABB /* libv8_external_snapshot.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libv8_external_snapshot.a; path = ../../ThirdParty/v8/lib/libv8_external_snapshot.a; sourceTree = "<group>"; };
+		5E1B417E20A9C62C006B7ABB /* libv8_libsampler.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libv8_libsampler.a; path = ../../ThirdParty/v8/lib/libv8_libsampler.a; sourceTree = "<group>"; };
+		5E1B417F20A9C62C006B7ABB /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = ../../ThirdParty/v8/lib/libicuuc.a; sourceTree = "<group>"; };
+		5E1B418020A9C62C006B7ABB /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = ../../ThirdParty/v8/lib/libicui18n.a; sourceTree = "<group>"; };
+		5E1B418120A9C62C006B7ABB /* libv8_libplatform.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libv8_libplatform.a; path = ../../ThirdParty/v8/lib/libv8_libplatform.a; sourceTree = "<group>"; };
+		5E1B418220A9C62C006B7ABB /* libv8_libbase.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libv8_libbase.a; path = ../../ThirdParty/v8/lib/libv8_libbase.a; sourceTree = "<group>"; };
+		5E1B418320A9C62C006B7ABB /* libv8_base.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libv8_base.a; path = ../../ThirdParty/v8/lib/libv8_base.a; sourceTree = "<group>"; };
+		5E1B418C20A9C686006B7ABB /* game.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = game.js; path = ../../../Bin/Resources/game.js; sourceTree = "<group>"; };
+		5E1B419120AA0E1B006B7ABB /* client.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = client.js; path = ../../../Bin/Resources/Scripts/client.js; sourceTree = "<group>"; };
 		5ECE174620584BA200C5DA14 /* game */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = game; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ECE175020584E9A00C5DA14 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../Game/main.cpp; sourceTree = "<group>"; };
 		5ECE175320584F0C00C5DA14 /* libeternity.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libeternity.a; path = "../../../../../../Library/Developer/Xcode/DerivedData/eternity-dlxnlmvnbuvtomcljaxxrapkrzew/Build/Products/Debug/libeternity.a"; sourceTree = "<group>"; };
@@ -48,6 +64,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E1B418420A9C62C006B7ABB /* libv8_external_snapshot.a in Frameworks */,
+				5E1B418520A9C62C006B7ABB /* libv8_libsampler.a in Frameworks */,
+				5E1B418620A9C62C006B7ABB /* libicuuc.a in Frameworks */,
+				5E1B418720A9C62C006B7ABB /* libicui18n.a in Frameworks */,
+				5E1B418820A9C62C006B7ABB /* libv8_libplatform.a in Frameworks */,
+				5E1B418920A9C62C006B7ABB /* libv8_libbase.a in Frameworks */,
+				5E1B418A20A9C62C006B7ABB /* libv8_base.a in Frameworks */,
 				5ECE177120584FA900C5DA14 /* libglfw3.a in Frameworks */,
 				5ECE176820584F7500C5DA14 /* Cocoa.framework in Frameworks */,
 				5ECE176920584F7500C5DA14 /* CoreAudio.framework in Frameworks */,
@@ -62,9 +85,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5E1B418B20A9C67A006B7ABB /* JS */ = {
+			isa = PBXGroup;
+			children = (
+				5E1B418C20A9C686006B7ABB /* game.js */,
+				5E1B419120AA0E1B006B7ABB /* client.js */,
+			);
+			name = JS;
+			sourceTree = "<group>";
+		};
 		5ECE173D20584BA200C5DA14 = {
 			isa = PBXGroup;
 			children = (
+				5E1B418B20A9C67A006B7ABB /* JS */,
 				5ECE175020584E9A00C5DA14 /* main.cpp */,
 				5ECE174720584BA200C5DA14 /* Products */,
 				5ECE175220584F0C00C5DA14 /* Frameworks */,
@@ -82,6 +115,13 @@
 		5ECE175220584F0C00C5DA14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E1B417D20A9C62C006B7ABB /* libv8_external_snapshot.a */,
+				5E1B417E20A9C62C006B7ABB /* libv8_libsampler.a */,
+				5E1B417F20A9C62C006B7ABB /* libicuuc.a */,
+				5E1B418020A9C62C006B7ABB /* libicui18n.a */,
+				5E1B418120A9C62C006B7ABB /* libv8_libplatform.a */,
+				5E1B418220A9C62C006B7ABB /* libv8_libbase.a */,
+				5E1B418320A9C62C006B7ABB /* libv8_base.a */,
 				5ECE177020584FA900C5DA14 /* libglfw3.a */,
 				5ECE176220584F7500C5DA14 /* Cocoa.framework */,
 				5ECE176320584F7500C5DA14 /* CoreAudio.framework */,

@@ -1,8 +1,5 @@
 
 #include <Core/Entity.h>
-#include <Core/Application.h>
-#include <Core/ComponentSystem.h>
-#include <Core/World.h>
 
 Entity::Entity() {
 	m_active = false;
@@ -27,13 +24,13 @@ void Entity::ID(int id) {
 	m_entityID = id;
 }
 
-template<class T>
-Component* Entity::Assign() {
-	// Register with appropriate system
-    World* world = Application::GetInstance()->GetWorld();
-	ComponentSystem<T>* system = world->GetComponentSystem<T>();
-	T* component = system->CreateComponent();
-
-	// Return
-	return(component);
+Component* Entity::FindComponent(std::string name) {
+    std::vector<Component*>::iterator it = m_components.begin();
+    for(; it != m_components.end(); it++) {
+        if((*it)->GetGigaName() == name) {
+            return(*it);
+        }
+    }
+    
+    return(0);
 }

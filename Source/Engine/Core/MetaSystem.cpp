@@ -1,6 +1,10 @@
 
 #include <Core/MetaSystem.h>
 
+void MetaSystem::Initialize() {
+    RegisterMetaFunctions();
+}
+
 void MetaSystem::RegisterFunction(std::string className, std::string functionName, CallableFunction c, bool isStatic) {
 	std::map<std::string, RegisteredClass*>::iterator it = m_classes.find(className);
 	GIGA_ASSERT(it != m_classes.end(), "Class type not registered.");

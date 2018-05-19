@@ -1,5 +1,6 @@
 
 #include <Core/World.h>
+#include <Core/Entity.h>
 
 void World::Initialize() {
 	m_entityCounter = 0;
@@ -45,19 +46,19 @@ void World::Update(float delta) {
 
 Entity* World::CreateEntity() {
 	// Create a new entity
-	Entity entity;
-	entity.ID(m_entityCounter);
+	Entity* entity = new Entity();
+	entity->ID(++m_entityCounter);
 
 	// Add it to the list
 	m_entities.push_back(entity);
-	return(&m_entities.back());
+	return(m_entities.back());
 }
 
 Entity* World::GetEntity(int id) {
-	std::vector<Entity>::iterator it = m_entities.begin();
+	std::vector<Entity*>::iterator it = m_entities.begin();
 	for (; it != m_entities.end(); it++) {
-		if ((*it).m_entityID == id) {
-			return(&(*it));
+		if ((*it)->m_entityID == id) {
+			return((*it));
 		}
 	}
 

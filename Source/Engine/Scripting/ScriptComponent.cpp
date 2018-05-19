@@ -6,9 +6,17 @@
 
 ScriptComponent::ScriptComponent() {
     m_scriptSource = 0;
+    m_thread = 0;
 }
 
 void ScriptComponent::Initialize(Script* script) {
+    // Get our systems
+    ScriptingSystem* scriptingSystem = GetSystem<ScriptingSystem>();
+    
+    if(m_thread == 0) {
+        m_thread = scriptingSystem;
+    }
+    
 	v8::Isolate* isolate = m_thread->GetIsolate();
 
 	m_thread = (ScriptThread*)isolate->GetData(0);
@@ -37,9 +45,6 @@ void ScriptComponent::Initialize(Script* script) {
 	// Get our global object space and start adding stuff to it
 	v8::Local<v8::Object> globalSpace = isolate->GetCurrentContext()->Global();
 
-	// Get our systems
-	ScriptingSystem* scriptingSystem = GetSystem<ScriptingSystem>();
-
 	// Add globals
 	std::map<std::string, ScriptVariant*> globals = scriptingSystem->GetGlobals();
 	for (std::map<std::string, ScriptVariant*>::iterator i = globals.begin(); i != globals.end(); i++) {
@@ -65,6 +70,7 @@ void ScriptComponent::Initialize(Script* script) {
 	if (v8::Script::Compile(context, scriptSrc).ToLocal(&vscript) == false) {
 		v8::String::Utf8Value error(try_catch.Exception());
 		Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to compile script file " + m_scriptSource->GetResource()->filename, *error));
+        GIGA_ASSERT(false, "Unable to compile script function.");
 
 		m_thread->SetCurrentScript(0);
 		return;
@@ -77,6 +83,7 @@ void ScriptComponent::Initialize(Script* script) {
 	if (vscript->Run(context).ToLocal(&result) == false) {
 		v8::String::Utf8Value error(try_catch.Exception());
 		Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to execute script file " + m_scriptSource->GetResource()->filename, *error));
+        GIGA_ASSERT(false, "Unable to execute script file.");
 
 		m_thread->SetCurrentScript(0);
 		return;
@@ -100,6 +107,7 @@ void ScriptComponent::Initialize(Script* script) {
 		v8::String::Utf8Value error(try_catch.Exception());
 		if (*error) {
 			Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to execute init function " + m_scriptSource->GetResource()->filename, *error));
+            GIGA_ASSERT(false, "Unable to execute init function");
 		}
 	}
 
@@ -116,6 +124,12 @@ void ScriptComponent::Initialize(Script* script) {
 
 		v8::String::Utf8Value type(actual->TypeOf(isolate));
 		typeStr = *type;
+        
+        for(size_t i = 0; i < types.size(); i++) {
+            if(types[i]->name == typeStr) {
+                continue;
+            }
+        }
 
 		if (actual->IsFunction()) {
 			v8::Local<v8::Function> func = actual.As<v8::Function>();
@@ -129,7 +143,7 @@ void ScriptComponent::Initialize(Script* script) {
 		}
 	}
 
-	context->Exit();
+    context->Exit();
 }
 
 void ScriptComponent::SetGlobal(std::string name, Variant* value) {
@@ -157,4 +171,70 @@ void ScriptComponent::SetGlobal(std::string name, Variant* value) {
 	// Exit
 	context->Exit();
 	m_thread->SetCurrentScript(0);
+}
+
+void ScriptComponent::CallFunction(std::string function, int argc, Variant** argv) {
+    // Check to ensure this function exists
+    ScriptFunction* scriptFunction = 0;
+    for (size_t i = 0; i < m_functions.size(); i++) {
+        if (m_functions[i]->funcName == function) {
+            scriptFunction = m_functions[i];
+        }
+    }
+    
+    if (scriptFunction == 0) return;
+    
+    ScriptingSystem* scriptingSystem = GetSystem<ScriptingSystem>();
+    m_thread->SetCurrentScript(this);
+    
+    v8::Isolate* isolate = m_thread->GetIsolate();
+    
+    // Create a stack-allocated handle scope.
+    v8::HandleScope handle_scope(isolate);
+    
+    v8::Local<v8::Function> storedFunction = scriptFunction->func.Get(isolate);
+    
+    // Catch any errors the script might throw
+    v8::TryCatch try_catch(isolate);
+    
+    // Get our context
+    v8::Local<v8::Context> context = m_context.Get(isolate);
+    
+    // Enter our context
+    context->Enter();
+    
+    // Get our global object space and start adding stuff to it
+    v8::Local<v8::Object> globalSpace = context->Global();
+    
+    // Convert our arguments to v8::Values
+    v8::Local<v8::Value>* args = (v8::Local<v8::Value>*)malloc(argc * sizeof(v8::Local<v8::Value>*));
+    for(int i = 0; i < argc; i++) {
+        ScriptVariant* variant = (ScriptVariant*)(argv[i]);
+        args[i] = variant->GetValue();
+    }
+    
+    // Attempt to call the function
+    v8::Local<v8::Value> value = globalSpace->Get(v8::String::NewFromUtf8(isolate, function.c_str()));
+    if(value->IsFunction()) {
+        // Call the Init function if there is one
+        v8::Local<v8::Function> funcHandle = value.As<v8::Function>();
+        v8::Local<v8::Value> result = funcHandle->Call(globalSpace, argc, args);
+        
+        // Attempt to get an error message (need a better way to do this)
+        v8::String::Utf8Value error(try_catch.Exception());
+        if(*error) {
+            Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to execute function " + function, *error));
+            GIGA_ASSERT(false, *error);
+        }
+    }
+    else {
+        Message::Broadcast(new Error(Error::ERROR_WARN, "Invalid function name."));
+    }
+    
+    free(args);
+    
+    // Exit context
+    context->Exit();
+    
+    m_thread->SetCurrentScript(0);
 }
