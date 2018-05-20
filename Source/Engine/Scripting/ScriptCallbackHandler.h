@@ -59,12 +59,12 @@ public:
 	/**
 	* Handle object getters (call internal callbacks based on name)
 	*/
-	// static void HandleObjectGetter(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info);
+	static void HandleObjectGetter(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info);
 
 	/**
 	* Handle object setters (call internal callbacks based on name)
 	*/
-	// static void HandleObjectSetter(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info);
+    static void HandleObjectSetter(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info);
 
 	/**
 	* Handle static getter calls (call internal callback based on name)

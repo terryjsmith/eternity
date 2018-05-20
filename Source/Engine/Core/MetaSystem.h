@@ -5,6 +5,7 @@
 #include <eternity.h>
 #include <Core/System.h>
 #include <Core/Variant.h>
+#include <Core/VariantRef.h>
 #include <Core/GigaObject.h>
 
 typedef GigaObject* (*MetaConstructor)(void);
@@ -20,6 +21,11 @@ public:
      * Initialize meta functions
      */
     void Initialize();
+    
+    /**
+     * Register all meta functions (auto-generated)
+     */
+    void RegisterMetaFunctions();
 
 	/**
 	 * Register a class-specific callback
@@ -30,11 +36,26 @@ public:
 	 * Find a class-specific callback function
 	 */
 	CallableFunction FindFunction(std::string className, std::string functionName);
-
-	/**
-	 * Register all meta functions (auto-generated)
-	 */
-	void RegisterMetaFunctions();
+    
+    /**
+     * Register a variable
+     */
+    template <class T>
+    void RegisterVariable(std::string className, std::string name, VariantRef<T> ref, bool settable, bool gettable) {
+        std::map<std::string, RegisteredClass*>::iterator it = m_classes.find(className);
+        GIGA_ASSERT(it != m_classes.end(), "Class type not registered.");
+        
+        std::map<std::string, RegisteredVariable*>::iterator fi = it->second->variables.find(name);
+        GIGA_ASSERT(fi == it->second->variables.end(), "Variable already registered.");
+        
+        RegisteredVariable* var = new RegisteredVariable();
+        var->var = ref;
+        var->name = name;
+        var->gettable = gettable;
+        var->settable = settable;
+        
+        it->second->variables[name] = var;
+    }
 
 	/**
 	 * Create a new object of type className
@@ -76,6 +97,13 @@ public:
 		CallableFunction func;
 		bool isStatic;
 	};
+    
+    struct RegisteredVariable {
+        std::string name;
+        VariantRef var;
+        bool gettable;
+        bool settable;
+    };
 
 	struct RegisteredClass {
 		std::string name;
@@ -85,6 +113,9 @@ public:
 
 		// Callable meta functions
 		std::map<std::string, RegisteredFunction*> functions;
+        
+        // Variables
+        std::map<std::string, RegisteredVariable*> variables;
 	};
 
 protected:

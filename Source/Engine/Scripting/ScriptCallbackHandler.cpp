@@ -147,3 +147,64 @@ void ScriptCallbackHandler::HandleObjectFunctionCallback(const v8::FunctionCallb
     free(argv);
     jsobj->UnlockMutex();
 }
+
+void ScriptCallbackHandler::HandleObjectGetter(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info) {
+    // Unwrap our object
+    GigaObject* jsobj = Unwrap(info.This());
+    jsobj->LockMutex();
+    
+    // Get current thread out of isolate
+    v8::Isolate* isolate = v8::Isolate::GetCurrent();
+    ScriptThread* thread = (ScriptThread*)isolate->GetData(0);
+    ScriptComponent* component = thread->GetCurrentScript();
+    
+    v8::Local<v8::Object> holder = info.This();
+    v8::Local<v8::Function> funcHolder = holder.As<v8::Function>();
+    v8::String::Utf8Value thisName(funcHolder->GetName());
+    
+    MetaSystem* metaSystem = GetSystem<MetaSystem>();
+    ScriptVariant* retval = 0;
+    
+    v8::Local<v8::Function> func = info.Callee();
+    v8::String::Utf8Value funcName(func->GetName());
+    
+    GigaObject* singleton = metaSystem->GetSingleton(*thisName);
+    if(singleton) {
+        singleton->LockMutex();
+        retval = (ScriptVariant*)singleton->Call(*funcName, argc, argv);
+        singleton->UnlockMutex();
+    }
+    else {
+        CallableFunction func = metaSystem->FindFunction(*thisName, *funcName);
+        retval = (ScriptVariant*)func(0, argc, argv);
+    }
+
+    
+    // Get the script interface we're supposed to connect to
+    ScriptingSystem* ss = GetSystem<ScriptingSystem>();
+    ScriptableObjectType* interface = ss->GetScriptableObjectType(jsobj->GetGigaName());
+    
+    // Iterate through the callback list, looking for a registered callback function
+    std::vector<ScriptableObjectType::ScriptObjectCallbackPair*> varList = interface->GetVariableList();
+    v8::String::Utf8Value propName(property);
+    for (size_t i = 0; i < varList.size(); i++) {
+        std::string strPropName = std::string(*propName);
+        if (varList[i]->variableName == strPropName) {
+            if (varList[i]->getter != 0) {
+                ScriptableVariant* value = (ScriptableVariant*)(varList[i]->getter(strPropName, obj));
+                v8::Local<v8::Value> val = value->GetValue();
+                info.GetReturnValue().Set(val);
+                delete value;
+                
+                break;
+            }
+        }
+    }
+    
+    jsobj->UnlockMutex();
+    delete obj;
+}
+
+void ScriptCallbackHandler::HandleObjectSetter(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info) {
+    
+}
