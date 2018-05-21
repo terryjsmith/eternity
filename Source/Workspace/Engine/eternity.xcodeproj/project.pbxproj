@@ -35,7 +35,6 @@
 		5E1B418E20A9C6D5006B7ABB /* ScriptingSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B418D20A9C6D5006B7ABB /* ScriptingSystem.cpp */; };
 		5E1B419020A9E37A006B7ABB /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B418F20A9E37A006B7ABB /* Component.cpp */; };
 		5E1B419920B089DD006B7ABB /* Vector3.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B419820B089DD006B7ABB /* Vector3.h */; };
-		5E1B419C20B1E240006B7ABB /* VariantRef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E1B419A20B1E240006B7ABB /* VariantRef.cpp */; };
 		5E1B419D20B1E240006B7ABB /* VariantRef.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E1B419B20B1E240006B7ABB /* VariantRef.h */; };
 		5E567C3C2082D2E2000041B9 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E567C3A2082D2E2000041B9 /* Command.cpp */; };
 		5E567C3D2082D2E2000041B9 /* Command.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E567C3B2082D2E2000041B9 /* Command.h */; };
@@ -133,7 +132,6 @@
 		5E1B418D20A9C6D5006B7ABB /* ScriptingSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScriptingSystem.cpp; path = ../../Engine/Scripting/ScriptingSystem.cpp; sourceTree = "<group>"; };
 		5E1B418F20A9E37A006B7ABB /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
 		5E1B419820B089DD006B7ABB /* Vector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vector3.h; path = ../../Engine/Scripting/Types/Vector3.h; sourceTree = "<group>"; };
-		5E1B419A20B1E240006B7ABB /* VariantRef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VariantRef.cpp; sourceTree = "<group>"; };
 		5E1B419B20B1E240006B7ABB /* VariantRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VariantRef.h; sourceTree = "<group>"; };
 		5E567C3A2082D2E2000041B9 /* Command.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Command.cpp; sourceTree = "<group>"; };
 		5E567C3B2082D2E2000041B9 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
@@ -300,7 +298,6 @@
 				5ECE16E220584AD600C5DA14 /* Transform.h */,
 				5ECE17992063477200C5DA14 /* Variant.cpp */,
 				5ECE179A2063477200C5DA14 /* Variant.h */,
-				5E1B419A20B1E240006B7ABB /* VariantRef.cpp */,
 				5E1B419B20B1E240006B7ABB /* VariantRef.h */,
 				5E1B416B20A23357006B7ABB /* Window.cpp */,
 				5E1B416C20A23357006B7ABB /* Window.h */,
@@ -544,7 +541,6 @@
 				5ECE17A52063477200C5DA14 /* Variant.cpp in Sources */,
 				5ECE17A32063477200C5DA14 /* MetaSystem.cpp in Sources */,
 				5E1B416F20A23357006B7ABB /* Window.cpp in Sources */,
-				5E1B419C20B1E240006B7ABB /* VariantRef.cpp in Sources */,
 				5E1B415B209BDAAC006B7ABB /* ScriptCallbackHandler.cpp in Sources */,
 				5ECE171320584AD600C5DA14 /* Transform.cpp in Sources */,
 				5ECE171A20584AD600C5DA14 /* ResourceSystem.cpp in Sources */,

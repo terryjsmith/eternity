@@ -53,6 +53,12 @@ void ScriptThread::Initialize() {
             }
         }
         
+        // Add variables
+        std::map<std::string, MetaSystem::RegisteredVariable*>::iterator vi = (*it)->variables.begin();
+        for (; vi != (*it)->variables.end(); vi++) {
+            tpl->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(m_isolate, vi->second->name.c_str()), ScriptCallbackHandler::HandleObjectGetter, ScriptCallbackHandler::HandleObjectSetter);
+        }
+        
         // End template
         tpl->InstanceTemplate()->SetInternalFieldCount(1);
         

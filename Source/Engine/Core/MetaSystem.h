@@ -8,12 +8,14 @@
 #include <Core/VariantRef.h>
 #include <Core/GigaObject.h>
 
-typedef GigaObject* (*MetaConstructor)(void);
-
 class GIGA_API MetaSystem : public System {
 public:
 	MetaSystem() = default;
 	~MetaSystem() = default;
+    
+    typedef GigaObject* (*MetaConstructor)(void);
+    typedef void (*SetterFunction)(GigaObject* obj, Variant* value);
+    typedef Variant* (*GetterFunction)(GigaObject* obj);
     
     GIGA_CLASS_NAME("MetaSystem");
     
@@ -40,8 +42,7 @@ public:
     /**
      * Register a variable
      */
-    template <class T>
-    void RegisterVariable(std::string className, std::string name, VariantRef<T> ref, bool settable, bool gettable) {
+    void RegisterVariable(std::string className, std::string name, GetterFunction getfunc, SetterFunction setfunc) {
         std::map<std::string, RegisteredClass*>::iterator it = m_classes.find(className);
         GIGA_ASSERT(it != m_classes.end(), "Class type not registered.");
         
@@ -49,10 +50,9 @@ public:
         GIGA_ASSERT(fi == it->second->variables.end(), "Variable already registered.");
         
         RegisteredVariable* var = new RegisteredVariable();
-        var->var = ref;
         var->name = name;
-        var->gettable = gettable;
-        var->settable = settable;
+        var->getter = getfunc;
+        var->setter = setfunc;
         
         it->second->variables[name] = var;
     }
@@ -91,18 +91,23 @@ public:
      */
     struct RegisteredClass;
     std::vector<RegisteredClass*> GetRegisteredClasses();
+    
+    /**
+     * Get variable getter/setter functions
+     */
+    GetterFunction FindVariableGetFunction(std::string className, std::string varName);
+    SetterFunction FindVariableSetFunction(std::string className, std::string varName);
 
 	struct RegisteredFunction {
 		std::string name;
 		CallableFunction func;
 		bool isStatic;
-	};
+    };
     
     struct RegisteredVariable {
         std::string name;
-        VariantRef var;
-        bool gettable;
-        bool settable;
+        GetterFunction getter;
+        SetterFunction setter;
     };
 
 	struct RegisteredClass {

@@ -115,8 +115,8 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 		if (pos != name.npos) {
 			name = name.substr(pos + 6);
 		}
-	}
-
+    }
+    
 	if (pullOptions && cursor == CXCursor_EnumConstantDecl) {
 		if (strcmp("Singleton", name.c_str()) == 0) {
 			markSingleton = true;
@@ -134,8 +134,8 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 			markSerialize = true;
 		}
 
-		pullOptions = false;
-		return CXChildVisit_Continue;
+		//pullOptions = false;
+        return CXChildVisit_Continue;
 	}
 
 	if (pullOptions && (cursor == CXCursor_CompoundStmt || cursor == CXCursor_DeclStmt || cursor == CXCursor_EnumDecl)) {
@@ -304,6 +304,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
     
     if (cursor == CXCursor_CXXMethod && name.compare("GVARIABLE") == 0) {
         grabNextVar = true;
+        pullOptions = true;
 		return CXChildVisit_Recurse;
     }
 
@@ -365,6 +366,7 @@ void ProcessDirectory(Directory* dir) {
 		clang_disposeTranslationUnit(unit);
         currentGigaClassName.clear();
         currentMetaClass = 0;
+        pullOptions = false;
 	}
     
     std::vector<Directory*>::iterator di = dir->subdirectories.begin();
@@ -517,6 +519,15 @@ int main(int argc, char** argv) {
 				output += "\treturn(new Variant(cobj->" + vi->second->name + "));\n";
 				output += "}\n\n";
 			}
+            
+            if (vi->second->set) {
+                output += "void meta_" + cl->name + "_" + vi->second->name + "_set(GigaObject* obj, Variant* value) {\n";
+                output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(obj);\n";
+                output += "\tGIGA_ASSERT(cobj != 0, \"Object is not of the correct type.\");\n\n";
+                
+                output += "\tcobj->" + vi->second->name + " = value->As" + functionMappings[vi->second->type] + "();\n";
+                output += "}\n\n";
+            }
 		}
 
 		// Constructors
@@ -665,6 +676,15 @@ int main(int argc, char** argv) {
 			output += (fi->second->isStatic || cl->singleton) ? "true" : "false";
 			output += "); \n";
 		}
+        
+        std::map<std::string, MetaClass::MetaVariable*>::iterator vi = cl->variables.begin();
+        for (; vi != cl->variables.end(); vi++) {
+            output += "\tmetaSystem->RegisterVariable(\"" + cl->name + "\", \"" + vi->second->name + "\", ";
+            output += vi->second->get ? "meta_" + cl->name + "_" + vi->second->name + "_get" : "0";
+            output += ", ";
+            output += vi->second->set ? "meta_" + cl->name + "_" + vi->second->name + "_set" : "0";
+            output += ");\n";
+        }
         
         if(cl->functions.size()) {
             output += "\n";

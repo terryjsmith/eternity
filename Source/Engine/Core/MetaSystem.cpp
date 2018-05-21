@@ -59,3 +59,23 @@ std::vector<MetaSystem::RegisteredClass*> MetaSystem::GetRegisteredClasses() {
     
     return(classes);
 }
+
+MetaSystem::GetterFunction MetaSystem::FindVariableGetFunction(std::string className, std::string varName) {
+    std::map<std::string, RegisteredClass*>::iterator it = m_classes.find(className);
+    GIGA_ASSERT(it != m_classes.end(), "Class type not registered.");
+    
+    std::map<std::string, RegisteredVariable*>::iterator fi = it->second->variables.find(varName);
+    GIGA_ASSERT(fi != it->second->variables.end(), "Variable not registered.");
+    
+    return(fi->second->getter);
+}
+
+MetaSystem::SetterFunction MetaSystem::FindVariableSetFunction(std::string className, std::string varName) {
+    std::map<std::string, RegisteredClass*>::iterator it = m_classes.find(className);
+    GIGA_ASSERT(it != m_classes.end(), "Class type not registered.");
+    
+    std::map<std::string, RegisteredVariable*>::iterator fi = it->second->variables.find(varName);
+    GIGA_ASSERT(fi != it->second->variables.end(), "Variable not registered.");
+    
+    return(fi->second->setter);
+}

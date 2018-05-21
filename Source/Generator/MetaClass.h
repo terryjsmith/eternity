@@ -28,7 +28,7 @@ public:
 
 	struct MetaVariable {
 		std::string name;
-		std::string type;
+		int type;
 		bool get, set, serialize;
 	};
 
