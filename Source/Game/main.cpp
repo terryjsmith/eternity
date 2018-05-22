@@ -113,15 +113,6 @@ int main(int argc, char** argv) {
 
 		world->Update(delta);
 
-		/*if (moveForward) {
-			RenderSystem* renderSystem = GetSystem<RenderSystem>();
-			Scene* scene = renderSystem->GetCurrentScene();
-			CameraComponent* camera = scene->GetCamera();
-
-			Transform* transform = camera->GetTransform();
-			transform->Move(transform->GetLook() * delta);
-		}*/
-
 		window->ProcessEvents();
 
 		renderSystem->Render();

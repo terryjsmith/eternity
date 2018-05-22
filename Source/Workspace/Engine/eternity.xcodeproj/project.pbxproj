@@ -40,6 +40,17 @@
 		5E567C3D2082D2E2000041B9 /* Command.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E567C3B2082D2E2000041B9 /* Command.h */; };
 		5E567C402082D97F000041B9 /* TimeSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E567C3E2082D97F000041B9 /* TimeSystem.cpp */; };
 		5E567C412082D97F000041B9 /* TimeSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E567C3F2082D97F000041B9 /* TimeSystem.h */; };
+		5E81088C20B2DC1F00140BCB /* NetworkMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E81088A20B2DC1F00140BCB /* NetworkMessage.cpp */; };
+		5E81088D20B2DC1F00140BCB /* NetworkMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E81088B20B2DC1F00140BCB /* NetworkMessage.h */; };
+		5E81089020B3A64A00140BCB /* MemoryReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E81088E20B3A64A00140BCB /* MemoryReader.cpp */; };
+		5E81089120B3A64A00140BCB /* MemoryReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E81088F20B3A64A00140BCB /* MemoryReader.h */; };
+		5E81089420B3A6CA00140BCB /* MemoryWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E81089220B3A6CA00140BCB /* MemoryWriter.cpp */; };
+		5E81089520B3A6CA00140BCB /* MemoryWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E81089320B3A6CA00140BCB /* MemoryWriter.h */; };
+		5E81089920B3A76A00140BCB /* UDPSocketBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E81089720B3A76A00140BCB /* UDPSocketBase.h */; };
+		5E81089C20B3A7C700140BCB /* UDPSocketPosix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E81089A20B3A7C700140BCB /* UDPSocketPosix.cpp */; };
+		5E81089D20B3A7C700140BCB /* UDPSocketPosix.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E81089B20B3A7C700140BCB /* UDPSocketPosix.h */; };
+		5E8108A520B3A94E00140BCB /* NetworkSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E8108A320B3A94E00140BCB /* NetworkSession.cpp */; };
+		5E8108A620B3A94E00140BCB /* NetworkSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E8108A420B3A94E00140BCB /* NetworkSession.h */; };
 		5ECE170E20584AD600C5DA14 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ECE16DC20584AD600C5DA14 /* Application.cpp */; };
 		5ECE170F20584AD600C5DA14 /* Application.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE16DD20584AD600C5DA14 /* Application.h */; };
 		5ECE171020584AD600C5DA14 /* Component.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECE16DE20584AD600C5DA14 /* Component.h */; };
@@ -137,6 +148,18 @@
 		5E567C3B2082D2E2000041B9 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
 		5E567C3E2082D97F000041B9 /* TimeSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeSystem.cpp; sourceTree = "<group>"; };
 		5E567C3F2082D97F000041B9 /* TimeSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeSystem.h; sourceTree = "<group>"; };
+		5E81088A20B2DC1F00140BCB /* NetworkMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NetworkMessage.cpp; path = ../../Engine/Network/NetworkMessage.cpp; sourceTree = "<group>"; };
+		5E81088B20B2DC1F00140BCB /* NetworkMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkMessage.h; path = ../../Engine/Network/NetworkMessage.h; sourceTree = "<group>"; };
+		5E81088E20B3A64A00140BCB /* MemoryReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryReader.cpp; sourceTree = "<group>"; };
+		5E81088F20B3A64A00140BCB /* MemoryReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryReader.h; sourceTree = "<group>"; };
+		5E81089220B3A6CA00140BCB /* MemoryWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryWriter.cpp; sourceTree = "<group>"; };
+		5E81089320B3A6CA00140BCB /* MemoryWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryWriter.h; sourceTree = "<group>"; };
+		5E81089720B3A76A00140BCB /* UDPSocketBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UDPSocketBase.h; path = ../../Engine/Network/UDPSocketBase.h; sourceTree = "<group>"; };
+		5E81089A20B3A7C700140BCB /* UDPSocketPosix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UDPSocketPosix.cpp; path = ../../Engine/Network/UDPSocketPosix.cpp; sourceTree = "<group>"; };
+		5E81089B20B3A7C700140BCB /* UDPSocketPosix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UDPSocketPosix.h; path = ../../Engine/Network/UDPSocketPosix.h; sourceTree = "<group>"; };
+		5E8108A220B3A90700140BCB /* UDPSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UDPSocket.h; path = ../../Engine/Network/UDPSocket.h; sourceTree = "<group>"; };
+		5E8108A320B3A94E00140BCB /* NetworkSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NetworkSession.cpp; path = ../../Engine/Network/NetworkSession.cpp; sourceTree = "<group>"; };
+		5E8108A420B3A94E00140BCB /* NetworkSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkSession.h; path = ../../Engine/Network/NetworkSession.h; sourceTree = "<group>"; };
 		5ECE16D420584A6600C5DA14 /* libeternity.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeternity.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ECE16DC20584AD600C5DA14 /* Application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
 		5ECE16DD20584AD600C5DA14 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
@@ -245,12 +268,28 @@
 			name = Types;
 			sourceTree = "<group>";
 		};
+		5E81088920B2DBEE00140BCB /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				5E81088A20B2DC1F00140BCB /* NetworkMessage.cpp */,
+				5E81088B20B2DC1F00140BCB /* NetworkMessage.h */,
+				5E8108A320B3A94E00140BCB /* NetworkSession.cpp */,
+				5E8108A420B3A94E00140BCB /* NetworkSession.h */,
+				5E8108A220B3A90700140BCB /* UDPSocket.h */,
+				5E81089720B3A76A00140BCB /* UDPSocketBase.h */,
+				5E81089A20B3A7C700140BCB /* UDPSocketPosix.cpp */,
+				5E81089B20B3A7C700140BCB /* UDPSocketPosix.h */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
 		5ECE16CB20584A6600C5DA14 = {
 			isa = PBXGroup;
 			children = (
 				5ECE17A7206494D200C5DA14 /* Autogenerated */,
 				5ECE16DB20584AD600C5DA14 /* Core */,
 				5ECE16E420584AD600C5DA14 /* IO */,
+				5E81088920B2DBEE00140BCB /* Network */,
 				5ECE16EB20584AD600C5DA14 /* Render */,
 				5E1B4152209BDA93006B7ABB /* Scripting */,
 				5ECE16E320584AD600C5DA14 /* eternity.h */,
@@ -319,6 +358,10 @@
 				5E144863207A86430044E784 /* InputSystem.h */,
 				5E14485E207A850B0044E784 /* Keyboard.cpp */,
 				5E14485F207A850B0044E784 /* Keyboard.h */,
+				5E81088E20B3A64A00140BCB /* MemoryReader.cpp */,
+				5E81088F20B3A64A00140BCB /* MemoryReader.h */,
+				5E81089220B3A6CA00140BCB /* MemoryWriter.cpp */,
+				5E81089320B3A6CA00140BCB /* MemoryWriter.h */,
 				5ECE16E520584AD600C5DA14 /* Resource.cpp */,
 				5ECE16E620584AD600C5DA14 /* Resource.h */,
 				5ECE16E720584AD600C5DA14 /* ResourceObject.cpp */,
@@ -410,6 +453,8 @@
 			files = (
 				5ECE171B20584AD600C5DA14 /* ResourceSystem.h in Headers */,
 				5E1B417820A9195D006B7ABB /* ComponentSystem.h in Headers */,
+				5E81089920B3A76A00140BCB /* UDPSocketBase.h in Headers */,
+				5E81089D20B3A7C700140BCB /* UDPSocketPosix.h in Headers */,
 				5ECE172120584AD600C5DA14 /* MeshComponent.h in Headers */,
 				5ECE17A62063477200C5DA14 /* Variant.h in Headers */,
 				5ECE171520584AD600C5DA14 /* eternity.h in Headers */,
@@ -428,6 +473,7 @@
 				5E1B4160209BDAAC006B7ABB /* Script.h in Headers */,
 				5ECE172E20584AD600C5DA14 /* RenderComponent.h in Headers */,
 				5ECE171720584AD600C5DA14 /* Resource.h in Headers */,
+				5E81088D20B2DC1F00140BCB /* NetworkMessage.h in Headers */,
 				5ECE171F20584AD600C5DA14 /* Mesh.h in Headers */,
 				5E1B417C20A9195D006B7ABB /* World.h in Headers */,
 				5E1B419D20B1E240006B7ABB /* VariantRef.h in Headers */,
@@ -436,6 +482,7 @@
 				5ECE172C20584AD600C5DA14 /* OpenGLVertexType.h in Headers */,
 				5ECE17A42063477200C5DA14 /* MetaSystem.h in Headers */,
 				5ECE173A20584AD600C5DA14 /* VertexBuffer.h in Headers */,
+				5E81089520B3A6CA00140BCB /* MemoryWriter.h in Headers */,
 				5E1B4168209BDBA3006B7ABB /* ScriptComponent.h in Headers */,
 				5E1B419920B089DD006B7ABB /* Vector3.h in Headers */,
 				5ECE173520584AD600C5DA14 /* Scene.h in Headers */,
@@ -457,6 +504,8 @@
 				5ECE172820584AD600C5DA14 /* OpenGLShaderProgram.h in Headers */,
 				5E1B416E20A23357006B7ABB /* Timer.h in Headers */,
 				5ECE179C2063477200C5DA14 /* Error.h in Headers */,
+				5E81089120B3A64A00140BCB /* MemoryReader.h in Headers */,
+				5E8108A620B3A94E00140BCB /* NetworkSession.h in Headers */,
 				5E1B417020A23357006B7ABB /* Window.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,6 +585,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E81089C20B3A7C700140BCB /* UDPSocketPosix.cpp in Sources */,
 				5E1B417720A9195D006B7ABB /* ComponentSystem.cpp in Sources */,
 				5ECE179D2063477200C5DA14 /* GigaObject.cpp in Sources */,
 				5ECE17A52063477200C5DA14 /* Variant.cpp in Sources */,
@@ -552,16 +602,19 @@
 				5ECE173420584AD600C5DA14 /* Scene.cpp in Sources */,
 				5ECE172720584AD600C5DA14 /* OpenGLShaderProgram.cpp in Sources */,
 				5ECE170E20584AD600C5DA14 /* Application.cpp in Sources */,
+				5E8108A520B3A94E00140BCB /* NetworkSession.cpp in Sources */,
 				5E1B417B20A9195D006B7ABB /* World.cpp in Sources */,
 				5ECE171E20584AD600C5DA14 /* Mesh.cpp in Sources */,
 				5ECE173920584AD600C5DA14 /* VertexBuffer.cpp in Sources */,
 				5ECE171820584AD600C5DA14 /* ResourceObject.cpp in Sources */,
 				5ECE171C20584AD600C5DA14 /* CameraComponent.cpp in Sources */,
 				5E1B419020A9E37A006B7ABB /* Component.cpp in Sources */,
+				5E81088C20B2DC1F00140BCB /* NetworkMessage.cpp in Sources */,
 				5ECE172920584AD600C5DA14 /* OpenGLVertexBuffer.cpp in Sources */,
 				5E1B4161209BDAAC006B7ABB /* ScriptVariant.cpp in Sources */,
 				5ECE173220584AD600C5DA14 /* RenderWindow.cpp in Sources */,
 				5ECE171620584AD600C5DA14 /* Resource.cpp in Sources */,
+				5E81089020B3A64A00140BCB /* MemoryReader.cpp in Sources */,
 				5ECE173020584AD600C5DA14 /* RenderSystem.cpp in Sources */,
 				5ECE17A9206494DD00C5DA14 /* MetaData.cpp in Sources */,
 				5E567C402082D97F000041B9 /* TimeSystem.cpp in Sources */,
@@ -571,6 +624,7 @@
 				5ECE179B2063477200C5DA14 /* Error.cpp in Sources */,
 				5ECE173B20584AD600C5DA14 /* VertexType.cpp in Sources */,
 				5ECE172D20584AD600C5DA14 /* RenderComponent.cpp in Sources */,
+				5E81089420B3A6CA00140BCB /* MemoryWriter.cpp in Sources */,
 				5ECE17A12063477200C5DA14 /* MessageSystem.cpp in Sources */,
 				5E14485D207A84D10044E784 /* InputDevice.cpp in Sources */,
 				5ECE173720584AD600C5DA14 /* ShaderProgram.cpp in Sources */,
