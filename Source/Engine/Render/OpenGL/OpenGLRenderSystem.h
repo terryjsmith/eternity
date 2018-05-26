@@ -18,6 +18,8 @@ public:
 	 */
 	VertexBuffer* CreateVertexBuffer();
 	VertexType* CreateVertexType();
+    IndexBuffer* CreateIndexBuffer();
+    Texture2D* CreateTexture2D();
 
 	/**
 	* Draw things on the screen

@@ -15,3 +15,11 @@ VertexBuffer* RenderSystem::CreateVertexBuffer() {
 VertexType* RenderSystem::CreateVertexType() {
 	return(new VertexType());
 }
+
+IndexBuffer* RenderSystem::CreateIndexBuffer() {
+    return(new IndexBuffer());
+}
+
+Texture2D* RenderSystem::CreateTexture2D() {
+    return(new Texture2D());
+}

@@ -6,6 +6,9 @@
 #include <Core/System.h>
 #include <Render/Scene.h>
 #include <Render/RenderPass.h>
+#include <Render/Texture2D.h>
+#include <Render/VertexBuffer.h>
+#include <Render/IndexBuffer.h>
 
 class GIGA_API RenderSystem : public System {
 public:
@@ -23,7 +26,9 @@ public:
 	 * Default create functions
 	 */
 	virtual VertexBuffer* CreateVertexBuffer();
+    virtual IndexBuffer* CreateIndexBuffer();
 	virtual VertexType* CreateVertexType();
+    virtual Texture2D* CreateTexture2D();
 
 	/**
 	 * Draw things on the screen
