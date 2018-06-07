@@ -10,13 +10,109 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Engine/Render/OpenGL/OpenGLShaderProgram.cpp"
-            timestampString = "542677433.185802"
+            timestampString = "550074738.418267"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
             landmarkName = "OpenGLShaderProgram::Bind()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Engine/Render/OpenGL/OpenGLShaderProgram.cpp"
+            timestampString = "550074709.589942"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "OpenGLShaderProgram::Bind()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OpenGLShaderProgram::Bind()"
+                  moduleName = "game"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/terryjsmith/Documents/Projects/eternity/Source/Engine/Render/OpenGL/OpenGLShaderProgram.cpp"
+                  timestampString = "550088073.124771"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "34"
+                  endingLineNumber = "34"
+                  offsetFromSymbolStart = "4301">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OpenGLShaderProgram::Bind()"
+                  moduleName = "game"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/terryjsmith/Documents/Projects/eternity/Source/Engine/Render/OpenGL/OpenGLShaderProgram.cpp"
+                  timestampString = "550088073.128545"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "34"
+                  endingLineNumber = "34"
+                  offsetFromSymbolStart = "4333">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Engine/Render/OpenGL/OpenGLShaderProgram.cpp"
+            timestampString = "550074712.111351"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "OpenGLShaderProgram::Bind()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OpenGLShaderProgram::Bind()"
+                  moduleName = "game"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/terryjsmith/Documents/Projects/eternity/Source/Engine/Render/OpenGL/OpenGLShaderProgram.cpp"
+                  timestampString = "550088073.135374"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "8702">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OpenGLShaderProgram::Bind()"
+                  moduleName = "game"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/terryjsmith/Documents/Projects/eternity/Source/Engine/Render/OpenGL/OpenGLShaderProgram.cpp"
+                  timestampString = "550088073.139148"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "8734">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

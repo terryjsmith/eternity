@@ -10,6 +10,7 @@
 #include <IO/Command.h>
 #include <Scripting/Script.h>
 #include <Scripting/ScriptingSystem.h>
+#include <Render/Mesh.h>
 
 Application* Application::m_instance = 0;
 
@@ -34,6 +35,7 @@ void Application::Initialize() {
 	// Register resource types
 	resourceSystem->RegisterResourceType<Shader>("Shader");
     resourceSystem->RegisterResourceType<Script>("Script");
+    resourceSystem->RegisterResourceType<Mesh>("Mesh");
 
 	// Register singletons and callback functions
 	metaSystem->RegisterSingleton("ResourceSystem", resourceSystem);

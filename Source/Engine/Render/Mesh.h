@@ -34,36 +34,36 @@ public:
         SECTION_LAST
     };
 
-protected:
+public:
     // Child mesh objects
-	std::vector<Mesh*> m_children;
+	std::vector<Mesh*> children;
 
     // Vertex buffer
-	VertexBuffer *m_vertexBuffer;
+	VertexBuffer *vertexBuffer;
     
     // Index buffer
-    IndexBuffer* m_indexBuffer;
+    IndexBuffer* indexBuffer;
     
     // Diffuse texture
-    Texture2D* m_diffuseTexture;
+    Texture2D* diffuseTexture;
     
     // Additional (optional) textures
-    Texture2D* m_normalTexture;
+    Texture2D* normalTexture;
     
     // Material
-    Material* m_material;
+    Material* material;
     
     // Number of triangles (must be set for rendering)
-    int m_numTriangles;
+    int numTriangles;
     
     // Bounding box of vertices (min and max)
-    BoundingBox m_aabb;
+    BoundingBox aabb;
     
     // Bones
-    std::vector<Bone*> m_bones;
+    std::vector<Bone*> bones;
     
     // Skeletal animations
-    std::vector<Animation*> m_animations;
+    std::vector<Animation*> animations;
 };
 
 #endif

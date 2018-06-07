@@ -9,9 +9,16 @@ void OpenGLShaderProgram::Bind() {
 		m_vshader = glCreateShader(GL_VERTEX_SHADER);
 
 		// Also, prepend version (TODO: make this more flexible based on actual version)
-		std::string version = "#version 400 core\n";
+		std::string header = "#version 400 core\n";
+        
+        if(m_definitions) {
+            std::map<std::string, bool>::iterator it = m_definitions->definitions.begin();
+            for(; it != m_definitions->definitions.end(); it++) {
+                header += "#define " + it->first + "\n";
+            }
+        }
 
-		std::string data = version + m_vertexShader->GetResource()->GetString();
+        std::string data = header + m_vertexShader->GetResource()->GetString();
 
 		unsigned long length = data.length();
 		char* str = (char*)data.c_str();
@@ -39,7 +46,7 @@ void OpenGLShaderProgram::Bind() {
 		// Create a new vertex shader and load source into it
 		m_fshader = glCreateShader(GL_FRAGMENT_SHADER);
 
-		data = version + m_fragmentShader->GetResource()->GetString();
+		data = header + m_fragmentShader->GetResource()->GetString();
 
 		length = data.length();
 		str = (char*)data.c_str();

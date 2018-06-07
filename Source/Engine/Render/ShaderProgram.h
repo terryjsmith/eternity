@@ -5,14 +5,15 @@
 #include <eternity.h>
 #include <Core/MathTypes.h>
 #include <Render/Shader.h>
+#include <Render/ShaderDefinitionSet.h>
 
 class GIGA_API ShaderProgram {
 public:
 	ShaderProgram();
 	virtual ~ShaderProgram() = default;
 
-	void Instantiate(Shader* vertexShader, Shader* fragmentShader);
-
+	void Instantiate(Shader* vertexShader, Shader* fragmentShader, ShaderDefinitionSet* definitions);
+    
 	virtual void Bind() { }
 	virtual void Unbind() { }
 
@@ -52,6 +53,9 @@ protected:
 
 	// Cache of shader locations
 	std::vector<ShaderVariable*> m_vars;
+    
+    // Definitions
+    ShaderDefinitionSet* m_definitions;
 };
 
 #endif

@@ -49,6 +49,10 @@
 		5E1B418C20A9C686006B7ABB /* game.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = game.js; path = ../../../Bin/Resources/game.js; sourceTree = "<group>"; };
 		5E1B419120AA0E1B006B7ABB /* client.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = client.js; path = ../../../Bin/Resources/Scripts/client.js; sourceTree = "<group>"; };
 		5E51AEFD20B9CCE300A162CB /* libSOIL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSOIL.a; path = ../../ThirdParty/soil/lib/libSOIL.a; sourceTree = "<group>"; };
+		5E65C14D20C0C29C00DF2348 /* color.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color.fs; path = ../../../Bin/Resources/Shaders/color.fs; sourceTree = "<group>"; };
+		5E65C14E20C0C29C00DF2348 /* color.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color.vs; path = ../../../Bin/Resources/Shaders/color.vs; sourceTree = "<group>"; };
+		5E65C15020C9731F00DF2348 /* mesh.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = mesh.fs; path = ../../../Bin/Resources/Shaders/mesh.fs; sourceTree = "<group>"; };
+		5E65C15120C9731F00DF2348 /* mesh.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = mesh.vs; path = ../../../Bin/Resources/Shaders/mesh.vs; sourceTree = "<group>"; };
 		5ECE174620584BA200C5DA14 /* game */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = game; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ECE175020584E9A00C5DA14 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../Game/main.cpp; sourceTree = "<group>"; };
 		5ECE175320584F0C00C5DA14 /* libeternity.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libeternity.a; path = "../../../../../../Library/Developer/Xcode/DerivedData/eternity-dlxnlmvnbuvtomcljaxxrapkrzew/Build/Products/Debug/libeternity.a"; sourceTree = "<group>"; };
@@ -88,19 +92,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5E1B418B20A9C67A006B7ABB /* JS */ = {
+		5E1B418B20A9C67A006B7ABB /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
 				5E1B418C20A9C686006B7ABB /* game.js */,
 				5E1B419120AA0E1B006B7ABB /* client.js */,
 			);
-			name = JS;
+			name = Scripts;
+			sourceTree = "<group>";
+		};
+		5E65C14B20C0C28100DF2348 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5E65C14C20C0C28900DF2348 /* Shaders */,
+				5E1B418B20A9C67A006B7ABB /* Scripts */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		5E65C14C20C0C28900DF2348 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				5E65C15020C9731F00DF2348 /* mesh.fs */,
+				5E65C15120C9731F00DF2348 /* mesh.vs */,
+				5E65C14D20C0C29C00DF2348 /* color.fs */,
+				5E65C14E20C0C29C00DF2348 /* color.vs */,
+			);
+			name = Shaders;
 			sourceTree = "<group>";
 		};
 		5ECE173D20584BA200C5DA14 = {
 			isa = PBXGroup;
 			children = (
-				5E1B418B20A9C67A006B7ABB /* JS */,
+				5E65C14B20C0C28100DF2348 /* Resources */,
 				5ECE175020584E9A00C5DA14 /* main.cpp */,
 				5ECE174720584BA200C5DA14 /* Products */,
 				5ECE175220584F0C00C5DA14 /* Frameworks */,

@@ -5,6 +5,7 @@
 #include <Render/Shader.h>
 #include <Render/OpenGL/OpenGLShaderProgram.h>
 #include <Render/Scene.h>
+#include <Render/MaterialSystem.h>
 #include <IO/ResourceSystem.h>
 #include <IO/InputSystem.h>
 #include <Core/MetaSystem.h>
@@ -20,6 +21,7 @@ int main(int argc, char** argv) {
 	World* world = application->GetWorld();
 
 	OpenGLRenderSystem* renderSystem = world->CreateSystem<OpenGLRenderSystem>();
+    MaterialSystem* materialSystem = world->CreateSystem<MaterialSystem>();
 	ResourceSystem* resourceSystem = world->CreateSystem<ResourceSystem>();
 	MessageSystem* messageSystem = world->CreateSystem<MessageSystem>(20);
     InputSystem* inputSystem = world->CreateSystem<InputSystem>();
@@ -38,6 +40,8 @@ int main(int argc, char** argv) {
     resourceSystem->AddSearchPath("Resources");
 	resourceSystem->AddSearchPath("Resources/Shaders");
     resourceSystem->AddSearchPath("Resources/Scripts");
+    resourceSystem->AddSearchPath("Resources/Models");
+    resourceSystem->AddSearchPath("Resources/Textures");
     
     // Get framebuffer size (retina is different)
     int framebufferWidth, framebufferHeight;
@@ -72,9 +76,7 @@ int main(int argc, char** argv) {
 	};
 
 	// Create mesh
-	Mesh* mesh = new Mesh();
-	mesh->vertexBuffer = renderSystem->CreateVertexBuffer();
-	mesh->vertexBuffer->Create(type, 3, data, false);
+    Mesh* mesh = dynamic_cast<Mesh*>(resourceSystem->LoadResource("crate.g3d", "Mesh"));
 
     Entity* triangle = world->CreateEntity();
     MeshComponent* meshComponent = triangle->Assign<MeshComponent>();
@@ -122,7 +124,6 @@ int main(int argc, char** argv) {
 	world->Shutdown();
 	application->Shutdown();
 
-	delete mesh;
 	delete renderSystem;
 	delete window;
 

@@ -47,6 +47,7 @@
 		5E567C3D2082D2E2000041B9 /* Command.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E567C3B2082D2E2000041B9 /* Command.h */; };
 		5E567C402082D97F000041B9 /* TimeSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E567C3E2082D97F000041B9 /* TimeSystem.cpp */; };
 		5E567C412082D97F000041B9 /* TimeSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E567C3F2082D97F000041B9 /* TimeSystem.h */; };
+		5E65C14A20C0C25900DF2348 /* OpenGLColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E65C14920C0C25900DF2348 /* OpenGLColor.cpp */; };
 		5E81088C20B2DC1F00140BCB /* NetworkMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E81088A20B2DC1F00140BCB /* NetworkMessage.cpp */; };
 		5E81088D20B2DC1F00140BCB /* NetworkMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E81088B20B2DC1F00140BCB /* NetworkMessage.h */; };
 		5E81089020B3A64A00140BCB /* MemoryReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E81088E20B3A64A00140BCB /* MemoryReader.cpp */; };
@@ -172,6 +173,8 @@
 		5E567C3B2082D2E2000041B9 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
 		5E567C3E2082D97F000041B9 /* TimeSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeSystem.cpp; sourceTree = "<group>"; };
 		5E567C3F2082D97F000041B9 /* TimeSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeSystem.h; sourceTree = "<group>"; };
+		5E65C14920C0C25900DF2348 /* OpenGLColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLColor.cpp; sourceTree = "<group>"; };
+		5E65C14F20C9700700DF2348 /* ShaderDefinitionSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderDefinitionSet.h; sourceTree = "<group>"; };
 		5E81088A20B2DC1F00140BCB /* NetworkMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NetworkMessage.cpp; path = ../../Engine/Network/NetworkMessage.cpp; sourceTree = "<group>"; };
 		5E81088B20B2DC1F00140BCB /* NetworkMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkMessage.h; path = ../../Engine/Network/NetworkMessage.h; sourceTree = "<group>"; };
 		5E81088E20B3A64A00140BCB /* MemoryReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryReader.cpp; sourceTree = "<group>"; };
@@ -433,6 +436,7 @@
 				5ECE170520584AD600C5DA14 /* Scene.cpp */,
 				5ECE170620584AD600C5DA14 /* Scene.h */,
 				5ECE170720584AD600C5DA14 /* Shader.h */,
+				5E65C14F20C9700700DF2348 /* ShaderDefinitionSet.h */,
 				5ECE170820584AD600C5DA14 /* ShaderProgram.cpp */,
 				5ECE170920584AD600C5DA14 /* ShaderProgram.h */,
 				5E8108AF20B7903C00140BCB /* Texture.h */,
@@ -451,6 +455,7 @@
 			isa = PBXGroup;
 			children = (
 				5ECE16F320584AD600C5DA14 /* OpenGL.h */,
+				5E65C14920C0C25900DF2348 /* OpenGLColor.cpp */,
 				5ECE16F420584AD600C5DA14 /* OpenGLDeferredRenderPass.cpp */,
 				5ECE16F520584AD600C5DA14 /* OpenGLDeferredRenderPass.h */,
 				5E8108AB20B78F4F00140BCB /* OpenGLIndexBuffer.cpp */,
@@ -655,6 +660,7 @@
 				5ECE172020584AD600C5DA14 /* MeshComponent.cpp in Sources */,
 				5ECE179F2063477200C5DA14 /* Message.cpp in Sources */,
 				5ECE173420584AD600C5DA14 /* Scene.cpp in Sources */,
+				5E65C14A20C0C25900DF2348 /* OpenGLColor.cpp in Sources */,
 				5ECE172720584AD600C5DA14 /* OpenGLShaderProgram.cpp in Sources */,
 				5ECE170E20584AD600C5DA14 /* Application.cpp in Sources */,
 				5E8108A520B3A94E00140BCB /* NetworkSession.cpp in Sources */,

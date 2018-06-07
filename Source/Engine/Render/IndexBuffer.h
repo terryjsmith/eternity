@@ -25,7 +25,7 @@ public:
     /**
      * Use this index buffer
      */
-    virtual void Use() { }
+    virtual void Bind() { }
     
     /**
      * Destroy this buffer's contents

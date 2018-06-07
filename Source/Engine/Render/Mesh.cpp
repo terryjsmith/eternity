@@ -101,31 +101,31 @@ void Mesh::ProcessData() {
                 reader->Read(&vertexSize, sizeof(uint32_t));
                 
                 // Material
-                child->m_material = new Material();
+                child->material = new Material();
                 
                 // Material data - diffuse
-                reader->Read(&child->m_material->diffuse.r, sizeof(float));
-                reader->Read(&child->m_material->diffuse.g, sizeof(float));
-                reader->Read(&child->m_material->diffuse.b, sizeof(float));
-                reader->Read(&child->m_material->diffuse.a, sizeof(float));
+                reader->Read(&child->material->diffuse.r, sizeof(float));
+                reader->Read(&child->material->diffuse.g, sizeof(float));
+                reader->Read(&child->material->diffuse.b, sizeof(float));
+                reader->Read(&child->material->diffuse.a, sizeof(float));
                 
                 // Material data - ambient
-                reader->Read(&child->m_material->ambient.r, sizeof(float));
-                reader->Read(&child->m_material->ambient.g, sizeof(float));
-                reader->Read(&child->m_material->ambient.b, sizeof(float));
-                reader->Read(&child->m_material->ambient.a, sizeof(float));
+                reader->Read(&child->material->ambient.r, sizeof(float));
+                reader->Read(&child->material->ambient.g, sizeof(float));
+                reader->Read(&child->material->ambient.b, sizeof(float));
+                reader->Read(&child->material->ambient.a, sizeof(float));
                 
                 // Material data - specular
-                reader->Read(&child->m_material->specular.r, sizeof(float));
-                reader->Read(&child->m_material->specular.g, sizeof(float));
-                reader->Read(&child->m_material->specular.b, sizeof(float));
-                reader->Read(&child->m_material->specular.a, sizeof(float));
+                reader->Read(&child->material->specular.r, sizeof(float));
+                reader->Read(&child->material->specular.g, sizeof(float));
+                reader->Read(&child->material->specular.b, sizeof(float));
+                reader->Read(&child->material->specular.a, sizeof(float));
                 
                 // Material data - shininess
-                reader->Read(&child->m_material->shininess, sizeof(float));
+                reader->Read(&child->material->shininess, sizeof(float));
                 
                 // TODO: Add to material system
-                materialSystem->AddMaterial(child->m_material);
+                child->material->SetMaterialID(materialSystem->AddMaterial(child->material));
                 
                 // Number of textures
                 uint32_t numTextures = 0;
@@ -152,7 +152,7 @@ void Mesh::ProcessData() {
                     free(textureFilename);
                     
                     // TODO: use texture type to assign
-                    child->m_diffuseTexture = texture;
+                    child->diffuseTexture = texture;
                 }
                 
                 // Read in bounding box data
@@ -165,7 +165,7 @@ void Mesh::ProcessData() {
                 reader->Read(&maxv.y, sizeof(float));
                 reader->Read(&maxv.z, sizeof(float));
                 
-                child->m_aabb.Create(minv, maxv);
+                child->aabb.Create(minv, maxv);
                 
                 // Number of vertices
                 uint32_t vertexCount = 0;
@@ -174,6 +174,7 @@ void Mesh::ProcessData() {
                 // Set the vertex attributes
                 int offset = 0;
                 VertexType* vertexType = renderSystem->CreateVertexType();
+                vertexType->Create();
                 
                 if(vertexFormat & VERTEXTYPE_ATTRIB_POSITION) {
                     vertexType->AddVertexAttrib(VERTEXTYPE_ATTRIB_POSITION, 3, offset);
@@ -213,36 +214,36 @@ void Mesh::ProcessData() {
                 reader->Read((unsigned char*)vertexData, sizeof(float) * vertexCount * vertexSize);
                 
                 // Create vertex buffer
-                child->m_vertexBuffer = renderSystem->CreateVertexBuffer();
-                child->m_vertexBuffer->Create(vertexType, vertexCount, vertexData, false);
+                child->vertexBuffer = renderSystem->CreateVertexBuffer();
+                child->vertexBuffer->Create(vertexType, vertexCount, vertexData, false);
                 
                 // Number of indices
                 uint32_t indexCount = 0;
                 reader->Read((unsigned char*)&indexCount, sizeof(uint32_t));
                 
                 // Set number of triangles
-                child->m_numTriangles = indexCount / 3;
+                child->numTriangles = indexCount / 3;
                 
                 // Actual indices
                 uint32_t* indexData = (uint32_t*)malloc(sizeof(uint32_t) * indexCount);
                 reader->Read((unsigned char*)indexData, sizeof(uint32_t) * indexCount);
                 
                 // Create index buffer
-                child->m_indexBuffer = renderSystem->CreateIndexBuffer();
-                child->m_indexBuffer->Create(indexCount, indexData);
+                child->indexBuffer = renderSystem->CreateIndexBuffer();
+                child->indexBuffer->Create(indexCount, indexData);
                 
                 free(vertexData);
                 free(indexData);
                 
-                m_children.push_back(child);
+                children.push_back(child);
             }
             
             // After reading in all children, compute the bounding box of the parent
             vector3 min = vector3(FLT_MAX);
             vector3 max = vector3(-FLT_MAX);
             
-            GetMinMaxAABB(min, max);
-            m_aabb.Create(min, max);
+            //GetMinMaxAABB(min, max);
+            aabb.Create(min, max);
             
             break;
         }
@@ -265,7 +266,7 @@ void Mesh::ProcessData() {
                 bone->name.resize(length);
                 reader->Read((void*)bone->name.data(), length);
                 
-                m_bones.push_back(bone);
+                bones.push_back(bone);
             }
         }
         
@@ -334,7 +335,7 @@ void Mesh::ProcessData() {
                     animation->frames.push_back(frame);
                 }
                 
-                m_animations.push_back(animation);
+                animations.push_back(animation);
             }
         }
         

@@ -27,7 +27,7 @@ void OpenGLIndexBuffer::Destroy() {
     }
 }
 
-void OpenGLIndexBuffer::Use() {
+void OpenGLIndexBuffer::Bind() {
     GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer));
 }
 

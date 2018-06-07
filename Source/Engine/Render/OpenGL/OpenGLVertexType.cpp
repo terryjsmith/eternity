@@ -17,8 +17,11 @@ void OpenGLVertexType::EnableAttribute(int index, int attrib) {
 		return;
 	}
 
+    std::map<int, VertexAttrib*>::iterator ai = m_attribs.find(attrib);
+    VertexAttrib* attr = ai->second;
+    
 	GL_CHECK(glEnableVertexAttribArray(index));
-	GL_CHECK(glVertexAttribPointer(index, m_attribs[attrib]->size, GL_FLOAT, GL_FALSE, sizeof(float) *  m_vertexSize, (void*)(sizeof(float) * m_attribs[attrib]->offset)));
+	GL_CHECK(glVertexAttribPointer(index, attr->size, GL_FLOAT, GL_FALSE, sizeof(float) *  m_vertexSize, (void*)(sizeof(float) * attr->offset)));
 }
 
 void OpenGLVertexType::DisableAttribute(int index) {

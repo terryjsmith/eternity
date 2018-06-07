@@ -14,7 +14,7 @@ public:
 	void Render(Scene* scene);
 
 protected:
-	void RecursiveRender(MeshComponent* mesh, matrix4 parent);
+	void RecursiveRender(MeshComponent* mesh, matrix4 view, matrix4 parent);
 };
 
 #endif

@@ -31,11 +31,6 @@ public:
     virtual void Unbind() { }
     
     /**
-     * Process data loaded into a resource
-     */
-    virtual void ProcessData() { }
-    
-    /**
      * Dump texture to disk
      */
     virtual void Save(std::string filename) { }

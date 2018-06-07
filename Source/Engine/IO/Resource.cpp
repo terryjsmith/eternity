@@ -65,7 +65,7 @@ void Resource::Initialize(std::string filename, int mode) {
 
 	// Also save extension
 	pos = filename.find_last_of(".");
-	this->extension = filename.substr(pos, filename.length() - pos);
+	this->extension = filename.substr(pos + 1, filename.length() - pos - 1);
 
 	// Use flags to set open mode
 	std::string flags = "";
