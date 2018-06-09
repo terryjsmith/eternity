@@ -2,7 +2,7 @@
 #include <Render/OpenGL/OpenGLVertexType.h>
 #include <Render/OpenGL/OpenGL.h>
 
-void OpenGLVertexType::Create() {
+void OpenGLVertexType::Initialize() {
 	GL_CHECK(glGenVertexArrays(1, &m_vertexArray));
 }
 

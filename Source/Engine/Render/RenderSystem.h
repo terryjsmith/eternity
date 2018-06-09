@@ -9,7 +9,9 @@
 #include <Render/Texture2D.h>
 #include <Render/VertexBuffer.h>
 #include <Render/IndexBuffer.h>
+#include <Render/Framebuffer.h>
 
+GIGA_CLASS()
 class GIGA_API RenderSystem : public System {
 public:
 	RenderSystem() : m_currentScene(0) { }
@@ -29,20 +31,55 @@ public:
     virtual IndexBuffer* CreateIndexBuffer();
 	virtual VertexType* CreateVertexType();
     virtual Texture2D* CreateTexture2D();
+    virtual Framebuffer* CreateFramebuffer();
+    virtual ShaderProgram* CreateShaderProgram();
 
 	/**
 	 * Draw things on the screen
 	 */
 	virtual void Render() { }
+    
+    /**
+     * Clear buffers
+     */
+    virtual void Clear(int bitmask) { }
+    
+    /**
+     * Draw + indexed draw
+     */
+    virtual void Draw(int type, int elements) { }
+    virtual void DrawIndexed(int type, int elements) { }
+    
+    /**
+     * Depth testing
+     */
+    virtual void EnableDepthTest(int type) { }
+    virtual void DisableDepthTest() { }
+    
+    /**
+     * Set viewport (normally done by framebuffer)
+     */
+    virtual void SetViewport(int width, int height) { }
+    
+    /**
+     * Clear any current framebuffer
+     */
+    virtual void ClearFramebuffer() { }
 
 	/**
 	 * Get/set current scene
 	 */
 	void SetCurrentScene(Scene* scene) { m_currentScene = scene; }
-	Scene* GetCurrentScene() { return m_currentScene; }
+	GIGA_FUNCTION() Scene* GetCurrentScene() { return m_currentScene; }
 
 protected:
+    // Post processing passes
 	std::vector<RenderPass*> m_renderPasses;
+    
+    // Window width and height
+    int m_windowWidth, m_windowHeight;
+    
+    // Current scene
 	Scene* m_currentScene;
 };
 

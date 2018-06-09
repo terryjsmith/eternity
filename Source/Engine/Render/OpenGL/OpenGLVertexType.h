@@ -10,7 +10,7 @@ public:
 	OpenGLVertexType() = default;
 	~OpenGLVertexType() = default;
 
-	void Create();
+	void Initialize();
 	void Destroy();
 
 	/**

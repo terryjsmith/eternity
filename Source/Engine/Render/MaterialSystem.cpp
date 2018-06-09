@@ -1,7 +1,7 @@
 
 #include <Render/MaterialSystem.h>
 #include <Render/RenderSystem.h>
-#include <Render/Color.h>
+#include <Render/Defines.h>
 #include <Core/Application.h>
 
 MaterialSystem::MaterialSystem() {

@@ -61,20 +61,6 @@ int main(int argc, char** argv) {
 
 	cameraComponent->GetTransform()->SetWorldPosition(vector3(0, 0, 4));
 
-	// Create a description of our vertex data
-	VertexType* type = renderSystem->CreateVertexType();
-	type->Create();
-
-	type->AddVertexAttrib(VERTEXTYPE_ATTRIB_POSITION, 3, 0);
-	type->AddVertexAttrib(VERTEXTYPE_ATTRIB_COLOR, 3, 3);
-
-	// Create some vertex data
-	float data[] = {
-		-0.5f, -0.5f, -1.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.5f, -1.0f, 0.0, 1.0f, 0.0f,
-		0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 1.0f
-	};
-
 	// Create mesh
     Mesh* mesh = dynamic_cast<Mesh*>(resourceSystem->LoadResource("crate.g3d", "Mesh"));
 
@@ -103,6 +89,9 @@ int main(int argc, char** argv) {
     clientComponent->Initialize(clientjs);
     
     scriptingSystem->Unlock();
+    
+    // Set ambient lighting
+    scene->SetAmbientLight(vector3(1, 1, 1));
 
 	Timer* gameTimer = new Timer();
 	gameTimer->Start();

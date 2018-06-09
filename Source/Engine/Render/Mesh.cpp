@@ -174,7 +174,7 @@ void Mesh::ProcessData() {
                 // Set the vertex attributes
                 int offset = 0;
                 VertexType* vertexType = renderSystem->CreateVertexType();
-                vertexType->Create();
+                vertexType->Initialize();
                 
                 if(vertexFormat & VERTEXTYPE_ATTRIB_POSITION) {
                     vertexType->AddVertexAttrib(VERTEXTYPE_ATTRIB_POSITION, 3, offset);

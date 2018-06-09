@@ -2,10 +2,13 @@
 #include <Render/RenderSystem.h>
 
 void RenderSystem::Setup(int windowWidth, int windowHeight) {
-	std::vector<RenderPass*>::iterator it = m_renderPasses.begin();
-	for (; it != m_renderPasses.end(); it++) {
-		(*it)->Initialize(windowWidth, windowHeight);
-	}
+    m_windowWidth = windowWidth;
+    m_windowHeight = windowHeight;
+    
+    std::vector<RenderPass*>::iterator pi = m_renderPasses.begin();
+    for(; pi != m_renderPasses.end(); pi++) {
+        (*pi)->Initialize(windowWidth, windowHeight);
+    }
 }
 
 VertexBuffer* RenderSystem::CreateVertexBuffer() {
@@ -22,4 +25,12 @@ IndexBuffer* RenderSystem::CreateIndexBuffer() {
 
 Texture2D* RenderSystem::CreateTexture2D() {
     return(new Texture2D());
+}
+
+Framebuffer* RenderSystem::CreateFramebuffer() {
+    return(new Framebuffer());
+}
+
+ShaderProgram* RenderSystem::CreateShaderProgram() {
+    return(new ShaderProgram());
 }

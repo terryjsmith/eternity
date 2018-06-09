@@ -19,7 +19,7 @@ public:
 	VertexType() = default;
 	virtual ~VertexType();
 
-	virtual void Create() { }
+	virtual void Initialize() { }
 	virtual void Destroy() { }
 
 	/**

@@ -5,12 +5,20 @@
 #include <Render/OpenGL/OpenGLVertexType.h>
 #include <Render/OpenGL/OpenGL.h>
 #include <Render/OpenGL/OpenGLTexture2D.h>
+#include <Render/OpenGL/OpenGLFramebuffer.h>
+#include <Render/OpenGL/OpenGLShaderProgram.h>
 #include <IO/ResourceSystem.h>
 #include <Core/Application.h>
 
 void OpenGLRenderSystem::Initialize() {
-	m_deferredRenderPass = new OpenGLDeferredRenderPass();
-	m_renderPasses.push_back(m_deferredRenderPass);
+	m_gbufferRenderPass = new GBuffer();
+    m_renderPasses.push_back(m_gbufferRenderPass);
+    
+    m_combineRenderPass = new CombinePass();
+    m_renderPasses.push_back(m_combineRenderPass);
+    
+    m_lightingRenderPass = new LightingPass();
+    m_renderPasses.push_back(m_lightingRenderPass);
     
     // Set our texture type to OpenGL
     ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
@@ -33,7 +41,69 @@ Texture2D* OpenGLRenderSystem::CreateTexture2D() {
     return(new OpenGLTexture2D());
 }
 
-void OpenGLRenderSystem::Render() {
-	m_deferredRenderPass->Render(m_currentScene);
+Framebuffer* OpenGLRenderSystem::CreateFramebuffer() {
+    return(new OpenGLFramebuffer());
 }
 
+ShaderProgram* OpenGLRenderSystem::CreateShaderProgram() {
+    return(new OpenGLShaderProgram());
+}
+
+void OpenGLRenderSystem::Render() {
+    /**
+     * Depth pre-pass
+     */
+    
+    /**
+     * G-buffer pass
+     */
+	m_gbufferRenderPass->Render(m_currentScene);
+    
+    /**
+     * Lighting
+     */
+    m_lightingRenderPass->Render(m_currentScene);
+    
+    /**
+     * Combine pass
+     */
+    m_combineRenderPass->SetDiffuseTexture((Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(0));
+    m_combineRenderPass->SetPositionTexture((Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(1));
+    m_combineRenderPass->SetNormalTexture((Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(2));
+    m_combineRenderPass->SetLightingTexture((Texture2D*)m_lightingRenderPass->GetFramebuffer(0)->GetTexture(0));
+    
+    m_combineRenderPass->Render(m_currentScene);
+    
+    /**
+     * Post-processing
+     */
+}
+
+void OpenGLRenderSystem::Clear(int bitmask) {
+    GL_CHECK(glClear(bitmask));
+}
+
+void OpenGLRenderSystem::Draw(int type, int elements) {
+    GL_CHECK(glDrawArrays(type, 0, elements));
+}
+
+void OpenGLRenderSystem::DrawIndexed(int type, int elements) {
+    GL_CHECK(glDrawElements(type, elements, GL_UNSIGNED_INT, 0));
+}
+
+void OpenGLRenderSystem::EnableDepthTest(int type) {
+    GL_CHECK(glEnable(GL_DEPTH_TEST));
+    GL_CHECK(glDepthFunc(type));
+}
+
+void OpenGLRenderSystem::DisableDepthTest() {
+    GL_CHECK(glDisable(GL_DEPTH_TEST));
+}
+
+void OpenGLRenderSystem::SetViewport(int width, int height) {
+    GL_CHECK(glViewport(0, 0, width, height));
+}
+
+void OpenGLRenderSystem::ClearFramebuffer() {
+    GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+}
