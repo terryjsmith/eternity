@@ -31,6 +31,7 @@ public:
     virtual IndexBuffer* CreateIndexBuffer();
 	virtual VertexType* CreateVertexType();
     virtual Texture2D* CreateTexture2D();
+    virtual Texture3D* CreateTexture3D();
     virtual Framebuffer* CreateFramebuffer();
     virtual ShaderProgram* CreateShaderProgram();
 
@@ -42,6 +43,7 @@ public:
     /**
      * Clear buffers
      */
+    virtual void SetClearColor(vector4 color) { }
     virtual void Clear(int bitmask) { }
     
     /**
@@ -62,9 +64,9 @@ public:
     virtual void SetViewport(int width, int height) { }
     
     /**
-     * Clear any current framebuffer
+     * Set render type (front/back/none)
      */
-    virtual void ClearFramebuffer() { }
+    virtual void SetDrawBuffer(int buffer) { }
 
 	/**
 	 * Get/set current scene

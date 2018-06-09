@@ -37,6 +37,10 @@ public:
 	GIGA_FUNCTION() vector3 GetUp();
 	GIGA_FUNCTION() vector3 GetRight();
 	GIGA_FUNCTION() vector3 GetLook();
+    
+    GIGA_FUNCTION() void SetUp(vector3 up);
+    GIGA_FUNCTION() void SetRight(vector3 right);
+    GIGA_FUNCTION() void SetLook(vector3 look);
 
 	GIGA_FUNCTION() void Move(vector3 amount);
 	GIGA_FUNCTION() void Rotate(vector3 axis, float degrees);
@@ -55,6 +59,11 @@ protected:
 	vector3 m_position;
 	vector3 m_scaling;
 	quaternion m_rotation;
+    
+    // Custom look vectors
+    vector3 m_up;
+    vector3 m_right;
+    vector3 m_look;
 };
 
 #endif

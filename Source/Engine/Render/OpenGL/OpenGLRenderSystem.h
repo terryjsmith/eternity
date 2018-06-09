@@ -22,6 +22,7 @@ public:
 	VertexType* CreateVertexType();
     IndexBuffer* CreateIndexBuffer();
     Texture2D* CreateTexture2D();
+    Texture3D* CreateTexture3D();
     Framebuffer* CreateFramebuffer();
     ShaderProgram* CreateShaderProgram();
 
@@ -33,6 +34,7 @@ public:
     /**
      * Clear buffers
      */
+    void SetClearColor(vector4 color);
     void Clear(int bitmask);
     
     /**
@@ -53,9 +55,9 @@ public:
     void SetViewport(int width, int height);
     
     /**
-     * Clear any current framebuffer
+     * Set render type (front/back/none)
      */
-    void ClearFramebuffer();
+    void SetDrawBuffer(int buffer);
 
 protected:
 	// Default render passes

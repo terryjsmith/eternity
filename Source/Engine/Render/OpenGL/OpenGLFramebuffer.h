@@ -16,7 +16,7 @@ public:
     /**
      * Initialize (will detroy any existing framebuffer and textures)
      */
-    void Initialize(int width, int height);
+    void Initialize();
     
     /**
      * Attach a texture to our framebuffer

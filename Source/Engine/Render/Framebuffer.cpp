@@ -3,7 +3,6 @@
 
 Framebuffer::Framebuffer() {
     m_complete = false;
-    m_width = m_height = 0;
 }
 
 Framebuffer::~Framebuffer() {

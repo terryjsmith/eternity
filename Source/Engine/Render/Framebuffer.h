@@ -25,7 +25,7 @@ public:
     /**
      * Initialize (will detroy any existing framebuffer and textures)
      */
-    virtual void Initialize(int width, int height) { }
+    virtual void Initialize() { }
     
     /**
      * Attach a texture to our framebuffer
@@ -54,12 +54,6 @@ public:
     virtual void Bind() { }
     virtual void Unbind() { }
     
-    /**
-     * Getters
-     */
-    int GetWidth() { return m_width; }
-    int GetHeight() { return m_height; }
-    
 protected:
     // The textures attached to this framebuffer
     std::vector<Texture*> m_textures;
@@ -69,9 +63,6 @@ protected:
     
     // Whether this framebuffer has been checked for completeness
     bool m_complete;
-    
-    // Width and height (for viewport)
-    int m_width, m_height;
 };
 
 #endif

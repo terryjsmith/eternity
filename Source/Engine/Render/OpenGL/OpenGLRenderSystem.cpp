@@ -5,6 +5,7 @@
 #include <Render/OpenGL/OpenGLVertexType.h>
 #include <Render/OpenGL/OpenGL.h>
 #include <Render/OpenGL/OpenGLTexture2D.h>
+#include <Render/OpenGL/OpenGLTexture3D.h>
 #include <Render/OpenGL/OpenGLFramebuffer.h>
 #include <Render/OpenGL/OpenGLShaderProgram.h>
 #include <IO/ResourceSystem.h>
@@ -39,6 +40,10 @@ VertexType* OpenGLRenderSystem::CreateVertexType() {
 
 Texture2D* OpenGLRenderSystem::CreateTexture2D() {
     return(new OpenGLTexture2D());
+}
+
+Texture3D* OpenGLRenderSystem::CreateTexture3D() {
+    return(new OpenGLTexture3D());
 }
 
 Framebuffer* OpenGLRenderSystem::CreateFramebuffer() {
@@ -83,6 +88,10 @@ void OpenGLRenderSystem::Clear(int bitmask) {
     GL_CHECK(glClear(bitmask));
 }
 
+void OpenGLRenderSystem::SetClearColor(vector4 color) {
+    GL_CHECK(glClearColor(color.r, color.g, color.b, color.a));
+}
+
 void OpenGLRenderSystem::Draw(int type, int elements) {
     GL_CHECK(glDrawArrays(type, 0, elements));
 }
@@ -104,6 +113,6 @@ void OpenGLRenderSystem::SetViewport(int width, int height) {
     GL_CHECK(glViewport(0, 0, width, height));
 }
 
-void OpenGLRenderSystem::ClearFramebuffer() {
-    GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+void OpenGLRenderSystem::SetDrawBuffer(int buffer) {
+    glDrawBuffer(buffer);
 }

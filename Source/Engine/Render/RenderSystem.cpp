@@ -27,6 +27,10 @@ Texture2D* RenderSystem::CreateTexture2D() {
     return(new Texture2D());
 }
 
+Texture3D* RenderSystem::CreateTexture3D() {
+    return(new Texture3D());
+}
+
 Framebuffer* RenderSystem::CreateFramebuffer() {
     return(new Framebuffer());
 }

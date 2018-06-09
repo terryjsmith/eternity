@@ -8,7 +8,7 @@ void LightingPass::Initialize(int windowWidth, int windowHeight) {
     RenderSystem* renderSystem = GetSystem<RenderSystem>();
     
     Framebuffer* lightingFramebuffer = renderSystem->CreateFramebuffer();
-    lightingFramebuffer->Initialize(windowWidth, windowHeight);
+    lightingFramebuffer->Initialize();
     
     // Create our textures
     Texture2D* diffuseTexture = renderSystem->CreateTexture2D();

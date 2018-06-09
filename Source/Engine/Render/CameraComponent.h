@@ -14,8 +14,17 @@ public:
 
 	GIGA_CLASS_NAME("CameraComponent");
 
-	GIGA_FUNCTION() void SetViewport(int windowWidth, int windowHeight);
-
+    /**
+     * Get/set near/far/aspect/FOV
+     */
+    void SetFar(float ffar) { m_ffar = ffar; }
+    void SetNear(float fnear) { m_fnear = fnear; }
+    void SetAspectRatio(float aspect) { m_aspect = aspect; }
+    void SetFOV(float fov) { m_fov = fov; }
+    
+    /**
+     * Get camera matrices
+     */
 	matrix4 GetViewMatrix();
 	matrix4 GetProjectionMatrix();
 

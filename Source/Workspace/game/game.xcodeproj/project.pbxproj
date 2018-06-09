@@ -65,6 +65,8 @@
 		5ECE176620584F7500C5DA14 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		5ECE176720584F7500C5DA14 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5ECE177020584FA900C5DA14 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = ../../ThirdParty/glfw/lib/libglfw3.a; sourceTree = "<group>"; };
+		5EEF328420CC9C72004A43A0 /* depth.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = depth.vs; path = ../../../Bin/Resources/Shaders/depth.vs; sourceTree = "<group>"; };
+		5EEF328520CC9C72004A43A0 /* depth.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = depth.fs; path = ../../../Bin/Resources/Shaders/depth.fs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,8 @@
 			children = (
 				5E65C14D20C0C29C00DF2348 /* color.fs */,
 				5E65C14E20C0C29C00DF2348 /* color.vs */,
+				5EEF328520CC9C72004A43A0 /* depth.fs */,
+				5EEF328420CC9C72004A43A0 /* depth.vs */,
 				5E65C15C20C9C51200DF2348 /* deferred.fs */,
 				5E65C15020C9731F00DF2348 /* gbuffer.fs */,
 				5E65C15120C9731F00DF2348 /* gbuffer.vs */,

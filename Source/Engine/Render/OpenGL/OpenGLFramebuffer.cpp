@@ -22,10 +22,7 @@ OpenGLFramebuffer::~OpenGLFramebuffer() {
     }
 }
 
-void OpenGLFramebuffer::Initialize(int width, int height) {
-    m_width = width;
-    m_height = height;
-    
+void OpenGLFramebuffer::Initialize() {
     if (m_framebuffer) {
         GL_CHECK(glDeleteFramebuffers(1, &m_framebuffer));
     }
@@ -131,7 +128,8 @@ void OpenGLFramebuffer::Bind() {
         m_complete = true;
     }
     
-    GL_CHECK(glViewport(0, 0, m_width, m_height));
+    Texture2D* first = (Texture2D*)m_textures[0];
+    GL_CHECK(glViewport(0, 0, first->GetWidth(), first->GetHeight()));
 }
 
 void OpenGLFramebuffer::Unbind() {

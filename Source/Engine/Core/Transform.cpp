@@ -7,6 +7,10 @@ Transform::Transform() {
 	m_scaling = vector3(1, 1, 1);
 	m_rotation = quaternion(1, 0, 0, 0);
     
+    m_up = vector3(0, 0, 0);
+    m_right = vector3(0, 0, 0);
+    m_look = vector3(0, 0, 0);
+    
     m_parent = 0;
 }
 
@@ -106,6 +110,8 @@ void Transform::SetLocalRotation(quaternion rotation) {
 }
 
 void Transform::SetWorldRotation(quaternion rotation) {
+    m_look = m_up = m_right = vector3(0, 0, 0);
+    
 	if (m_root && m_parent) {
 		m_parent->SetWorldRotation(rotation);
 		return;
@@ -129,15 +135,30 @@ matrix4 Transform::GetMatrix() {
 }
 
 vector3 Transform::GetUp() {
+    if(glm::length(m_up)) return(m_up);
 	return(m_rotation * vector3(0, 1, 0));
 }
 
 vector3 Transform::GetRight() {
+    if(glm::length(m_right)) return(m_right);
 	return(m_rotation * vector3(1, 0, 0));
 }
 
 vector3 Transform::GetLook() {
+    if(glm::length(m_look)) return(m_look);
 	return(m_rotation * vector3(0, 0, -1));
+}
+
+void Transform::SetUp(vector3 up) {
+    m_up = up;
+}
+
+void Transform::SetRight(vector3 right) {
+    m_right = right;
+}
+
+void Transform::SetLook(vector3 look) {
+    m_look = look;
 }
 
 void Transform::Move(vector3 amount) {
@@ -150,6 +171,8 @@ void Transform::Move(vector3 amount) {
 }
 
 void Transform::Rotate(vector3 axis, float degrees) {
+    m_look = m_up = m_right = vector3(0, 0, 0);
+    
 	if (m_root && m_parent) {
 		m_parent->Rotate(axis, degrees);
 		return;

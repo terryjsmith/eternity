@@ -13,7 +13,7 @@ void GBuffer::Initialize(int windowWidth, int windowHeight) {
     RenderSystem* renderSystem = GetSystem<RenderSystem>();
     
     Framebuffer* gbufferFramebuffer = renderSystem->CreateFramebuffer();
-    gbufferFramebuffer->Initialize(windowWidth, windowHeight);
+    gbufferFramebuffer->Initialize();
     
     // Create our textures
     Texture2D* diffuseTexture = renderSystem->CreateTexture2D();
@@ -65,7 +65,7 @@ void GBuffer::Render(Scene* scene) {
     
     // Get the camera
     CameraComponent* camera = scene->GetCamera();
-    camera->SetViewport(m_windowWidth, m_windowHeight);
+    camera->SetAspectRatio((float)m_windowWidth / m_windowHeight);
     
     // Get matrices
     matrix4 view = camera->GetViewMatrix();

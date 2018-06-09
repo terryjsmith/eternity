@@ -8,10 +8,6 @@ CameraComponent::CameraComponent() {
     m_fov = 45.0f;
 }
 
-void CameraComponent::SetViewport(int windowWidth, int windowHeight) {
-	m_aspect = (float)windowWidth / (float)windowHeight;
-}
-
 matrix4 CameraComponent::GetViewMatrix() {
 	Transform* transform = GetTransform();
 	quaternion rotation = transform->GetWorldRotation();

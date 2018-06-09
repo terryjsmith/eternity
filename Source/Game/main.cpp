@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
     CameraComponent* cameraComponent = camera->Assign<CameraComponent>();
 	scene->SetCamera(cameraComponent);
 
-	cameraComponent->GetTransform()->SetWorldPosition(vector3(0, 0, 4));
+	cameraComponent->GetTransform()->SetWorldPosition(vector3(0, 1.5, 4));
 
 	// Create mesh
     Mesh* mesh = dynamic_cast<Mesh*>(resourceSystem->LoadResource("crate.g3d", "Mesh"));
