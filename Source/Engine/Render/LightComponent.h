@@ -7,8 +7,9 @@
 #include <Render/CameraComponent.h>
 #include <Render/Framebuffer.h>
 #include <Render/Texture.h>
-#include <Render/Scene.h>
 #include <Render/DepthPass.h>
+
+class Scene;
 
 /**
  * Base light class
@@ -52,6 +53,11 @@ public:
      * Generate depth texture
      */
     virtual void GenerateDepthTexture(Scene* scene) = 0;
+    
+    /**
+     * Get depth texture
+     */
+    Texture* GetDepthTexture() { return m_depthTexture; }
     
 protected:
     // Create subclass types (spotlight, directional light, etc.)

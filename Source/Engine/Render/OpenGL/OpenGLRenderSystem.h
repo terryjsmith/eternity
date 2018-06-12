@@ -50,6 +50,13 @@ public:
     void DisableDepthTest();
     
     /**
+     * Blending
+     */
+    void EnableBlending();
+    void DisableBlending();
+    void SetBlendFunc(int sourceFactor, int destFactor);
+    
+    /**
      * Set viewport (normally done by framebuffer)
      */
     void SetViewport(int width, int height);

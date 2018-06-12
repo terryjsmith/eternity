@@ -5,6 +5,7 @@
 #include <eternity.h>
 #include <Render/CameraComponent.h>
 #include <Render/MeshComponent.h>
+#include <Render/LightComponent.h>
 
 /**
  * A scene contains all of the visible objects in the player's area
@@ -19,6 +20,9 @@ public:
 
 	GIGA_FUNCTION() void AddMesh(MeshComponent* mesh);
 	std::vector<MeshComponent*>& GetMeshes() { return m_meshes; }
+    
+    GIGA_FUNCTION() void AddLight(LightComponent* light);
+    std::vector<LightComponent*>& GetLights() { return m_lights; }
 
 	GIGA_FUNCTION() void SetCamera(CameraComponent* camera) { m_camera = camera; }
 	GIGA_FUNCTION() CameraComponent* GetCamera() { return m_camera; }
@@ -29,6 +33,9 @@ public:
 protected:
     // The meshes visible to the player
 	std::vector<MeshComponent*> m_meshes;
+    
+    // Lights
+    std::vector<LightComponent*> m_lights;
     
     // The active camera component
 	CameraComponent* m_camera;

@@ -63,19 +63,25 @@ void OpenGLRenderSystem::Render() {
      * G-buffer pass
      */
 	m_gbufferRenderPass->Render(m_currentScene);
+    Framebuffer* gbuffer = m_gbufferRenderPass->GetFramebuffer(0);
     
     /**
      * Lighting
      */
+    m_lightingRenderPass->SetDiffuseTexture((Texture2D*)gbuffer->GetTexture(0));
+    m_lightingRenderPass->SetPositionTexture((Texture2D*)gbuffer->GetTexture(1));
+    m_lightingRenderPass->SetNormalTexture((Texture2D*)gbuffer->GetTexture(2));
+    m_lightingRenderPass->SetMaterialTexture((Texture2D*)gbuffer->GetTexture(3));
+    
     m_lightingRenderPass->Render(m_currentScene);
     
     /**
      * Combine pass
      */
-    m_combineRenderPass->SetDiffuseTexture((Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(0));
-    m_combineRenderPass->SetPositionTexture((Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(1));
-    m_combineRenderPass->SetNormalTexture((Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(2));
-    m_combineRenderPass->SetLightingTexture((Texture2D*)m_lightingRenderPass->GetFramebuffer(0)->GetTexture(0));
+    m_combineRenderPass->SetDiffuseTexture((Texture2D*)gbuffer->GetTexture(0));
+    m_combineRenderPass->SetPositionTexture((Texture2D*)gbuffer->GetTexture(1));
+    m_combineRenderPass->SetNormalTexture((Texture2D*)gbuffer->GetTexture(2));
+    m_combineRenderPass->SetLightingTexture((Texture2D*)gbuffer->GetTexture(0));
     
     m_combineRenderPass->Render(m_currentScene);
     
@@ -107,6 +113,18 @@ void OpenGLRenderSystem::EnableDepthTest(int type) {
 
 void OpenGLRenderSystem::DisableDepthTest() {
     GL_CHECK(glDisable(GL_DEPTH_TEST));
+}
+
+void OpenGLRenderSystem::EnableBlending() {
+    GL_CHECK(glEnable(GL_BLEND));
+}
+
+void OpenGLRenderSystem::DisableBlending() {
+    GL_CHECK(glDisable(GL_BLEND));
+}
+
+void OpenGLRenderSystem::SetBlendFunc(int sourceFactor, int destFactor) {
+    GL_CHECK(glBlendFunc(sourceFactor, destFactor));
 }
 
 void OpenGLRenderSystem::SetViewport(int width, int height) {

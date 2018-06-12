@@ -5,9 +5,11 @@
 #include <eternity.h>
 #include <Render/Texture2D.h>
 #include <Render/CameraComponent.h>
-#include <Render/Scene.h>
+#include <Render/MeshComponent.h>
 #include <Render/Framebuffer.h>
 #include <Render/ShaderProgram.h>
+
+class Scene;
 
 class GIGA_API DepthPass {
 public:

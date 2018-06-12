@@ -59,6 +59,13 @@ public:
     virtual void DisableDepthTest() { }
     
     /**
+     * Blending
+     */
+    virtual void EnableBlending() { }
+    virtual void DisableBlending() { }
+    virtual void SetBlendFunc(int sourceFactor, int destFactor) { }
+    
+    /**
      * Set viewport (normally done by framebuffer)
      */
     virtual void SetViewport(int width, int height) { }
