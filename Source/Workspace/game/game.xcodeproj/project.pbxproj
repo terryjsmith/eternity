@@ -48,6 +48,7 @@
 		5E1B418320A9C62C006B7ABB /* libv8_base.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libv8_base.a; path = ../../ThirdParty/v8/lib/libv8_base.a; sourceTree = "<group>"; };
 		5E1B418C20A9C686006B7ABB /* game.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = game.js; path = ../../../Bin/Resources/game.js; sourceTree = "<group>"; };
 		5E1B419120AA0E1B006B7ABB /* client.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = client.js; path = ../../../Bin/Resources/Scripts/client.js; sourceTree = "<group>"; };
+		5E49594520D0BAA6006EEE30 /* lighting.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = lighting.fs; path = ../../../Bin/Resources/Shaders/lighting.fs; sourceTree = "<group>"; };
 		5E51AEFD20B9CCE300A162CB /* libSOIL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSOIL.a; path = ../../ThirdParty/soil/lib/libSOIL.a; sourceTree = "<group>"; };
 		5E65C14D20C0C29C00DF2348 /* color.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color.fs; path = ../../../Bin/Resources/Shaders/color.fs; sourceTree = "<group>"; };
 		5E65C14E20C0C29C00DF2348 /* color.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color.vs; path = ../../../Bin/Resources/Shaders/color.vs; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 				5E65C15C20C9C51200DF2348 /* deferred.fs */,
 				5E65C15020C9731F00DF2348 /* gbuffer.fs */,
 				5E65C15120C9731F00DF2348 /* gbuffer.vs */,
+				5E49594520D0BAA6006EEE30 /* lighting.fs */,
 				5E65C15D20C9C51200DF2348 /* ortho.vs */,
 			);
 			name = Shaders;
