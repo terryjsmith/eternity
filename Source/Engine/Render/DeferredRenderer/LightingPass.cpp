@@ -67,6 +67,7 @@ void LightingPass::Render(Scene* scene) {
     renderSystem->SetBlendFunc(BLEND_ONE, BLEND_ONE);
     
     // Set up ortho projection
+    m_program->Bind();
     m_program->Set("ortho", m_ortho);
     
     // Set textures
