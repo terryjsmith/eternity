@@ -5,6 +5,11 @@
 #include <Core/MessageSystem.h>
 #include <Core/Entity.h>
 
+#ifdef WIN32
+#include <direct.h>
+#define getcwd	_getcwd
+#endif
+
 void ScriptingSystem::Initialize() {
     v8::V8::InitializeICU();
     v8::V8::Initialize();

@@ -26,18 +26,23 @@ bool UDPSocketWin32::Connect(std::string server, int port) {
         Message::Broadcast(new Error(Error::ERROR_WARN, (char*)"Unable to create socket for server", server));
         return(false);
     }
-    
-    // Get the host IP in a computer usable home
-    struct hostent* host;
-    host = gethostbyname(server.c_str());
-    if (host == 0) {
-        Message::Broadcast(new Error(Error::ERROR_WARN, (char*)"Unable to get host", server));
-        return(false);
-    }
+
+	// Get the IP address
+	struct addrinfo hint;
+	struct addrinfo *res;
+	hint.ai_family = AF_INET;
+	hint.ai_socktype = SOCK_DGRAM;
+
+	if (getaddrinfo(server.c_str(), "", &hint, &res)) {
+		Message::Broadcast(new Error(Error::ERROR_WARN, (char*)"Unable to get host", server));
+		return(false);
+	}
     
     // Create our server structure
+	memset(&m_sockaddr, 0, sizeof(sockaddr_in));
     m_sockaddr.sin_family = AF_INET;
-    memcpy((void *)&m_sockaddr.sin_addr, host->h_addr_list[0], host->h_length);
+	
+	memcpy(&m_sockaddr, res->ai_addr, res->ai_addrlen);
     m_sockaddr.sin_port = htons(port);
     
     // Connect

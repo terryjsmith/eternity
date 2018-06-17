@@ -1,4 +1,6 @@
 
+#ifndef WIN32
+
 #ifndef udpsocketposix_hpp
 #define udpsocketposix_hpp
 
@@ -50,5 +52,7 @@ public:
      */
     sockaddr_in* GetLastSocketAddress(socklen_t& len);
 };
+
+#endif
 
 #endif

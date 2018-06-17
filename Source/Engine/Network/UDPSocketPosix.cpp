@@ -1,4 +1,6 @@
 
+#ifndef WIN32
+
 #include <Network/UDPSocketPosix.h>
 #include <Core/Error.h>
 
@@ -117,3 +119,5 @@ sockaddr_in* UDPSocketPosix::GetLastSocketAddress(socklen_t& len) {
     len = m_lastLength;
     return(&m_lastsockaddr);
 }
+
+#endif

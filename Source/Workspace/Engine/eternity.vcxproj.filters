@@ -22,6 +22,15 @@
     <Filter Include="Scripting">
       <UniqueIdentifier>{d9464c3d-a1b1-405e-bd99-d9ac5b634d6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render\Deferred Renderer">
+      <UniqueIdentifier>{e475ab15-21bd-4f33-ae16-eec5e21b4366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting\Types">
+      <UniqueIdentifier>{0002bc54-bd76-46c0-886f-a0ddc0c23144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{f695c65b-b617-4806-8156-54b7368a2c99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Engine\eternity.h" />
@@ -84,9 +93,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Engine\Render\RenderPass.h">
       <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLDeferredRenderPass.h">
-      <Filter>Render\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Engine\Render\MeshComponent.h">
       <Filter>Render</Filter>
@@ -172,6 +178,108 @@
     <ClInclude Include="..\..\Engine\Core\ComponentSystem.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Engine\Core\VariantRef.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\IO\MemoryReader.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\IO\MemoryWriter.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Animation.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\AnimationFrame.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\AnimationTransform.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Bone.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\BoundingBox.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Defines.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\DepthPass.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Framebuffer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\IndexBuffer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\LightComponent.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Material.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\MaterialSystem.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\ShaderDefinitionSet.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\SpotLightComponent.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Texture.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Texture2D.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\Texture3D.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\DeferredRenderer\CombinePass.h">
+      <Filter>Render\Deferred Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\DeferredRenderer\GBuffer.h">
+      <Filter>Render\Deferred Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\DeferredRenderer\LightingPass.h">
+      <Filter>Render\Deferred Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLFramebuffer.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLIndexBuffer.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLTexture.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLTexture2D.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Render\OpenGL\OpenGLTexture3D.h">
+      <Filter>Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Scripting\Types\Vector3.h">
+      <Filter>Scripting\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Network\NetworkMessage.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Network\NetworkSession.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Network\UDPSocket.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Network\UDPSocketBase.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine\Network\UDPSocketWin32.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Engine\Render\RenderWindow.cpp">
@@ -221,9 +329,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Engine\Render\Scene.cpp">
       <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLDeferredRenderPass.cpp">
-      <Filter>Render\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Engine\Render\MeshComponent.cpp">
       <Filter>Render</Filter>
@@ -299,6 +404,75 @@
     </ClCompile>
     <ClCompile Include="..\..\Engine\Core\ComponentSystem.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\Component.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Core\Error.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\IO\MemoryReader.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\IO\MemoryWriter.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\BoundingBox.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\DepthPass.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\Framebuffer.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\LightComponent.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\MaterialSystem.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\RenderPass.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\SpotLightComponent.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\DeferredRenderer\CombinePass.cpp">
+      <Filter>Render\Deferred Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\DeferredRenderer\GBuffer.cpp">
+      <Filter>Render\Deferred Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\DeferredRenderer\LightingPass.cpp">
+      <Filter>Render\Deferred Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLDefines.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLFramebuffer.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLIndexBuffer.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLTexture2D.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Render\OpenGL\OpenGLTexture3D.cpp">
+      <Filter>Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Scripting\ScriptingSystem.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Network\NetworkMessage.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Network\NetworkSession.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Network\UDPSocketWin32.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
