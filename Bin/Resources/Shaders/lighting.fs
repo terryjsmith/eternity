@@ -38,12 +38,11 @@ uniform sampler2D textureMaterialLookup;
 uniform vec3 cameraPosition;
 uniform vec3 lightPosition;
 uniform vec3 lightColour;
-uniform float lightConstantAtt;
-uniform float lightLinearAtt;
-uniform float lightExponentialAtt;
 uniform int lightType;
 uniform sampler2D lightShadowMap[6];
+uniform samplerCube lightShadowMap3D;
 uniform mat4 lightSpaceMatrix[6];
+uniform float farPlane;
 
 // Model view matrix
 uniform mat4 worldviewInverseMatrix;
@@ -129,6 +128,26 @@ float ApplyShadow(sampler2D tex, vec4 position) {
     return(shadow);
 }
 
+float ApplyShadow(samplerCube tex, vec4 position) {
+    float bias = 0.0005;
+    
+    vec3 fragToLight = vec3(position) - lightPosition;
+    
+    // Get the closest depth to the light at this position
+    float shadow = 0.0;
+    float closestDepth = texture(tex, fragToLight).r;
+    closestDepth *= farPlane;
+    
+    // Get the current depth at this position
+    float currentDepth = length(fragToLight);
+    
+    // Are we in the shadow?
+    float curr = (currentDepth - bias) > closestDepth ? 1.0 : 0.0;
+    shadow = curr;
+    
+    return(shadow);
+}
+
 /**
  * Main
  */
@@ -165,21 +184,13 @@ void main()
 	vec3 globalNormal = mat3(worldviewInverseMatrix) * normal;
         
     // Use the light type to determine passes for shadow maps
-    int numPasses = 6;
-
-	// This might look strange and you might think "A loop would be better here", 
-	// but NV cards do not like loops inside functions and will throw an error you will
-	// spend way too long looking for if you put a loop inside either below if or else
     if(lightType == LIGHTTYPE_DIRECTIONAL) {
         vec4 lightSpacePosition = lightSpaceMatrix[cascadeIndex] * globalPosition;
 		shadow = ApplyShadow(lightShadowMap[cascadeIndex], lightSpacePosition);
     }
     else {
-		for(int i = 0; i < 6; i++) {
-			vec4 lightSpacePosition = lightSpaceMatrix[i] * globalPosition;
-			float current = ApplyShadow(lightShadowMap[i], lightSpacePosition);
-            shadow = min(current + shadow, 1.0);
-		}
+        float current = ApplyShadow(lightShadowMap3D, globalPosition);
+        shadow = min(current + shadow, 1.0);
     }
 	
 	if(shadow < 1.0) {

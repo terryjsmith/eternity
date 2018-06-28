@@ -81,7 +81,7 @@ void OpenGLRenderSystem::Render() {
     m_combineRenderPass->SetDiffuseTexture((Texture2D*)gbuffer->GetTexture(0));
     m_combineRenderPass->SetPositionTexture((Texture2D*)gbuffer->GetTexture(1));
     m_combineRenderPass->SetNormalTexture((Texture2D*)gbuffer->GetTexture(2));
-    m_combineRenderPass->SetLightingTexture((Texture2D*)gbuffer->GetTexture(0));
+    m_combineRenderPass->SetLightingTexture((Texture2D*)m_lightingRenderPass->GetFramebuffer(0)->GetTexture(0));
     
     m_combineRenderPass->Render(m_currentScene);
     
