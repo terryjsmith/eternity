@@ -14,7 +14,7 @@ void DepthPass::Initialize(int width, int height) {
     m_depthTexture = renderSystem->CreateTexture2D();
     m_depthTexture->Initialize(width, height, COLOR_DEPTH_COMPONENT32F, COLOR_DEPTH_COMPONENT);
     
-    m_framebuffer->AddTexture(m_depthTexture, FRAMEBUFFER_SLOT_0);
+    m_framebuffer->AddTexture(m_depthTexture, FRAMEBUFFER_SLOT_DEPTH);
     
     ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
     
@@ -28,11 +28,11 @@ void DepthPass::Initialize(int width, int height) {
 }
 
 void DepthPass::SetTexture(Texture2D* tex) {
-    m_framebuffer->SetTexture(tex, FRAMEBUFFER_SLOT_0);
+    m_framebuffer->SetTexture(tex, FRAMEBUFFER_SLOT_DEPTH);
 }
 
 void DepthPass::SetTexture(Texture3D* tex, int slot) {
-    m_framebuffer->SetTexture(tex, FRAMEBUFFER_SLOT_0, slot);
+    m_framebuffer->SetTexture(tex, FRAMEBUFFER_SLOT_DEPTH, slot);
 }
 
 void DepthPass::Render(Scene* scene) {
@@ -47,7 +47,7 @@ void DepthPass::Render(Scene* scene) {
     renderSystem->EnableDepthTest(TEST_LEQUAL);
     
     // Clear our buffer
-    renderSystem->SetClearColor(vector4(FLT_MAX, FLT_MAX, FLT_MAX, FLT_MAX));
+    //renderSystem->SetClearColor(vector4(FLT_MAX, FLT_MAX, FLT_MAX, FLT_MAX));
     renderSystem->Clear(DEPTH_BUFFER_BIT);
     
     // Tell the system depth write only

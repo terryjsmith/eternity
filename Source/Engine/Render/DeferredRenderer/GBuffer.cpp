@@ -52,7 +52,7 @@ void GBuffer::Initialize(int windowWidth, int windowHeight) {
 void GBuffer::Render(Scene* scene) {
     // Use our program
     m_program->Bind();
-    
+
     // Bind our FBO and set the viewport to the proper size
     m_framebuffers[0]->Bind();
     

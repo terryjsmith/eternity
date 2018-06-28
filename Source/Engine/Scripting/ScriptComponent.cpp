@@ -93,7 +93,7 @@ void ScriptComponent::Initialize(Script* script) {
 	v8::Local<v8::Value> value = globalSpace->Get(v8::String::NewFromUtf8(isolate, "Init"));
 	if (value->IsFunction()) {
 		if (this->m_parent) {
-			Variant* parent = new Variant(this->m_parent);
+			Variant* parent = new Variant((GigaObject*)this->m_parent);
 			SetGlobal("GameObject", parent);
 		}
 

@@ -18,9 +18,16 @@ public:
      * Get/set near/far/aspect/FOV
      */
     void SetFar(float ffar) { m_ffar = ffar; }
+    float GetFar() { return m_ffar; }
+    
     void SetNear(float fnear) { m_fnear = fnear; }
+    float GetNeat() { return m_fnear; }
+    
     void SetAspectRatio(float aspect) { m_aspect = aspect; }
+    float GetAspectRatio() { return m_aspect; }
+    
     void SetFOV(float fov) { m_fov = fov; }
+    float GetFOV() { return m_fov; }
     
     /**
      * Get camera matrices

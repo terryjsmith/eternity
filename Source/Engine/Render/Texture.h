@@ -36,6 +36,11 @@ public:
     virtual void Save(std::string filename) { }
     
     /**
+     * Set texure filter
+     */
+    virtual void SetTextureFilter(int filter) { }
+    
+    /**
      * Get texture info
      */
     int GetWidth() { return m_width; }

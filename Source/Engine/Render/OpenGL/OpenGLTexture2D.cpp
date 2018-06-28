@@ -96,6 +96,12 @@ void OpenGLTexture2D::ProcessData() {
     }
 }
 
+void OpenGLTexture2D::SetTextureFilter(int filter) {
+    // Make sure material texture does not filter
+    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter));
+    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter));
+}
+
 void OpenGLTexture2D::Save(std::string filename) {
     // Dump out normal texture
     glBindTexture(GL_TEXTURE_2D, m_texture);

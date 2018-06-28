@@ -44,12 +44,13 @@ void OpenGLFramebuffer::AddTexture(Texture2D* texture, int type) {
     // Attach the texture to the FBO
     GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, type, GL_TEXTURE_2D, texture->GetTexture(), 0));
     
+    m_textures.push_back(texture);
+    
     // Don't add depth textures to our framebuffer slots/counts
     if (type == GL_DEPTH_ATTACHMENT) {
         return;
     }
     
-    m_textures.push_back(texture);
     m_slots.push_back(type);
     
     if (m_slots.size()) {
@@ -72,12 +73,13 @@ void OpenGLFramebuffer::AddTexture(Texture3D* texture, int type, int slot) {
     // Attach the texture to the FBO
     GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, type, slot, texture->GetTexture(), 0));
     
+    m_textures.push_back(texture);
+    
     // Don't add depth textures to our framebuffer slots/counts
     if (type == GL_DEPTH_ATTACHMENT) {
         return;
     }
     
-    m_textures.push_back(texture);
     m_slots.push_back(type);
     
     if (m_slots.size()) {
@@ -98,12 +100,16 @@ void OpenGLFramebuffer::AddTexture(Texture3D* texture, int type, int slot) {
 
 void OpenGLFramebuffer::SetTexture(Texture2D* texture, int type) {
     // Attach the texture to the FBO
+    GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer));
     GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, type, texture->GetTarget(0), texture->GetTexture(), 0));
+    GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 }
 
 void OpenGLFramebuffer::SetTexture(Texture3D* texture, int type, int slot) {
     // Attach the texture to the FBO
+    GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer));
     GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, type, slot, texture->GetTexture(), 0));
+    GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 }
 
 void OpenGLFramebuffer::Bind() {
@@ -115,7 +121,7 @@ void OpenGLFramebuffer::Bind() {
         GL_CHECK(glDrawBuffers(m_slots.size(), &m_slots[0]));
     }
     else {
-        GL_CHECK(glDrawBuffers(m_slots.size(), GL_NONE));
+        //GL_CHECK(glDrawBuffers(m_slots.size(), GL_NONE));
     }
     
     if (m_complete == false) {

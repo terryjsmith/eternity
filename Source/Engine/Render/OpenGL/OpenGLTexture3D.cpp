@@ -16,17 +16,20 @@ void OpenGLTexture3D::Initialize(int width, int height, int format, int type) {
     m_channels = 0;
     
     switch(type) {
+        case GL_DEPTH_COMPONENT:
+            m_channels = 1;
+            break;
         case GL_RED:
-        m_channels = 1;
-        break;
+            m_channels = 1;
+            break;
         case GL_RGB:
-        m_channels = 3;
-        break;
+            m_channels = 3;
+            break;
         case GL_RGBA:
-        m_channels = 4;
-        break;
+            m_channels = 4;
+            break;
         default:
-        break;
+            break;
     };
     
     GL_CHECK(glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture));
@@ -60,12 +63,12 @@ unsigned int OpenGLTexture3D::GetTarget(int slot) {
 }
 
 void OpenGLTexture3D::Save(std::string filename) {
-    glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
+    GL_CHECK(glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture));
     for(int i = 0; i < 6; i++) {
         std::string new_filename = filename.substr(0, filename.length() - 4) + "_" + std::to_string(i) + ".bmp";
         // Dump out normal texture
         float* pixels = (float*)malloc(m_width * m_height * sizeof(float) * m_channels);
-        glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, m_channels == 3 ? GL_RGB : GL_RED, GL_FLOAT, pixels);
+        GL_CHECK(glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, m_channels == 3 ? GL_RGB : GL_DEPTH_COMPONENT, GL_FLOAT, pixels));
         
         // Convert from float to unsigned char
         unsigned char* data = (unsigned char*)malloc(m_width * m_height * m_channels);
@@ -74,7 +77,7 @@ void OpenGLTexture3D::Save(std::string filename) {
                 int offset = ((y * m_width) + x) * m_channels;
                 for(int c = 0; c < m_channels; c++) {
                     float r = pixels[offset + c];
-                    data[offset] = r / 100.0f * 255.0f;
+                    data[offset] = r * 255.0f;
                 }
             }
         }

@@ -1,4 +1,7 @@
 
+
+#ifdef WIN32
+
 #include <Network/UDPSocketWin32.h>
 #include <Core/Error.h>
 #include <WinSock2.h>
@@ -73,3 +76,5 @@ void UDPSocketWin32::Close() {
         m_socket = 0;
     }
 }
+
+#endif

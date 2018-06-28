@@ -19,6 +19,10 @@ extern int TEST_GREATER;
 extern int TEST_LEQUAL;
 extern int TEST_GEQUAL;
 
+// Filters
+extern int FILTER_NEAREST;
+extern int FILTER_LINEAR;
+
 // Clear bits
 extern int COLOR_BUFFER_BIT;
 extern int DEPTH_BUFFER_BIT;

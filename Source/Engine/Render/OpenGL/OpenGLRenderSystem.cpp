@@ -60,6 +60,15 @@ void OpenGLRenderSystem::Render() {
      */
     
     /**
+     * Depth pass (per light)
+     */
+    std::vector<LightComponent*> lights = m_currentScene->GetLights();
+    std::vector<LightComponent*>::iterator li = lights.begin();
+    for(; li != lights.end(); li++) {
+        (*li)->GenerateDepthTexture(m_currentScene);
+    }
+    
+    /**
      * G-buffer pass
      */
 	m_gbufferRenderPass->Render(m_currentScene);

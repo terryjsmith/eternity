@@ -70,6 +70,15 @@ void LightingPass::Render(Scene* scene) {
     m_program->Bind();
     m_program->Set("ortho", m_ortho);
     
+    // Get the far plane distance
+    CameraComponent* camera = scene->GetCamera();
+    m_program->Set("cameraPosition", camera->GetTransform()->GetWorldPosition());
+    
+    // Get view matrix
+    matrix4 view = camera->GetViewMatrix();
+    matrix4 worldViewInverse = glm::inverse(view);
+    m_program->Set("worldviewInverseMatrix", worldViewInverse);
+    
     // Set textures
     m_diffuseTexture->Bind(0);
     m_program->Set("textureDiffuse", 0);
@@ -90,6 +99,8 @@ void LightingPass::Render(Scene* scene) {
     materialTexture->Bind(4);
     m_program->Set("textureMaterialLookup", 4);
     
+    materialTexture->SetTextureFilter(FILTER_NEAREST);
+    
     VertexType* vertexType = m_buffer->GetType();
     vertexType->Bind();
     
@@ -108,7 +119,8 @@ void LightingPass::Render(Scene* scene) {
         m_program->Set("lightPosition", (*i)->GetTransform()->GetWorldPosition());
         m_program->Set("lightColour", (*i)->GetColor());
         m_program->Set("lightType", (*i)->GetType());
-        m_program->Set("attenuationDist", (*i)->GetAttenuation());
+        
+        m_program->Set("farPlane", (*i)->GetAttenuation());
         
         (*i)->GetDepthTexture()->Bind(5);
         m_program->Set("lightShadowMap3D", 5);

@@ -13,8 +13,8 @@ matrix4 CameraComponent::GetViewMatrix() {
 	quaternion rotation = transform->GetWorldRotation();
 	vector3 position = transform->GetWorldPosition();
 
-	vector3 look = rotation * vector3(0.0f, 0.0f, -1.0f);
-	vector3 up = rotation * vector3(0, 1, 0);
+    vector3 look = transform->GetLook();
+    vector3 up = transform->GetUp();
 
 	return(glm::lookAt(position, position + look, up));
 }

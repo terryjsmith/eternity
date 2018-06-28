@@ -1,4 +1,6 @@
 
+#ifdef WIN32
+
 #ifndef win32udpsocket_hpp
 #define win32udpsocket_hpp
 
@@ -31,5 +33,7 @@ public:
      */
     void Close();
 };
+
+#endif
 
 #endif

@@ -10,7 +10,7 @@
  */
 class GIGA_API Message : public GigaObject {
 public:
-	virtual ~Message() = default;
+	~Message() = default;
 
 	static void Broadcast(Message* message, bool synchronized = false);
 

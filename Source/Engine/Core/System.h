@@ -8,7 +8,7 @@
 class GIGA_API System : public GigaObject {
 public:
 	System() = default;
-	virtual ~System() = default;
+	~System() = default;
 
 	virtual void Initialize() { }
 	virtual void Update(float delta) { }
