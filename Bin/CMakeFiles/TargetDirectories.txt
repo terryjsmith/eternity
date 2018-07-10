@@ -1,0 +1,6 @@
+/Users/terryjsmith/Documents/Projects/eternity-cmake/Bin/CMakeFiles/game.dir
+/Users/terryjsmith/Documents/Projects/eternity-cmake/Bin/CMakeFiles/generator-prebuild.dir
+/Users/terryjsmith/Documents/Projects/eternity-cmake/Bin/CMakeFiles/eternity.dir
+/Users/terryjsmith/Documents/Projects/eternity-cmake/Bin/CMakeFiles/generator.dir
+/Users/terryjsmith/Documents/Projects/eternity-cmake/Bin/CMakeFiles/ALL_BUILD.dir
+/Users/terryjsmith/Documents/Projects/eternity-cmake/Bin/CMakeFiles/ZERO_CHECK.dir

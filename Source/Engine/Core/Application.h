@@ -6,6 +6,7 @@
 #include <Core/System.h>
 #include <Core/Window.h>
 #include <Core/World.h>
+#include <Core/Service.h>
 
 class GIGA_API Application {
 public:
@@ -32,6 +33,22 @@ public:
 	 * Get game world
 	 */
 	World* GetWorld();
+    
+    /**
+     * Find a service
+     */
+    template<class T>
+    T* GetService() {
+        std::vector<Service*>::iterator it = m_services.begin();
+        for(; it != m_services.end(); it++) {
+            T* obj = dynamic_cast<T*>(*it);
+            if(obj) {
+                return(obj);
+            }
+        }
+        
+        return(0);
+    }
 
 	/**
 	* Get singleton instance
@@ -47,12 +64,19 @@ protected:
 
 	// Game world
 	World* m_world;
+    
+    // Running services
+    std::vector<Service*> m_services;
 };
 
 // Short-hand class to find sub-systems in the Application class
 template<class T> T* GetSystem() {
     World* world = Application::GetInstance()->GetWorld();
     return(world->GetSystem<T>());
+}
+
+template<class T> T* GetService() {
+    return(Application::GetInstance()->GetService<T>());
 }
 
 #endif

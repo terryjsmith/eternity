@@ -1,5 +1,7 @@
 
 #include <Core/Entity.h>
+#include <Core/World.h>
+#include <Core/Application.h>
 
 Entity::Entity() {
 	m_active = false;
@@ -33,4 +35,49 @@ Component* Entity::FindComponent(std::string name) {
     }
     
     return(0);
+}
+
+void Entity::AddComponent(Component* component, bool notify) {
+    component->m_parent = this;
+    
+    // Send message to other components
+    if(notify) {
+        std::vector<Component*>::iterator ci = m_components.begin();
+        for(; ci != m_components.end(); ci++) {
+            (*ci)->OnComponentAdded(component);
+        }
+    }
+    
+    component->OnEntityAssigned();
+    m_components.push_back(component);
+}
+
+Component* Entity::Assign(std::string className) {
+    // Register with appropriate system
+    World* world = Application::GetInstance()->GetWorld();
+    std::vector<ComponentSystemBase*> systems = world->GetComponentSystems();
+    std::vector<ComponentSystemBase*>::iterator it = systems.begin();
+    
+    Component* component = Component::CreateComponent(className);
+    for(; it != systems.end(); it++) {
+        (*it)->AddComponent(component);
+    }
+    
+    // Send message to other components
+    std::vector<Component*>::iterator ci = m_components.begin();
+    for(; ci != m_components.end(); ci++) {
+        (*ci)->OnComponentAdded(component);
+    }
+    
+    component->m_parent = this;
+    component->OnEntityAssigned();
+    m_components.push_back(component);
+    
+    // Return
+    return(component);
+}
+
+void Entity::PostDeserialize() {
+    World* world = Application::GetInstance()->GetWorld();
+    world->AddEntity(this);
 }

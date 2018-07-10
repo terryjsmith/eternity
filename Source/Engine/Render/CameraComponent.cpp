@@ -1,4 +1,6 @@
 
+#define GLM_FORCE_RADIANS
+
 #include <Render/CameraComponent.h>
 #include <glm/gtc/matrix_transform.hpp>
 

@@ -30,6 +30,7 @@ public:
 		std::string name;
 		int type;
 		bool get, set, serialize;
+        std::string objectType;
 	};
 
 public:
@@ -37,6 +38,7 @@ public:
     std::map<std::string, MetaFunction*> functions;
 	std::map<std::string, MetaVariable*> variables;
 	bool singleton;
+    bool needsBody;
 };
 
 #endif

@@ -16,6 +16,7 @@ public:
 	~Entity() = default;
     
     GIGA_CLASS_NAME("Entity");
+    GIGA_CLASS_BODY();
 
 	/**
 	* Get/set active status
@@ -45,6 +46,26 @@ public:
      * Find component by name
      */
     GIGA_FUNCTION() Component* FindComponent(std::string name);
+    
+    /**
+     * Add component
+     */
+    void AddComponent(Component* component, bool notify = true);
+    
+    /**
+     * Find a component by class type
+     */
+    template<class T> T* FindComponent() {
+        std::vector<Component*>::iterator ci = m_components.begin();
+        for(; ci != m_components.end(); ci++) {
+            T* obj = dynamic_cast<T*>(*ci);
+            if(obj) {
+                return(obj);
+            }
+        }
+        
+        return(0);
+    }
 
 	/**
 	* Assign a new component
@@ -52,22 +73,34 @@ public:
     template<class T> T* Assign() {
         // Register with appropriate system
         World* world = Application::GetInstance()->GetWorld();
-        ComponentSystem<T>* system = world->GetComponentSystem<T>();
+        std::vector<ComponentSystemBase*> systems = world->GetComponentSystems();
+        std::vector<ComponentSystemBase*>::iterator it = systems.begin();
         
-        T* component = 0;
-        if(system) {
-            component = system->CreateComponent();
+        T* component = new T;
+        for(; it != systems.end(); it++) {
+            (*it)->AddComponent(component);
         }
-        else {
-            component = new T;
+        
+        // Send message to other components
+        std::vector<Component*>::iterator ci = m_components.begin();
+        for(; ci != m_components.end(); ci++) {
+            (*ci)->OnComponentAdded(component);
         }
         
         component->m_parent = this;
+        component->OnEntityAssigned();
         m_components.push_back(component);
         
         // Return
         return(component);
     }
+    
+    GIGA_FUNCTION() Component* Assign(std::string className);
+    
+    /**
+     * After deserialization
+     */
+    void PostDeserialize();
 
 	friend class World;
 
@@ -77,13 +110,13 @@ public:
 
 protected:
 	// Identifer (int)
-	int m_entityID;
+	GIGA_VARIABLE(Serialize) int m_entityID;
 
 	// Components assigned to this entity
 	std::vector<Component*> m_components;
 
 	// Active status
-	bool m_active;
+	GIGA_VARIABLE(Serialize) bool m_active;
 
 	// Updated in the last frame
 	bool m_updated;

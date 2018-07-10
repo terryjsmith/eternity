@@ -22,3 +22,27 @@ void OpenGLVertexBuffer::Bind() {
 void OpenGLVertexBuffer::Unbind() {
 	GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
+
+float* OpenGLVertexBuffer::GetData(int &count) {
+    std::vector<float> vertices;
+    int vertexSize = m_type->GetVertexSize();
+    vertices.resize(m_count * vertexSize);
+    
+    float* ret = (float*)malloc(m_count * 3 * sizeof(float));
+    GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, m_buffer));
+    
+    int size = 0;
+    GL_CHECK(glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &size));
+    GL_CHECK(glGetBufferSubData(GL_ARRAY_BUFFER, 0, vertexSize * m_count * sizeof(float), vertices.data()));
+    
+    for (int i = 0; i < m_count; i++) {
+        int offset = i * 3;
+        
+        ret[offset + 0] = vertices[i * vertexSize + 0];
+        ret[offset + 1] = vertices[i * vertexSize + 1];
+        ret[offset + 2] = vertices[i * vertexSize + 2];
+    }
+    
+    count = m_count;
+    return(ret);
+}

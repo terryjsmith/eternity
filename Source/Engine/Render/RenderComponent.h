@@ -9,12 +9,18 @@
 class GIGA_API RenderComponent : public Component {
 public:
 	RenderComponent();
-	virtual ~RenderComponent() = default;
+	virtual ~RenderComponent();
 
 	GIGA_FUNCTION() Transform* GetTransform() { return m_transform; }
+    
+    /**
+     * Overridable notifications
+     */
+    void OnEntityAssigned();
+    void OnComponentAdded(Component* component);
 
 protected:
-	Transform* m_transform;
+	GIGA_VARIABLE(Serialize) Transform* m_transform;
 };
 
 #endif

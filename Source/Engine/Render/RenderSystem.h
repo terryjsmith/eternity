@@ -3,7 +3,7 @@
 #define rendersystem_h
 
 #include <eternity.h>
-#include <Core/System.h>
+#include <Core/ComponentSystem.h>
 #include <Render/Scene.h>
 #include <Render/RenderPass.h>
 #include <Render/Texture2D.h>
@@ -12,7 +12,7 @@
 #include <Render/Framebuffer.h>
 
 GIGA_CLASS()
-class GIGA_API RenderSystem : public System {
+class GIGA_API RenderSystem : public ComponentSystem<RenderComponent> {
 public:
 	RenderSystem() : m_currentScene(0) { }
 	virtual ~RenderSystem() = default;

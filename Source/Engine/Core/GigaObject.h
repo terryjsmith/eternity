@@ -6,6 +6,7 @@
 
 class GigaObject;
 class Variant;
+class DataRecord;
 
 #define GIGA_CLASS_NAME(str) virtual std::string GetGigaName() { return str; } 
 
@@ -17,7 +18,7 @@ typedef Variant*(*CallableFunction)(GigaObject* obj, int argc, Variant** argv);
 class GIGA_API GigaObject {
 public:
 	GigaObject();
-	~GigaObject() = default;
+	virtual ~GigaObject() = default;
 
 	/**
 	 * Pure virtual function that specifies string version of class name
@@ -36,11 +37,6 @@ public:
 	bool HasFunction(std::string func);
 
 	/**
-	 * Convert object to string
-	 */
-	virtual std::string ToString();
-
-	/**
 	* Lock this object to the thread (or try to)
 	*/
 	void LockMutex();
@@ -50,6 +46,21 @@ public:
 	* Unlock
 	*/
 	void UnlockMutex();
+    
+    /**
+     * Serialize/deserialize from data record
+     */
+    virtual void Serialize(DataRecord* record) { }
+    virtual void Deserialize(DataRecord* record) { }
+    
+    /**
+     * Hooks after de/serializing
+     */
+    virtual void PreSerialize() { }
+    virtual void PostSerialize() { }
+    
+    virtual void PreDeserialize() { }
+    virtual void PostDeserialize() { }
 
 protected:
 	// Lockable mutex (multi-threading)

@@ -1,6 +1,6 @@
 
-#ifndef memorywriter_hpp
-#define MemoryWriter_hpp
+#ifndef memorywriter_h
+#define memorywriter_h
 
 #include <eternity.h>
 

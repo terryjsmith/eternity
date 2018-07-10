@@ -22,6 +22,7 @@ public:
 	~Resource();
 
 	GIGA_CLASS_NAME("Resource");
+    GIGA_CLASS_BODY();
 
 	/**
 	 * Set filename
@@ -88,10 +89,15 @@ public:
 	* Go to a specific position in the file
 	*/
 	void SetPosition(unsigned int offset);
+    
+    /**
+     * After deserialization
+     */
+    void PostDeserialize();
 
 public:
 	// Just the filename + extension
-    GIGA_VARIABLE(Get) std::string filename;
+    GIGA_VARIABLE(Get, Serialize) std::string filename;
 
 	// File extension
 	GIGA_VARIABLE(Get) std::string extension;

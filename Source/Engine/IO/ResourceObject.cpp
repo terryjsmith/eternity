@@ -2,11 +2,11 @@
 #include <IO/ResourceObject.h>
 
 ResourceObject::~ResourceObject() {
-	m_resource.reset();
+	
 }
 
-void ResourceObject::Instantiate(std::shared_ptr<Resource>& resource) {
-	m_resource = std::shared_ptr<Resource>(resource);
+void ResourceObject::Instantiate(Resource* resource) {
+    m_resource = resource;
 
 	// Load
 	m_resource->Load();
@@ -19,5 +19,9 @@ void ResourceObject::Instantiate(std::shared_ptr<Resource>& resource) {
 }
 
 Resource* ResourceObject::GetResource() {
-	return(m_resource.get());
+    return(m_resource);
+}
+
+void ResourceObject::PostDeserialize() {
+    this->Instantiate(this->m_resource);
 }

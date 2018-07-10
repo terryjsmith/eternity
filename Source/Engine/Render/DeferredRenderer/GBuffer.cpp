@@ -33,7 +33,7 @@ void GBuffer::Initialize(int windowWidth, int windowHeight) {
     gbufferFramebuffer->AddTexture(indexTexture, FRAMEBUFFER_SLOT_3);
     
     Texture2D* depthTexture = renderSystem->CreateTexture2D();
-    depthTexture->Initialize(windowWidth, windowHeight, COLOR_DEPTH_COMPONENT32F, COLOR_DEPTH_COMPONENT);
+    depthTexture->Initialize(windowWidth, windowHeight, COLOR_DEPTH_COMPONENT24, COLOR_DEPTH_COMPONENT);
     gbufferFramebuffer->AddTexture(depthTexture, FRAMEBUFFER_SLOT_DEPTH);
     
     m_framebuffers.push_back(gbufferFramebuffer);

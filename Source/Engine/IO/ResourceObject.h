@@ -22,17 +22,22 @@ public:
 	 * Get resource
 	 */
 	Resource* GetResource();
+    
+    /**
+     * After deserialization
+     */
+    void PostDeserialize();
 
 protected:
 	/**
 	* Initialize with a resource
 	*/
-	void Instantiate(std::shared_ptr<Resource>& resource);
+	void Instantiate(Resource* resource);
 
 	friend class ResourceSystem;
 
 protected:
-	std::shared_ptr<Resource> m_resource;
+	GIGA_VARIABLE(Serialize) Resource* m_resource;
 };
 
 #endif

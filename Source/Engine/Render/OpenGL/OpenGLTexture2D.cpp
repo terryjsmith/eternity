@@ -16,6 +16,9 @@ void OpenGLTexture2D::Initialize(int width, int height, int format, int type) {
     m_channels = 0;
     
     switch(type) {
+        case GL_DEPTH_COMPONENT:
+            m_channels = 1;
+            break;
         case GL_RED:
             m_channels = 1;
             break;
@@ -34,8 +37,14 @@ void OpenGLTexture2D::Initialize(int width, int height, int format, int type) {
     GL_CHECK(glBindTexture(GL_TEXTURE_2D, m_texture));
     GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, type, GL_FLOAT, NULL));
     
-    GL_CHECK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-    GL_CHECK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    GL_CHECK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+    GL_CHECK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+    
+    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+    
+    float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 }
 
 void OpenGLTexture2D::SetData(int width, int height, int format, int type, void* data) {
@@ -105,27 +114,23 @@ void OpenGLTexture2D::SetTextureFilter(int filter) {
 void OpenGLTexture2D::Save(std::string filename) {
     // Dump out normal texture
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    float* pixels = (float*)malloc(m_width * m_height * sizeof(float) * 3);
-    glGetTexImage(GL_TEXTURE_2D, 0, m_channels == 3 ? GL_RGB : GL_RED, GL_FLOAT, pixels);
+    float* pixels = (float*)malloc(m_width * m_height * sizeof(float) * m_channels);
+    glGetTexImage(GL_TEXTURE_2D, 0, m_channels == 3 ? GL_RGB : GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     
     // Convert from float to unsigned char
-    unsigned char* data = (unsigned char*)malloc(m_width * m_height * 3);
+    unsigned char* data = (unsigned char*)malloc(m_width * m_height * m_channels);
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
-            int offset = ((y * m_width) + x) * 3;
-            float r = pixels[offset];
-            data[offset] = r * 255.0f;
-            
-            float g = pixels[offset + 1];
-            data[offset + 1] = g * 255.0f;
-            
-            float b = pixels[offset + 2];
-            data[offset + 2] = b * 255.0f;
+            int offset = ((y * m_width) + x) * m_channels;
+            for(int i = 0; i < m_channels; i++) {
+                float r = pixels[offset + i];
+                data[offset + i] = r * 255.0f;
+            }
         }
     }
     
-    SOIL_save_image(filename.c_str(), SOIL_SAVE_TYPE_BMP, m_width, m_height, 3, data);
+    SOIL_save_image(filename.c_str(), SOIL_SAVE_TYPE_BMP, m_width, m_height, m_channels, data);
     free(data);
     free(pixels);
 }

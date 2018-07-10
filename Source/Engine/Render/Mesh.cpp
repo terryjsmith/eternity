@@ -348,3 +348,19 @@ void Mesh::ProcessData() {
     
     delete reader;
 }
+
+float* Mesh::GetVertices(int &count) {
+    int c = 0;
+    
+    float* ret = vertexBuffer->GetData(c);
+    count = c;
+    return(ret);
+}
+
+unsigned int* Mesh::GetIndices(int &count) {
+    int c = 0;
+    
+    unsigned int* ret = indexBuffer->GetData(c);
+    count = c;
+    return(ret);
+}

@@ -14,7 +14,13 @@
 #include <Core/Timer.h>
 #include <Core/Application.h>
 #include <Core/Entity.h>
-#include <Scripting/ScriptComponent.cpp>
+#include <Scripting/ScriptingSystem.h>
+#include <Render/PointLightComponent.h>
+#include <Render/SpotLightComponent.h>
+#include <Physics/PhysicsSystem.h>
+#include <Physics/BoxCollisionComponent.h>
+#include <Physics/MeshCollisionComponent.h>
+#include <IO/SQLiteDataLoader.h>
 
 int main(int argc, char** argv) {
 	Application* application = Application::GetInstance();
@@ -27,6 +33,7 @@ int main(int argc, char** argv) {
     InputSystem* inputSystem = world->CreateSystem<InputSystem>();
     MetaSystem* metaSystem = world->CreateSystem<MetaSystem>();
     ScriptingSystem* scriptingSystem = world->CreateSystem<ScriptingSystem>(20);
+    PhysicsSystem* physicsSystem = world->CreateSystem<PhysicsSystem>(20);
 
 	world->Initialize();
 	application->Initialize();
@@ -53,6 +60,23 @@ int main(int argc, char** argv) {
 	// Create a scene
 	Scene* scene = new Scene();
 	renderSystem->SetCurrentScene(scene);
+    
+    // Load some data
+    SQLiteDataLoader* loader = new SQLiteDataLoader();
+    loader->Open("game.db");
+    std::vector<DataRecord*> meshes = loader->GetRecords("MeshComponent");
+    
+    loader->GetRecords("TransformComponent");
+    
+    // Add meshes
+    std::vector<DataRecord*>::iterator ri = meshes.begin();
+    for(; ri != meshes.end(); ri++) {
+        scene->AddMesh((MeshComponent*)(*ri)->GetObject());
+    }
+    
+    //loader->SaveRecords();
+    
+    loader->Close();
 
 	// Create a camera
     Entity* camera = world->CreateEntity();
@@ -61,14 +85,47 @@ int main(int argc, char** argv) {
 
 	cameraComponent->GetTransform()->SetWorldPosition(vector3(0, 1.5, 4));
 
-	// Create mesh
+	/* Create mesh
     Mesh* mesh = dynamic_cast<Mesh*>(resourceSystem->LoadResource("crate.g3d", "Mesh"));
 
-    Entity* triangle = world->CreateEntity();
-    MeshComponent* meshComponent = triangle->Assign<MeshComponent>();
+    Entity* crate = world->CreateEntity();
+    MeshComponent* meshComponent = crate->Assign<MeshComponent>();
 	meshComponent->Instantiate(mesh);
+    meshComponent->GetTransform()->SetWorldPosition(vector3(1, 10, 0));
 
 	scene->AddMesh(meshComponent);
+    
+    // Add physics
+    BoxCollisionComponent* boxCollider = crate->Assign<BoxCollisionComponent>();
+    boxCollider->Initialize(vector3(1.0f), vector3(0), vector3(-0.5f, 0, -0.5f), 10.0f);*/
+    
+    
+    
+    /* Add physics
+    MeshCollisionComponent* meshCollider = floor->Assign<MeshCollisionComponent>();
+    int vcount, icount;
+    float* vertices = floorMesh->children[0]->GetVertices(vcount);
+    unsigned int* indices = floorMesh->children[0]->GetIndices(icount);
+    meshCollider->Initialize(vertices, vcount, indices, icount, true);*/
+    
+    // Create a light
+    Entity* light = world->CreateEntity();
+    /*SpotLightComponent* spotLight = light->Assign<SpotLightComponent>();
+    spotLight->Initialize();
+    spotLight->GetTransform()->SetWorldPosition(vector3(0, 2, 3));
+    //spotLight->GetCamera()->GetTransform()->Rotate(vector3(0, 1, 0), 180.0f);
+    spotLight->GetCamera()->GetTransform()->Rotate(vector3(1, 0, 0), -30.0f);
+    spotLight->SetFOV(90.0f);
+    spotLight->SetAttenuation(25.0f);
+    
+    scene->AddLight(spotLight);*/
+    
+    PointLightComponent* pointLight = light->Assign<PointLightComponent>();
+    pointLight->Initialize();
+    pointLight->GetTransform()->SetWorldPosition(vector3(-1, 3, 2));
+    pointLight->SetAttenuation(20.0f);
+    
+    scene->AddLight(pointLight);
 
     // Create a keyboard
     Keyboard* keyboard = new Keyboard();
@@ -91,7 +148,7 @@ int main(int argc, char** argv) {
     scriptingSystem->Unlock();
     
     // Set ambient lighting
-    scene->SetAmbientLight(vector3(1, 1, 1));
+    scene->SetAmbientLight(vector3(0.25, 0.25, 0.25));
 
 	Timer* gameTimer = new Timer();
 	gameTimer->Start();

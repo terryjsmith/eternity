@@ -7,17 +7,14 @@ in vec4 frag_position;
 /**
  * Uniforms
  */
-uniform vec3 lightPosition;
-
-/**
- * Out variables
- */
-layout (location = 0) out float out_depth;
+uniform float farPlane;
+uniform vec3 cameraPosition;
 
 /**
  * Main
  */
 void main () {
     // Output depth
-    out_depth = length(vec3(frag_position) - lightPosition);
+    float distance = length(vec3(frag_position.xyz) - cameraPosition);
+    gl_FragDepth = distance / farPlane;
 }

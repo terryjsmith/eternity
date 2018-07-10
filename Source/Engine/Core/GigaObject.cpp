@@ -40,6 +40,3 @@ bool GigaObject::HasFunction(std::string func) {
 	return(c != 0);
 }
 
-std::string GigaObject::ToString() {
-	return(this->GetGigaName() + "[]");
-}

@@ -20,11 +20,15 @@ void Transform::SetParent(Transform* transform) {
 	m_scaling = GetWorldScaling();
 	m_rotation = GetWorldRotation();
 
-	if (transform) {
+	/*if (transform) {
 		m_position = m_position - transform->GetWorldPosition();
-		m_scaling = m_position - transform->GetWorldScaling();
+		m_scaling = m_scaling / transform->GetWorldScaling();
 		m_rotation = glm::inverse(transform->GetWorldRotation()) * m_rotation;
-	}
+	}*/
+    
+    m_parent = transform;
+    
+    m_parent->AddChild(this);
 }
 
 vector3 Transform::GetWorldPosition() {
@@ -39,7 +43,7 @@ vector3 Transform::GetWorldPosition() {
 vector3 Transform::GetWorldScaling() {
 	vector3 sum = m_scaling;
 	if (m_parent) {
-		sum += m_parent->GetWorldScaling();
+		sum *= m_parent->GetWorldScaling();
 	}
 
 	return(sum);
@@ -55,73 +59,44 @@ quaternion Transform::GetWorldRotation() {
 }
 
 void Transform::SetLocalPosition(vector3 position) {
-	if (m_root && m_parent) {
-		m_parent->SetLocalPosition(position);
-		return;
-	}
-
-	m_position = position;
+    m_position = position;
 }
 
 void Transform::SetWorldPosition(vector3 position) {
-	if (m_root && m_parent) {
+	if (m_parent) {
 		m_parent->SetWorldPosition(position);
 		return;
 	}
 
 	m_position = position;
-
-	if (m_parent) {
-		vector3 other = m_parent->GetWorldPosition();
-		m_position = m_position - other;
-	}
 }
 
 void Transform::SetLocalScaling(vector3 scaling) {
-	if (m_root && m_parent) {
-		m_parent->SetLocalScaling(scaling);
-		return;
-	}
-
 	m_scaling = scaling;
 }
 
 void Transform::SetWorldScaling(vector3 scaling) {
-	if (m_root && m_parent) {
+	if (m_parent) {
 		m_parent->SetWorldScaling(scaling);
 		return;
 	}
 
 	m_scaling = scaling;
-
-	if (m_parent) {
-		vector3 other = m_parent->GetWorldScaling();
-		m_scaling = m_scaling - other;
-	}
 }
 
 void Transform::SetLocalRotation(quaternion rotation) {
-	if (m_root && m_parent) {
-		m_parent->SetLocalRotation(rotation);
-		return;
-	}
-
 	m_rotation = rotation;
 }
 
 void Transform::SetWorldRotation(quaternion rotation) {
     m_look = m_up = m_right = vector3(0, 0, 0);
     
-	if (m_root && m_parent) {
+	if (m_parent) {
 		m_parent->SetWorldRotation(rotation);
 		return;
 	}
 
 	m_rotation = rotation;
-
-	if (m_parent) {
-		m_rotation = glm::inverse(m_parent->GetWorldRotation()) * m_rotation;
-	}
 }
 
 matrix4 Transform::GetMatrix() {
@@ -189,4 +164,18 @@ void Transform::Scale(vector3 amount) {
 	}
 
 	m_scaling *= amount;
+}
+
+void Transform::AddChild(Transform* transform) {
+    std::vector<Transform*>::iterator ti = std::find(m_children.begin(), m_children.end(), transform);
+    if(ti == m_children.end()) {
+        m_children.push_back(transform);
+    }
+}
+
+void Transform::RemoveChild(Transform* transform) {
+    std::vector<Transform*>::iterator ti = std::find(m_children.begin(), m_children.end(), transform);
+    if(ti != m_children.end()) {
+        m_children.erase(ti);
+    }
 }

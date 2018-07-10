@@ -8,9 +8,15 @@
 #include <Core/Error.h>
 #include <IO/Keyboard.h>
 #include <IO/Command.h>
+#include <Core/TransformComponent.h>
 #include <Scripting/Script.h>
 #include <Scripting/ScriptingSystem.h>
-#include <Render/Mesh.h>
+#include <Render/MeshComponent.h>
+#include <Render/CameraComponent.h>
+#include <Render/SpotLightComponent.h>
+#include <Render/PointLightComponent.h>
+#include <Physics/PhysicsCollision.h>
+#include <Physics/BoxCollisionComponent.h>
 
 Application* Application::m_instance = 0;
 
@@ -31,6 +37,7 @@ void Application::Initialize() {
 	messageSystem->RegisterMessageType<Error>("Error");
 	messageSystem->RegisterMessageType<KeyboardMessage>("KeyboardMessage");
 	messageSystem->RegisterMessageType<Command>("Command");
+    messageSystem->RegisterMessageType<PhysicsCollision>("PhysicsCollision");
 
 	// Register resource types
 	resourceSystem->RegisterResourceType<Shader>("Shader");
@@ -41,6 +48,16 @@ void Application::Initialize() {
 	metaSystem->RegisterSingleton("ResourceSystem", resourceSystem);
 	metaSystem->RegisterSingleton("InputSystem", inputSystem);
     metaSystem->RegisterSingleton("ScriptingSystem", scriptingSystem);
+    
+    // Component types
+    Component::RegisterComponentType<TransformComponent>("TransformComponent", 5);
+    Component::RegisterComponentType<MeshComponent>("MeshComponent", 10);
+    Component::RegisterComponentType<ScriptComponent>("ScriptComponent", 15);
+    Component::RegisterComponentType<CameraComponent>("CameraComponent", 20);
+    Component::RegisterComponentType<SpotLightComponent>("SpotLightComponent", 25);
+    Component::RegisterComponentType<PointLightComponent>("PointLightComponent", 30);
+    // TODO: Cascaded Directional Light
+    Component::RegisterComponentType<BoxCollisionComponent>("BoxCollisionComponent", 40);
     
     // Device types
     scriptingSystem->SetGlobal("INPUTDEVICE_MOUSE", new Variant(INPUTDEVICE_MOUSE));
@@ -136,6 +153,10 @@ void Application::Initialize() {
     scriptingSystem->SetGlobal("KEY_FUNC_F10", new Variant(KEY_FUNC_F10));
     scriptingSystem->SetGlobal("KEY_FUNC_F11", new Variant(KEY_FUNC_F11));
     scriptingSystem->SetGlobal("KEY_FUNC_F12", new Variant(KEY_FUNC_F12));
+    
+    // Collision notifications
+    scriptingSystem->SetGlobal("COLLISION_START", new Variant(PhysicsCollision::COLLISION_START));
+    scriptingSystem->SetGlobal("COLLISION_END", new Variant(PhysicsCollision::COLLISION_END));
 }
 
 void Application::Shutdown() {

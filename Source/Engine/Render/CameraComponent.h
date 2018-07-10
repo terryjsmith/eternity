@@ -13,6 +13,7 @@ public:
 	~CameraComponent() = default;
 
 	GIGA_CLASS_NAME("CameraComponent");
+    GIGA_CLASS_BODY();
 
     /**
      * Get/set near/far/aspect/FOV

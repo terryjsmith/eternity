@@ -39,6 +39,11 @@ public:
 	* Find an entity by ID
 	*/
 	Entity* GetEntity(int id);
+    
+    /**
+     * Add an entity
+     */
+    void AddEntity(Entity* entity);
 
 	/**
 	 * Registered system with update tick rate
@@ -86,17 +91,17 @@ public:
 	/**
 	* Get systems
 	*/
-	template<class T>
-	ComponentSystem<T>* GetComponentSystem() {
-		std::vector<RegisteredSystem*>::iterator it = m_systems.begin();
-		for (; it != m_systems.end(); it++) {
-			ComponentSystem<T>* system = dynamic_cast<ComponentSystem<T>*>((*it)->system);
-			if (system) {
-				return(system);
-			}
-		}
-
-		return(0);
+    std::vector<ComponentSystemBase*> GetComponentSystems() {
+        std::vector<ComponentSystemBase*> systems;
+        std::vector<RegisteredSystem*>::iterator it = m_systems.begin();
+        for(; it != m_systems.end(); it++) {
+            ComponentSystemBase* base = dynamic_cast<ComponentSystemBase*>((*it)->system);
+            if(base) {
+                systems.push_back(base);
+            }
+        }
+        
+        return(systems);
 	}
 
 protected:

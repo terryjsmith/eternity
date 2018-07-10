@@ -9,18 +9,18 @@
  */
 class GIGA_API IndexBuffer {
 public:
-    IndexBuffer() : m_count(0) { }
-    virtual ~IndexBuffer() = default;
+    IndexBuffer();
+    virtual ~IndexBuffer();
     
     /**
      * Create a new buffer and fill it
      */
-    virtual void Create(int count, void* data) { }
+    virtual void Create(int count, void* data);
     
     /**
      * Get the count of indices in this buffer
      */
-    int GetIndexCount() { return m_count; }
+    int GetIndexCount() { return m_indexCount; }
     
     /**
      * Use this index buffer
@@ -35,11 +35,12 @@ public:
     /**
      * Read the buffer's contents
      */
-    virtual unsigned int* GetData(int& count) { count = 0; return(0); }
+    virtual unsigned int* GetData(int& count);
     
 protected:
     // Count of indices
-    int m_count;
+    int m_indexCount;
+    unsigned int* m_indexData;
 };
 
 #endif

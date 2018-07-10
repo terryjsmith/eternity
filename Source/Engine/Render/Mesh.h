@@ -3,26 +3,34 @@
 #define mesh_h
 
 #include <eternity.h>
+#include <Render/BoundingBox.h>
 #include <IO/ResourceObject.h>
 #include <Render/VertexBuffer.h>
 #include <Render/IndexBuffer.h>
 #include <Render/Texture2D.h>
-#include <Render/BoundingBox.h>
 #include <Render/Bone.h>
 #include <Render/Material.h>
 #include <Render/Animation.h>
 
+GIGA_CLASS()
 class GIGA_API Mesh : public ResourceObject {
 public:
 	Mesh() = default;
 	~Mesh();
 
 	GIGA_CLASS_NAME("Mesh");
+    GIGA_CLASS_BODY();
     
     /**
      * Load a mesh from a .g3d file
      */
     void ProcessData();
+    
+    /**
+     * Get vertices/indices
+     */
+    float* GetVertices(int &count);
+    unsigned int* GetIndices(int &count);
     
     /**
      * Mesh file format sections

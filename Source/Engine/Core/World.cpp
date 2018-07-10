@@ -1,6 +1,7 @@
 
 #include <Core/World.h>
 #include <Core/Entity.h>
+#include <Core/TransformComponent.h>
 
 void World::Initialize() {
 	m_entityCounter = 0;
@@ -48,10 +49,28 @@ Entity* World::CreateEntity() {
 	// Create a new entity
 	Entity* entity = new Entity();
 	entity->ID(++m_entityCounter);
+    
+    // Assign the first component (Transform)
+    entity->Assign<TransformComponent>();
 
 	// Add it to the list
 	m_entities.push_back(entity);
 	return(m_entities.back());
+}
+
+void World::AddEntity(Entity* entity) {
+    // Make sure our counter is larger
+    m_entityCounter = std::max(m_entityCounter, entity->ID() + 1);
+    
+    std::vector<Entity*>::iterator it = m_entities.begin();
+    for(; it != m_entities.end(); it++) {
+        if((*it)->ID() == entity->ID()) {
+            GIGA_ASSERT(false, "Trying to add an entity that already exists.");
+            return;
+        }
+    }
+    
+    m_entities.push_back(entity);
 }
 
 Entity* World::GetEntity(int id) {

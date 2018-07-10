@@ -38,7 +38,7 @@ ResourceObject* ResourceSystem::LoadResource(std::string filename, std::string t
 	GIGA_ASSERT(obj != 0, "Resource type not found.");
 
 	// Create an instance of the Resource into the ResourceObject
-	obj->Instantiate(m_resources[m_resources.size() - 1]);
+	obj->Instantiate(m_resources[m_resources.size() - 1].get());
 	return(obj);
 }
 

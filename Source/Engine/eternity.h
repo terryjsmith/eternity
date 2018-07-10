@@ -38,6 +38,8 @@
 #define GIGA_FUNCTION(...)
 #define GIGA_CLASS(...)
 #define GIGA_VARIABLE(...)
+#define GIGA_CLASS_BODY(...) void Serialize(DataRecord* record); \
+    void Deserialize(DataRecord* record);
 #endif
 
 enum ClassOptions {
@@ -47,7 +49,7 @@ enum ClassOptions {
 enum VarOptions {
     Get = 1,
     Set,
-    Serializable
+    Serialize
 };
 
 // STD library

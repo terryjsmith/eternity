@@ -13,6 +13,11 @@ public:
 	void Create(VertexType* type, int count, float* data, bool dynamic);
 	void Bind();
 	void Unbind();
+    
+    /**
+     * Read the buffer's contents back out
+     */
+    float* GetData(int& count);
 
 protected:
 	// internal buffer

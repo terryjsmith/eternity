@@ -141,5 +141,5 @@ void OpenGLRenderSystem::SetViewport(int width, int height) {
 }
 
 void OpenGLRenderSystem::SetDrawBuffer(int buffer) {
-    glDrawBuffer(buffer);
+    GL_CHECK(glDrawBuffer(buffer));
 }

@@ -52,6 +52,18 @@ public:
      */
     Entity* GetParent() { return m_parent; }
     
+    /**
+     * Overridable callbacks
+     */
+    
+    // Called on existing components when a new component is added/removed
+    virtual void OnComponentAdded(Component* component) { }
+    virtual void OnComponentRemoved(Component* component) { }
+    
+    // Called on the new component when it is added/removed
+    virtual void OnEntityAssigned() { }
+    virtual void OnEntityUnassigned() { }
+
     friend class Entity;
     
 protected:
@@ -63,7 +75,7 @@ protected:
 	uint32_t m_typeID;
 
 	// Parent entity
-	Entity* m_parent;
+	GIGA_VARIABLE(Serialize) Entity* m_parent;
     
     // Registered type IDs
     static std::map<std::string, ComponentType*> m_types;

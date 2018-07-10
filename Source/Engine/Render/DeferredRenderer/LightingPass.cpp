@@ -29,7 +29,7 @@ void LightingPass::Initialize(int windowWidth, int windowHeight) {
     // Create our ortho screen matrix
     m_ortho = glm::ortho(0.0f, (float)windowWidth, (float)windowHeight, 0.0f);
     
-    // Create a program
+    // Create programs
     m_program = renderSystem->CreateShaderProgram();
     m_program->Instantiate(vshader, fshader, 0);
     
@@ -52,6 +52,8 @@ void LightingPass::Initialize(int windowWidth, int windowHeight) {
     
     m_buffer = renderSystem->CreateVertexBuffer();
     m_buffer->Create(type, 4, box, false);
+    
+    m_null = renderSystem->CreateTexture3D();
 }
 
 void LightingPass::Render(Scene* scene) {
@@ -115,19 +117,43 @@ void LightingPass::Render(Scene* scene) {
     std::vector<LightComponent*> lights = scene->GetLights();
     std::vector<LightComponent*>::iterator i = lights.begin();
     for (i; i != lights.end(); i++) {
+        // Get light "camera"
+        CameraComponent* cc = (*i)->GetCamera();
+        
         // Bind vars
         m_program->Set("lightPosition", (*i)->GetTransform()->GetWorldPosition());
         m_program->Set("lightColour", (*i)->GetColor());
         m_program->Set("lightType", (*i)->GetType());
-        
         m_program->Set("farPlane", (*i)->GetAttenuation());
+        m_program->Set("lightDirection", cc->GetTransform()->GetLook());
+        m_program->Set("lightAngle", glm::cos(glm::radians(cc->GetFOV() / 2.0f)));
+    
+        matrix4 viewproj = cc->GetProjectionMatrix();
+        if((*i)->GetType() != LightComponent::LIGHT_POINT) {
+            viewproj = viewproj * cc->GetViewMatrix();
+        }
+        m_program->Set("lightSpaceMatrix[0]", viewproj);
         
         (*i)->GetDepthTexture()->Bind(5);
-        m_program->Set("lightShadowMap3D", 5);
+        if((*i)->GetType() == LightComponent::LIGHT_POINT) {
+            m_program->Set("lightShadowMap3D", 5);
+        }
+        
+        if((*i)->GetType() == LightComponent::LIGHT_SPOT) {
+            m_program->Set("lightShadowMap[0]", 5);
+            m_null->Bind(6);
+            m_program->Set("lightShadowMap3D", 6);
+        }
+        
+        if((*i)->GetType() == LightComponent::LIGHT_DIRECTIONAL) {
+            
+        }
         
         // Render
         renderSystem->Draw(DRAW_TRIANGLE_STRIP, 4);
     }
+    
+    //m_framebuffers[0]->GetTexture(0)->Save("lighting.bmp");
     
     vertexType->Unbind();
     m_buffer->Unbind();

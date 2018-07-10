@@ -111,6 +111,11 @@ public:
 	* Convert value to string
 	*/
 	std::string ToString();
+    
+    /**
+     * Convert value from string
+     */
+    void FromString(std::string value, int type);
 
 	/**
 	* Get operators

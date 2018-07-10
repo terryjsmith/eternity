@@ -209,6 +209,7 @@ bool Variant::IsNull() {
 
 std::string Variant::ToString() {
 	std::string output;
+    int length = 0;
 	switch (m_type) {
 	case VAR_INT32:
 		output = std::to_string(m_data.i32);
@@ -230,27 +231,90 @@ std::string Variant::ToString() {
 		break;
 	case VAR_VECTOR2:
 		output.resize(50);
-		sprintf((char*)output.data(), "(%.2f, %.2f)", m_data.f1, m_data.f2);
+		length = sprintf((char*)output.data(), "(%.2f, %.2f)", m_data.f1, m_data.f2);
+        output.resize(length);
 		break;
 	case VAR_VECTOR3:
 		output.resize(50);
-		sprintf((char*)output.data(), "(%.2f, %.2f, %.2f)", m_data.f1, m_data.f2, m_data.f3);
+		length = sprintf((char*)output.data(), "(%.2f, %.2f, %.2f)", m_data.f1, m_data.f2, m_data.f3);
+        output.resize(length);
+        break;
 	case VAR_VECTOR4:
 		output.resize(50);
-		sprintf((char*)output.data(), "(%.2f, %.2f, %.2f, %.2f)", m_data.f1, m_data.f2, m_data.f3, m_data.f4);
+		length = sprintf((char*)output.data(), "(%.2f, %.2f, %.2f, %.2f)", m_data.f1, m_data.f2, m_data.f3, m_data.f4);
+        output.resize(length);
+        break;
 	case VAR_QUATERNION:
 		output.resize(50);
-		sprintf((char*)output.data(), "(%.2f, %.2f, %.2f, %.2f)", m_data.f4, m_data.f2, m_data.f3, m_data.f1);
+		length = sprintf((char*)output.data(), "(%.2f, %.2f, %.2f, %.2f)", m_data.f4, m_data.f2, m_data.f3, m_data.f1);
+        output.resize(length);
+        break;
 	case VAR_STRING:
 		output = m_data.str;
 		break;
-	case VAR_OBJECT:
-		output = m_data.obj->ToString();
+    case VAR_OBJECT:
+            // TODO: Add this back in
+        break;
 	default:
 		break;
 	}
 
 	return(output);
+}
+
+void Variant::FromString(std::string value, int type) {
+    switch (type) {
+        case VAR_INT32:
+            m_data.i32 = std::stoi(value);
+            m_type = VAR_INT32;
+            break;
+        case VAR_UINT32:
+            m_data.ui32 = (uint32_t)std::stoul(value);
+            m_type = VAR_UINT32;
+            break;
+        case VAR_UINT64:
+            m_data.i64 = (uint64_t)std::stoull(value);
+            m_type = VAR_UINT64;
+            break;
+        case VAR_INT64:
+            m_data.i64 = (uint64_t)std::stoll(value);
+            m_type = VAR_INT64;
+            break;
+        case VAR_BOOL:
+            m_data.b = value.compare("true") == 0 ? true : false;
+            m_type = VAR_BOOL;
+            break;
+        case VAR_FLOAT:
+            m_data.f1 = std::stof(value);
+            m_type = VAR_FLOAT;
+            break;
+        case VAR_VECTOR2:
+            sscanf(value.c_str(), "(%f, %f)", &m_data.f1, &m_data.f2);
+            m_type = VAR_VECTOR2;
+            break;
+        case VAR_VECTOR3:
+            sscanf(value.c_str(), "(%f, %f, %f)", &m_data.f1, &m_data.f2, &m_data.f3);
+            m_type = VAR_VECTOR3;
+            break;
+        case VAR_VECTOR4:
+            sscanf(value.c_str(), "(%f, %f, %f, %f)", &m_data.f1, &m_data.f2, &m_data.f3, &m_data.f4);
+            m_type = VAR_VECTOR4;
+            break;
+        case VAR_QUATERNION:
+            sscanf(value.c_str(), "(%f, %f, %f, %f)", &m_data.f4, &m_data.f2, &m_data.f3, &m_data.f1);
+            m_type = VAR_QUATERNION;
+            break;
+        case VAR_STRING:
+            m_data.str = (char*)malloc(value.size() + 1);
+            strcpy(m_data.str, value.data());
+            m_type = VAR_STRING;
+            break;
+        case VAR_OBJECT:
+            // TODO: Add this back in
+            break;
+        default:
+            break;
+    }
 }
 
 int32_t Variant::AsInt() {

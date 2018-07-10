@@ -33,6 +33,8 @@ protected:
     Texture2D* m_normalTexture;
     Texture2D* m_positionTexture;
     Texture2D* m_materialTexture;
+    
+    Texture3D* m_null;
 };
 
 #endif

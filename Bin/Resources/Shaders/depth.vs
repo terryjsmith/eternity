@@ -9,7 +9,8 @@ layout(location = 6) in vec4 vertex_weights;
 /**
  * Uniforms
  */
-uniform mat4 mvpMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 modelviewMatrix;
 uniform mat4 modelMatrix;
 
 #if defined(HAS_BONES)
@@ -37,8 +38,8 @@ void main () {
     transformed_position = bposition.xyz;
 #endif
     
+    mat4 mvpMatrix = projectionMatrix * modelviewMatrix;
     gl_Position = mvpMatrix * vec4(transformed_position.xyz, 1.0);
     
-    // Send through position
     frag_position = modelMatrix * vec4(transformed_position.xyz, 1.0);
 }

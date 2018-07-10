@@ -12,7 +12,7 @@ void DepthPass::Initialize(int width, int height) {
     m_framebuffer->Initialize();
     
     m_depthTexture = renderSystem->CreateTexture2D();
-    m_depthTexture->Initialize(width, height, COLOR_DEPTH_COMPONENT32F, COLOR_DEPTH_COMPONENT);
+    m_depthTexture->Initialize(width, height, COLOR_DEPTH_COMPONENT, COLOR_DEPTH_COMPONENT);
     
     m_framebuffer->AddTexture(m_depthTexture, FRAMEBUFFER_SLOT_DEPTH);
     
@@ -47,7 +47,7 @@ void DepthPass::Render(Scene* scene) {
     renderSystem->EnableDepthTest(TEST_LEQUAL);
     
     // Clear our buffer
-    //renderSystem->SetClearColor(vector4(FLT_MAX, FLT_MAX, FLT_MAX, FLT_MAX));
+    renderSystem->SetClearColor(vector4(1, 1, 1, 1));
     renderSystem->Clear(DEPTH_BUFFER_BIT);
     
     // Tell the system depth write only
@@ -58,6 +58,8 @@ void DepthPass::Render(Scene* scene) {
     matrix4 proj = m_camera->GetProjectionMatrix();
     
     m_program->Set("projectionMatrix", proj);
+    m_program->Set("farPlane", m_camera->GetFar());
+    m_program->Set("cameraPosition", m_camera->GetTransform()->GetWorldPosition());
     
     std::vector<MeshComponent*> meshes = scene->GetMeshes();
     std::vector<MeshComponent*>::iterator it = meshes.begin();
@@ -91,6 +93,7 @@ void DepthPass::RecursiveRender(MeshComponent* mesh, matrix4 view, matrix4 paren
     // Send view/proj matrix to shader
     matrix4 modelviewMatrix = view * model;
     m_program->Set("modelviewMatrix", modelviewMatrix);
+    m_program->Set("modelMatrix", model);
     
     Mesh* m = mesh->GetMesh();
     VertexBuffer* vertexBuffer = m->vertexBuffer;

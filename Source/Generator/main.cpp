@@ -47,14 +47,15 @@ bool grabNextClass = false;
 
 // Supported types
 enum Type {
-    VAR_INT = 1,
-    VAR_UINT,
+    VAR_INT32 = 1,
+    VAR_UINT32,
+    VAR_INT64,
+    VAR_UINT64,
     VAR_BOOL,
     VAR_FLOAT,
     VAR_VECTOR2,
-	VAR_VECTOR3,
+    VAR_VECTOR3,
     VAR_VECTOR4,
-    VAR_MATRIX4,
     VAR_QUATERNION,
     VAR_STRING,
     VAR_OBJECT,
@@ -90,10 +91,6 @@ int map_internal_type(CXType kind, std::string rettype) {
         
         if(rettype == "quaternion") {
             internalType = VAR_QUATERNION;
-        }
-        
-        if(rettype == "matrix4") {
-            internalType = VAR_MATRIX4;
         }
     }
 
@@ -211,6 +208,11 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 		return CXChildVisit_Continue;
     }
     
+    if (cursor == CXCursor_CXXMethod && name.compare("GBODY") == 0) {
+        currentMetaClass->needsBody = true;
+        return CXChildVisit_Continue;
+    }
+    
     if(cursor == CXCursor_FunctionDecl && currentGigaClassName.empty() == false) {
         int error = 1;
     }
@@ -248,6 +250,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
                 MetaClass* m = new MetaClass;
                 m->name = name;
 				m->singleton = false;
+                m->needsBody = false;
 
                 classes[name] = m;
 				currentMetaClass = m;
@@ -273,6 +276,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
             MetaClass::MetaVariable* var = new MetaClass::MetaVariable();
             var->name = name;
             var->type = internalType;
+            var->objectType = typestr;
 			var->get = var->set = var->serialize = false;
 
 			if (markGet) {
@@ -415,21 +419,20 @@ int main(int argc, char** argv) {
     // Create type mappings
     typeMappings[CXTypeKind::CXType_Void] = -1;
     typeMappings[CXTypeKind::CXType_Bool] = VAR_BOOL;
-    typeMappings[CXTypeKind::CXType_Int] = VAR_INT;
-    typeMappings[CXTypeKind::CXType_UInt] = VAR_UINT;
+    typeMappings[CXTypeKind::CXType_Int] = VAR_INT32;
+    typeMappings[CXTypeKind::CXType_UInt] = VAR_UINT32;
     typeMappings[CXTypeKind::CXType_Float] = VAR_FLOAT;
     typeMappings[CXTypeKind::CXType_Pointer] = VAR_OBJECT;
     typeMappings[CXTypeKind::CXType_SChar] = VAR_STRING;
 
 	// Mappings to functions
-	functionMappings[VAR_INT] = "Int";
-	functionMappings[VAR_UINT] = "UInt";
+	functionMappings[VAR_INT32] = "Int";
+	functionMappings[VAR_UINT32] = "UInt";
 	functionMappings[VAR_BOOL] = "Bool";
 	functionMappings[VAR_FLOAT] = "Float";
 	functionMappings[VAR_VECTOR2] = "Vector2";
 	functionMappings[VAR_VECTOR3] = "Vector3";
 	functionMappings[VAR_VECTOR4] = "Vector4";
-	functionMappings[VAR_MATRIX4] = "Matrix4";
 	functionMappings[VAR_QUATERNION] = "Quaternion";
 	functionMappings[VAR_STRING] = "String";
 	functionMappings[VAR_OBJECT] = "Object";
@@ -507,10 +510,10 @@ int main(int argc, char** argv) {
         
         // Process inheritance
         AddInheritedClasses(cl, cl->name);
-
+        
 		// Variables
 		std::map<std::string, MetaClass::MetaVariable*>::iterator vi = cl->variables.begin();
-		for (; vi != cl->variables.end(); vi++) {
+        for (; vi != cl->variables.end(); vi++) {
 			if (vi->second->get) {
 				output += "Variant* meta_" + cl->name + "_" + vi->second->name + "_get(GigaObject* obj) {\n";
 				output += "\t" + cl->name + "* cobj = dynamic_cast<" + cl->name + "*>(obj);\n";
@@ -655,6 +658,60 @@ int main(int argc, char** argv) {
 			output += "\n}\n\n";
 		}
 	}
+    
+    // Serialization
+    it = classes.begin();
+    for (; it != classes.end(); it++) {
+        MetaClass* cl = it->second;
+        
+        // Needs to have a GIGA_CLASS_BODY() tag
+        if(cl->needsBody == false) {
+            continue;
+        }
+        
+        // Needs to be a final exported class
+        std::map<std::string, bool>::iterator ei = exportGigaClasses.find(cl->name);
+        if(ei == exportGigaClasses.end()) {
+            continue;
+        }
+        
+        // Serialized variables
+        std::map<std::string, MetaClass::MetaVariable*> serialized;
+        
+        // Variables
+        std::map<std::string, MetaClass::MetaVariable*>::iterator vi = cl->variables.begin();
+        for (; vi != cl->variables.end(); vi++) {
+            if(vi->second->serialize == false) {
+                continue;
+            }
+            
+            serialized[vi->first] = vi->second;
+        }
+        
+        if(serialized.size()) {
+            output += "void " + cl->name + "::Serialize(DataRecord* record) {\n";
+        
+            // Iterate over serialized vars
+            vi = serialized.begin();
+            for(; vi != serialized.end(); vi++) {
+                output += "\trecord->Set(\"" + vi->first + "\", new Variant(" + vi->first + "));\n";
+            }
+        
+            output += "}\n\n";
+            
+            output += "void " + cl->name + "::Deserialize(DataRecord* record) {\n";
+            vi = serialized.begin();
+            for(; vi != serialized.end(); vi++) {
+                output += "\t" + vi->first + " = record->Get(\"" + vi->first + "\")->As";
+                output += functionMappings[vi->second->type];
+                if (vi->second->type == VAR_OBJECT) {
+                    output += "<" + vi->second->objectType + ">";
+                }
+                output += "();\n";
+            }
+            output += "}\n\n";
+        }
+    }
 
 	// Registration
 	output += "void MetaSystem::RegisterMetaFunctions() {\n\tMetaSystem* metaSystem = GetSystem<MetaSystem>();\n\n";
@@ -677,13 +734,36 @@ int main(int argc, char** argv) {
 			output += "); \n";
 		}
         
+        // Serialized variables
+        std::map<std::string, MetaClass::MetaVariable*> serialized;
+        
         std::map<std::string, MetaClass::MetaVariable*>::iterator vi = cl->variables.begin();
         for (; vi != cl->variables.end(); vi++) {
+            if(vi->second->serialize == true) {
+                serialized[vi->first] = vi->second;
+            }
+            
+            if(vi->second->get == false && vi->second->set == false) {
+                continue;
+            }
+            
             output += "\tmetaSystem->RegisterVariable(\"" + cl->name + "\", \"" + vi->second->name + "\", ";
             output += vi->second->get ? "meta_" + cl->name + "_" + vi->second->name + "_get" : "0";
             output += ", ";
             output += vi->second->set ? "meta_" + cl->name + "_" + vi->second->name + "_set" : "0";
             output += ");\n";
+        }
+        
+        if(serialized.size()) {
+            std::string objectName = "drt" + cl->name;
+            output += "\n\tDataRecordType* " + objectName + " = new DataRecordType(\"" + cl->name + "\");\n";
+            output += "\t" + objectName + "->SetPrimaryKey(\"" + cl->name + "_id\");\n";
+            vi = serialized.begin();
+            for (; vi != serialized.end(); vi++) {
+                output += "\t" + objectName + "->AddKey(\"" + vi->second->name + "\", " + std::to_string(vi->second->type) + ");\n";
+            }
+            
+            output += "\n\tDataRecordType::Register(\"" + cl->name + "\", " + objectName + ");\n";
         }
         
         if(cl->functions.size()) {

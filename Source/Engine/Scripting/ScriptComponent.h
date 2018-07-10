@@ -8,12 +8,14 @@
 #include <Scripting/ScriptThread.h>
 #include <v8.h>
 
+GIGA_CLASS()
 class GIGA_API ScriptComponent : public Component {
 public:
     ScriptComponent();
     ~ScriptComponent() = default;
     
     GIGA_CLASS_NAME("ScriptComponent");
+    GIGA_CLASS_BODY();
     
 	/**
 	 * Initialize from a source script

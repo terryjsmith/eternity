@@ -59,24 +59,24 @@ public:
      */
     Texture* GetDepthTexture() { return m_depthTexture; }
     
+    /**
+     * Get attached "camera"
+     */
+    CameraComponent* GetCamera() { return m_camera; }
+    
 protected:
     // Create subclass types (spotlight, directional light, etc.)
     LightComponent();
     
-    /**
-     * Recalculate internal matrices
-     */
-    virtual void RecalculateMatrices() = 0;
-    
 protected:
     // The color of light
-    vector3 m_color;
+    GIGA_VARIABLE(Serialize) vector3 m_color;
     
     // Light type
     unsigned int m_type;
     
     // Attenuation (distance to 0% light)
-    float m_attenuation;
+    GIGA_VARIABLE(Serialize) float m_attenuation;
     
     // Number of passes (textures, matrices, etc.)
     unsigned int m_passes;
