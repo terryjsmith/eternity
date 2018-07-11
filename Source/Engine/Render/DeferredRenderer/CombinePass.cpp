@@ -12,6 +12,7 @@ CombinePass::CombinePass() {
     m_lightingTexture = 0;
     
     m_framebuffer = 0;
+	m_buffer = 0;
 }
 
 void CombinePass::Initialize(int windowWidth, int windowHeight) {
@@ -32,8 +33,10 @@ void CombinePass::Initialize(int windowWidth, int windowHeight) {
     Shader* fshader = dynamic_cast<Shader*>(resourceSystem->LoadResource("deferred.fs", "Shader"));
     
     // Create a program
-    m_program = renderSystem->CreateShaderProgram();
-    m_program->Instantiate(vshader, fshader, 0);
+	if (m_program == 0) {
+		m_program = renderSystem->CreateShaderProgram();
+		m_program->Instantiate(vshader, fshader, 0);
+	}
     
     // Populate our vertex buffer and type
     float box[] = {
@@ -46,14 +49,16 @@ void CombinePass::Initialize(int windowWidth, int windowHeight) {
     // Use our vertex shader
     m_program->Bind();
     
-    VertexType* type = renderSystem->CreateVertexType();
-    type->Initialize();
-    
-    type->AddVertexAttrib(VERTEXTYPE_ATTRIB_POSITION, 2, 0);
-    type->AddVertexAttrib(VERTEXTYPE_ATTRIB_TEXCOORD0, 2, 2);
-    
-    m_buffer = renderSystem->CreateVertexBuffer();
-    m_buffer->Create(type, 4, box, false);
+	if (m_buffer == 0) {
+		VertexType* type = renderSystem->CreateVertexType();
+		type->Initialize();
+
+		type->AddVertexAttrib(VERTEXTYPE_ATTRIB_POSITION, 2, 0);
+		type->AddVertexAttrib(VERTEXTYPE_ATTRIB_TEXCOORD0, 2, 2);
+
+		m_buffer = renderSystem->CreateVertexBuffer();
+		m_buffer->Create(type, 4, box, false);
+	}
 }
 
 void CombinePass::Render(Scene *scene) {

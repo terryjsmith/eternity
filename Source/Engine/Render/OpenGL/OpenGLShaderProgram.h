@@ -8,7 +8,7 @@
 class GIGA_API OpenGLShaderProgram : public ShaderProgram {
 public:
 	OpenGLShaderProgram() = default;
-	~OpenGLShaderProgram() = default;
+	~OpenGLShaderProgram();
 
 	void Bind();
 	void Unbind();

@@ -12,6 +12,13 @@ void GBuffer::Initialize(int windowWidth, int windowHeight) {
     
     RenderSystem* renderSystem = GetSystem<RenderSystem>();
     
+	std::vector<Framebuffer*>::iterator it = m_framebuffers.begin();
+	for(; it != m_framebuffers.end(); it++) {
+		(*it)->Destroy();
+	}
+
+	m_framebuffers.clear();
+
     Framebuffer* gbufferFramebuffer = renderSystem->CreateFramebuffer();
     gbufferFramebuffer->Initialize();
     
@@ -45,8 +52,10 @@ void GBuffer::Initialize(int windowWidth, int windowHeight) {
     Shader* fshader = dynamic_cast<Shader*>(resourceSystem->LoadResource("gbuffer.fs", "Shader"));
     
     // Create a program
-    m_program = renderSystem->CreateShaderProgram();
-    m_program->Instantiate(vshader, fshader, 0);
+	if (m_program == 0) {
+		m_program = renderSystem->CreateShaderProgram();
+		m_program->Instantiate(vshader, fshader, 0);
+	}
 }
 
 void GBuffer::Render(Scene* scene) {

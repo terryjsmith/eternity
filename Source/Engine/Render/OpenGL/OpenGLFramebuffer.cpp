@@ -22,6 +22,19 @@ OpenGLFramebuffer::~OpenGLFramebuffer() {
     }
 }
 
+void OpenGLFramebuffer::Destroy() {
+	for (std::vector<Texture*>::iterator it = m_textures.begin(); it != m_textures.end(); it++) {
+		delete (*it);
+	}
+
+	m_textures.clear();
+
+	if (m_framebuffer) {
+		GL_CHECK(glDeleteFramebuffers(1, &m_framebuffer));
+		m_framebuffer = 0;
+	}
+}
+
 void OpenGLFramebuffer::Initialize() {
     if (m_framebuffer) {
         GL_CHECK(glDeleteFramebuffers(1, &m_framebuffer));

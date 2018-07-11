@@ -7,7 +7,7 @@
 
 class GIGA_API LightingPass : public RenderPass {
 public:
-    LightingPass() = default;
+    LightingPass();
     ~LightingPass() = default;
     
     void Initialize(int windowWidth, int windowHeight);

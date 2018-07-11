@@ -12,12 +12,29 @@
 #include <Core/Application.h>
 
 void OpenGLRenderSystem::Initialize() {
+	m_renderPasses.clear();
+
+	if (m_gbufferRenderPass) {
+		delete m_gbufferRenderPass;
+		m_gbufferRenderPass = 0;
+	}
+
 	m_gbufferRenderPass = new GBuffer();
     m_renderPasses.push_back(m_gbufferRenderPass);
-    
+
+	if (m_combineRenderPass) {
+		delete m_combineRenderPass;
+		m_combineRenderPass = 0;
+	}
+
     m_combineRenderPass = new CombinePass();
     m_renderPasses.push_back(m_combineRenderPass);
     
+	if (m_lightingRenderPass) {
+		delete m_lightingRenderPass;
+		m_lightingRenderPass = 0;
+	}
+
     m_lightingRenderPass = new LightingPass();
     m_renderPasses.push_back(m_lightingRenderPass);
     

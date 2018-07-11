@@ -1,6 +1,10 @@
 
 #include <Render/RenderPass.h>
 
+RenderPass::RenderPass() {
+	m_program = 0;
+}
+
 RenderPass::~RenderPass() {
     for (size_t i = 0; i < m_framebuffers.size(); i++) {
         delete m_framebuffers[i];

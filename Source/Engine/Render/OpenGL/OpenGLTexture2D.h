@@ -12,7 +12,7 @@
 class GIGA_API OpenGLTexture2D : public OpenGLTexture, public Texture2D {
 public:
     OpenGLTexture2D() = default;
-    ~OpenGLTexture2D() = default;
+    ~OpenGLTexture2D();
     
     /**
      * Initialize a new "zero" texture

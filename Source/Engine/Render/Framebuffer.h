@@ -26,6 +26,11 @@ public:
      * Initialize (will detroy any existing framebuffer and textures)
      */
     virtual void Initialize() { }
+
+	/**
+	 * Destroy all textures and this framebuffer
+	 */
+	virtual void Destroy() { }
     
     /**
      * Attach a texture to our framebuffer

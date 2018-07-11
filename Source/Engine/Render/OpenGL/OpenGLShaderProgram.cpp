@@ -3,6 +3,23 @@
 #include <Render/OpenGL/OpenGL.h>
 #include <Core/Error.h>
 
+OpenGLShaderProgram::~OpenGLShaderProgram() {
+	if (m_vshader) {
+		GL_CHECK(glDeleteShader(m_vshader));
+		m_vshader = 0;
+	}
+
+	if (m_fshader) {
+		GL_CHECK(glDeleteShader(m_fshader));
+		m_fshader = 0;
+	}
+
+	if (m_program) {
+		GL_CHECK(glDeleteProgram(m_program));
+		m_program = 0;
+	}
+}
+
 void OpenGLShaderProgram::Bind() {
 	if (m_program == 0) {
 		// Create a new vertex shader and load source into it

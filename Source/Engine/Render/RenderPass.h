@@ -9,7 +9,7 @@
 
 class GIGA_API RenderPass {
 public:
-	RenderPass() = default;
+	RenderPass();
     ~RenderPass();
 
     virtual void Initialize(int windowWidth, int windowHeight);

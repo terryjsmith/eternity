@@ -19,7 +19,7 @@
 class GIGA_API OpenGLTexture3D : public Texture3D, public OpenGLTexture {
 public:
     OpenGLTexture3D() = default;
-    virtual ~OpenGLTexture3D() = default;
+    ~OpenGLTexture3D();
     
     /**
      * Initialize a new "zero" texture

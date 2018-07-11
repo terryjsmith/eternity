@@ -3,6 +3,13 @@
 #include <Render/OpenGL/OpenGL.h>
 #include <SOIL.h>
 
+OpenGLTexture2D::~OpenGLTexture2D() {
+	if (m_texture) {
+		GL_CHECK(glDeleteTextures(1, &m_texture));
+		m_texture = 0;
+	}
+}
+
 void OpenGLTexture2D::Initialize(int width, int height, int format, int type) {
     if (m_texture) {
         GL_CHECK(glDeleteTextures(1, &m_texture));

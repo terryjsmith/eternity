@@ -7,7 +7,7 @@
 class GIGA_API OpenGLTexture {
 public:
     OpenGLTexture() : m_texture(0), m_slot(0) { }
-    virtual ~OpenGLTexture() = default;
+	virtual ~OpenGLTexture() = default;
     
 protected:
     // Internal texture ID
