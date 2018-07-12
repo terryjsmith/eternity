@@ -41,6 +41,11 @@ public:
      * Create a component from a name
      */
     static Component* CreateComponent(std::string className);
+
+	/**
+	 * Get registered component types
+	 */
+	static std::vector<std::string> GetComponentTypes();
     
     /**
      * Get type ID (lazy)

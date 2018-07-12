@@ -25,8 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS GLEW_STATIC "GIGA_API="
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    eternityopenglwidget.cpp \
-    ../ThirdParty/glew/src/glew.c
+    eternityopenglwidget.cpp
 
 HEADERS  += mainwindow.h \
     eternityopenglwidget.h
@@ -82,6 +81,10 @@ else:unix: LIBS += -L$$PWD/../ThirdParty/soil/lib/ -lsoil2-debug
 
 INCLUDEPATH += $$PWD/../ThirdParty/soil/include
 DEPENDPATH += $$PWD/../ThirdParty/soil/include
+
+# SQLite for local data storage
+INCLUDEPATH += $$PWD/../ThirdParty/sqlite/include
+DEPENDPATH += $$PWD/../ThirdParty/sqlite/include
 
 # V8 for JavaScript
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../ThirdParty/v8/lib/ -lv8_base -lv8_libbase v8_libplatform.lib -lv8_libsampler -lv8_external_snapshot -licui18n -licuuc

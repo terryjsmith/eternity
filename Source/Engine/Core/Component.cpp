@@ -25,3 +25,13 @@ Component* Component::CreateComponent(std::string className) {
 
     return(it->second->ctor());
 }
+
+std::vector<std::string> Component::GetComponentTypes() {
+	std::vector<std::string> ret;
+	std::map<std::string, ComponentType*>::iterator it = m_types.begin();
+	for (; it != m_types.end(); it++) {
+		ret.push_back(it->first);
+	}
+
+	return(ret);
+}

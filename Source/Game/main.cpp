@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
 	application->SetPrimaryWindow(window);
 
 	// Specify resource directories
-    resourceSystem->AddSearchPath("Resources");
+	resourceSystem->AddSearchPath("");
 	resourceSystem->AddSearchPath("Resources/Shaders");
     resourceSystem->AddSearchPath("Resources/Scripts");
     resourceSystem->AddSearchPath("Resources/Models");

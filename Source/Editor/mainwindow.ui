@@ -20,7 +20,7 @@
    <string>Eternity Editor</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: #111120;</string>
+   <string notr="true"/>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
@@ -35,20 +35,20 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="mainLayout" stretch="0,0">
       <property name="spacing">
        <number>10</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="leftSideLayout">
+       <layout class="QVBoxLayout" name="assetViewLaout">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="sceneViewLayout">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <layout class="QHBoxLayout" name="sceneMenuLayout">
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <layout class="QHBoxLayout" name="leftButtons">
               <property name="spacing">
                <number>0</number>
               </property>
@@ -99,10 +99,10 @@
              </layout>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_7"/>
+             <layout class="QHBoxLayout" name="centerButtons"/>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <layout class="QHBoxLayout" name="rightButtons">
               <item alignment="Qt::AlignRight">
                <widget class="QWidget" name="widget_2" native="true">
                 <property name="sizePolicy">
@@ -160,7 +160,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <layout class="QVBoxLayout" name="assetLayout">
           <property name="spacing">
            <number>0</number>
           </property>
@@ -184,7 +184,7 @@
             <property name="currentIndex">
              <number>0</number>
             </property>
-            <widget class="QWidget" name="tab">
+            <widget class="QWidget" name="contentTab">
              <attribute name="title">
               <string>Tab 1</string>
              </attribute>
@@ -221,7 +221,7 @@
                 <item>
                  <layout class="QVBoxLayout" name="verticalLayout_7">
                   <item>
-                   <widget class="QComboBox" name="comboBox">
+                   <widget class="QComboBox" name="assetLocationDropdown">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -237,7 +237,7 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTreeView" name="treeView_2">
+                   <widget class="QTreeView" name="currentFileSystemView">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
                       <horstretch>0</horstretch>
@@ -255,7 +255,7 @@
                  </layout>
                 </item>
                 <item>
-                 <widget class="QListView" name="listView">
+                 <widget class="QListView" name="currentFoldeListrView">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
@@ -277,10 +277,38 @@
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="tab_2">
+            <widget class="QWidget" name="consoleTab">
              <attribute name="title">
               <string>Tab 2</string>
              </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                 <widget class="QPlainTextEdit" name="consoleTextEdit">
+                  <property name="frameShape">
+                   <enum>QFrame::NoFrame</enum>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
             </widget>
            </widget>
           </item>
@@ -291,12 +319,12 @@
       <item>
        <layout class="QVBoxLayout" name="inspectorPanelLayout">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <layout class="QVBoxLayout" name="sceneInspectorLayout">
           <property name="spacing">
            <number>0</number>
           </property>
           <item>
-           <widget class="QGroupBox" name="groupBox">
+           <widget class="QGroupBox" name="sceneLayout">
             <property name="maximumSize">
              <size>
               <width>250</width>
@@ -320,7 +348,32 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QTreeView" name="treeView"/>
+              <widget class="QTreeView" name="sceneTreeView">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>250</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>400</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -328,12 +381,12 @@
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <layout class="QVBoxLayout" name="propertiesInspectorLayout">
           <property name="spacing">
            <number>0</number>
           </property>
           <item>
-           <widget class="QGroupBox" name="groupBox_2">
+           <widget class="QGroupBox" name="propertiesLayout">
             <property name="maximumSize">
              <size>
               <width>250</width>
@@ -357,7 +410,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QTableWidget" name="tableWidget"/>
+              <widget class="QTableWidget" name="propertiesTableView"/>
              </item>
             </layout>
            </widget>

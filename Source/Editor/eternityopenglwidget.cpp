@@ -14,6 +14,7 @@ EternityOpenGLWidget::EternityOpenGLWidget(QWidget *parent) : QOpenGLWidget(pare
 void EternityOpenGLWidget::initializeGL() {
     // Get resource system
     ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
+    resourceSystem->AddSearchPath("");
     resourceSystem->AddSearchPath("resources/shaders");
     resourceSystem->AddSearchPath("resources/images");
     resourceSystem->AddSearchPath("resources/models");
