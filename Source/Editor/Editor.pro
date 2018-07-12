@@ -46,7 +46,7 @@ else:win32:CONFIG(debug, debug|release): LIBS += OpenGL32.lib WS2_32.lib User32.
 # main eternity engine
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Bin/ eternity.lib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Bin/ eternity.lib
-else:unix: LIBS += -L$$PWD/../../Bin/ -lgiga -framework Cocoa -framework IOKit  -framework CoreVideo -framework OpenGL -framework Security
+else:unix: LIBS += -L$$PWD/../../Bin/ -leternity -framework Cocoa -framework IOKit  -framework CoreVideo -framework OpenGL -framework Security
 
 INCLUDEPATH += $$PWD/../Engine
 DEPENDPATH += $$PWD/../Engine
@@ -78,7 +78,7 @@ DEPENDPATH += $$PWD/../ThirdParty/glm/include
 # SOIL for loading textures
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../ThirdParty/soil/lib/ SOIL.lib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../ThirdParty/soil/lib/ SOIL.lib
-else:unix: LIBS += -L$$PWD/../ThirdParty/soil/lib/ -lsoil2-debug
+else:unix: LIBS += -L$$PWD/../ThirdParty/soil/lib/ -lSOIL
 
 INCLUDEPATH += $$PWD/../ThirdParty/soil/include
 DEPENDPATH += $$PWD/../ThirdParty/soil/include
