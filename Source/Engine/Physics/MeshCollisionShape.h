@@ -17,7 +17,6 @@ public:
     
     /**
      * Initialize from a set of vertices and indices 
-     * (complete flag set to true for final of multiple sub-meshes)
      */
     void Initialize(Mesh* mesh);
     

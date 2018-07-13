@@ -18,8 +18,7 @@
 #include <Render/PointLightComponent.h>
 #include <Render/SpotLightComponent.h>
 #include <Physics/PhysicsSystem.h>
-#include <Physics/BoxCollisionComponent.h>
-#include <Physics/MeshCollisionComponent.h>
+#include <Physics/RigidBodyComponent.h>
 #include <IO/SQLiteDataLoader.h>
 
 int main(int argc, char** argv) {

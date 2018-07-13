@@ -9,8 +9,8 @@
 GIGA_CLASS()
 class GIGA_API PhysicsCollision : public Message {
 public:
-    PhysicsCollision() = default;
-    PhysicsCollision(int type, RigidBodyComponent* a, RigidBodyComponent* b) : m_type(type), m_bodyA(a), m_bodyB(b) { }
+    PhysicsCollision();
+    PhysicsCollision(int type, RigidBodyComponent* a, RigidBodyComponent* b);
     ~PhysicsCollision() = default;
     
     enum {

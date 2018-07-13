@@ -36,7 +36,11 @@ void MeshCollisionShape::Initialize(Mesh* mesh) {
         if(m_triMesh == 0) {
             m_triMesh = new btTriangleIndexVertexArray();
         }
+        
         m_triMesh->addIndexedMesh(*mesh);
+        
+        free(vertices);
+        free(indices);
     }
     
     m_collisionShape = new btBvhTriangleMeshShape(m_triMesh, true);

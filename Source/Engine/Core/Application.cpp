@@ -16,7 +16,7 @@
 #include <Render/SpotLightComponent.h>
 #include <Render/PointLightComponent.h>
 #include <Physics/PhysicsCollision.h>
-#include <Physics/BoxCollisionComponent.h>
+#include <Physics/RigidBodyComponent.h>
 
 Application* Application::m_instance = 0;
 
@@ -57,7 +57,7 @@ void Application::Initialize() {
     Component::RegisterComponentType<SpotLightComponent>("SpotLightComponent", 25);
     Component::RegisterComponentType<PointLightComponent>("PointLightComponent", 30);
     // TODO: Cascaded Directional Light
-    Component::RegisterComponentType<BoxCollisionComponent>("BoxCollisionComponent", 40);
+    Component::RegisterComponentType<RigidBodyComponent>("RigidBodyComponent", 40);
     
     // Device types
     scriptingSystem->SetGlobal("INPUTDEVICE_MOUSE", new Variant(INPUTDEVICE_MOUSE));

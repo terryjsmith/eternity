@@ -7,7 +7,7 @@ option(USE_OPENGL "Build the OpenGL renderer" ON)
 set (CMAKE_CXX_STANDARD 11)
 
 # general setup
-find_library(LIBRARY_CLANG libclang "${CMAKE_SOURCE_DIR}/Source/ThirdParty/clang/lib" NO_DEFAULT_PATH)
+find_library(LIBRARY_CLANG clang "${CMAKE_SOURCE_DIR}/Source/ThirdParty/clang/lib" NO_DEFAULT_PATH)
 find_library(LIBRARY_GLFW glfw3 PATHS "${CMAKE_SOURCE_DIR}/Source/ThirdParty/glfw/lib" NO_DEFAULT_PATH)
 find_library(LIBRARY_V8_BASE v8_base "${CMAKE_SOURCE_DIR}/Source/ThirdParty/v8/lib" NO_DEFAULT_PATH)
 find_library(LIBRARY_V8_SNAPSHOT v8_external_snapshot "${CMAKE_SOURCE_DIR}/Source/ThirdParty/v8/lib" NO_DEFAULT_PATH)
