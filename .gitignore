@@ -34,7 +34,7 @@ Bin/
 *.bin
 
 # CMake
-Bin/CMake*
+Bin/*
 
 # MacOS
 *.DS_Store
