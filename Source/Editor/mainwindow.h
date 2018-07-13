@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QComboBox>
+#include <QGroupBox>
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +25,9 @@ public:
     // Menu item handlers
     void btnOpenProject_clicked();
 
+private slots:
+    void on_propertiesLayout_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -35,6 +39,9 @@ private:
 
     // Current project directory
     QString m_currentProjectDirectory;
+
+    QGroupBox* m_propertiesGroupBox;
+    bool m_propertiesExpanded;
 };
 
 #endif // MAINWINDOW_H

@@ -14,8 +14,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
+    m_propertiesExpanded = true;
+
     // Get UI components
     m_assetLocationDropdown = ui->assetLocationDropdown;
+    m_propertiesGroupBox = ui->propertiesLayout;
 
     // Set up our default asset locations
     QStringList assetTypes;
@@ -82,4 +85,15 @@ void MainWindow::OpenProject(QString directory) {
     ui->actionClose_Project->setEnabled(true);
     ui->actionNew_Scene->setEnabled(true);
     ui->actionOpen_Scene->setEnabled(true);
+}
+
+void MainWindow::on_propertiesLayout_clicked() {
+    if(m_propertiesExpanded) {
+        m_propertiesGroupBox->setMaximumHeight(20);
+        m_propertiesExpanded = false;
+    }
+    else {
+        m_propertiesGroupBox->setMaximumHeight(0);
+        m_propertiesExpanded = true;
+    }
 }
