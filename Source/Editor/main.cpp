@@ -17,6 +17,10 @@ int main(int argc, char *argv[]) {
     Application* application = Application::GetInstance();
     World* world = application->GetWorld();
 
+    QCoreApplication::setOrganizationName("Grok It Games");
+    QCoreApplication::setOrganizationDomain("grokitgames.com");
+    QCoreApplication::setApplicationName("Eternity Editor");
+
     // Initialize systems
     OpenGLRenderSystem* renderSystem = world->CreateSystem<OpenGLRenderSystem>();
     MaterialSystem* materialSystem = world->CreateSystem<MaterialSystem>();

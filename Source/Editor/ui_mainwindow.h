@@ -624,6 +624,7 @@ public:
         sceneLayout->setTitle(QApplication::translate("MainWindow", "Scene", Q_NULLPTR));
         propertiesLayout->setTitle(QApplication::translate("MainWindow", "Properties", Q_NULLPTR));
         label->setText(QApplication::translate("MainWindow", "Position", Q_NULLPTR));
+        plainTextEdit_3->setPlaceholderText(QApplication::translate("MainWindow", "X", Q_NULLPTR));
         label_2->setText(QApplication::translate("MainWindow", "Mesh", Q_NULLPTR));
         label_3->setText(QApplication::translate("MainWindow", "Shape", Q_NULLPTR));
         label_4->setText(QApplication::translate("MainWindow", "Type", Q_NULLPTR));

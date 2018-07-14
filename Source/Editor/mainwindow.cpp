@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
+#include <QSettings>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include "openscenedialog.h"
 
 #include <IO/SQLiteDataLoader.h>
@@ -54,12 +57,27 @@ MainWindow* MainWindow::GetInstance() {
 
 void MainWindow::btnOpenProject_clicked() {
     // Have the user choose a project directory
-    QString directory = QFileDialog::getExistingDirectory(this, "Choose Project Directory", QDir::currentPath());
-    OpenProject(directory);
+    QString filePath = QFileDialog::getOpenFileName(this, "Open Project", QDir::currentPath(), "Eternity Project (*.gpf)");
+    OpenProject(filePath);
 }
 
-void MainWindow::OpenProject(QString directory) {
-    if(directory.length() == 0) return;
+void MainWindow::OpenProject(QString projectFile) {
+    if(projectFile.length() == 0) return;
+
+    QString path = projectFile;
+    QString directory = path = path.mid(0, path.lastIndexOf("/"));
+
+    QFile projFile(projectFile);
+    if(!projFile.open(QIODevice::ReadWrite)) {
+        qWarning("Couldn't open project settings file.");
+        return;
+    }
+
+    QByteArray jsonData = projFile.readAll();
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(jsonData));
+    QJsonObject settingsObject = jsonDoc.object();
+
+    setWindowTitle("Eternity Editor - " + settingsObject["name"].toString());
 
     m_currentProjectDirectory = directory;
     QDir::setCurrent(m_currentProjectDirectory);

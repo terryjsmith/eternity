@@ -24,7 +24,7 @@ public:
     static MainWindow* GetInstance();
 
     // Open a project from a directory
-    void OpenProject(QString directory);
+    void OpenProject(QString projectFile);
 
     // Getters for view models
     EntityTreeModel* GetEntityTreeModel() { return m_entityTreeModel; }
