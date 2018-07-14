@@ -23,6 +23,9 @@ protected:
 
     // Current scene
     View* m_scene;
+
+    // Our update time (for retrieving frame delta)
+    QTime* m_updateTimer;
 };
 
 #endif // ETERNITYOPENGLWIDGET_H

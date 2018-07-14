@@ -42,7 +42,7 @@ void OpenSceneDialog::accept() {
     args["m_sceneID"] = std::to_string(selectedSceneID.toInt());
 
     SQLiteDataLoader* loader = GetAppService<SQLiteDataLoader>();
-    std::vector<DataRecord*> entities = loader->GetRecords("Entity");
+    std::vector<DataRecord*> entities = loader->GetRecords("Entity", args);
     EntityTreeModel* model = MainWindow::GetInstance()->GetEntityTreeModel();
 
     for(size_t i = 0; i < entities.size(); i++) {
@@ -50,6 +50,24 @@ void OpenSceneDialog::accept() {
         world->AddEntity(entity);
         model->addItem(entity);
     }
+
+    // Need to enter current context since OpenGL items may be created here
+    EternityOpenGLWidget* oglWidget = MainWindow::GetInstance()->GetOpenGLWidget();
+    oglWidget->makeCurrent();
+
+    std::vector<std::string> componentTypes = Component::GetComponentTypes();
+    for(size_t i = 0; i < componentTypes.size(); i++) {
+        std::vector<DataRecord*> components = loader->GetRecords(componentTypes[i], args);
+        for(size_t j = 0; j < components.size(); j++) {
+            Component* c = dynamic_cast<Component*>(components[j]->GetObject());
+            Entity* e = c->GetParent();
+            if(e) {
+                model->addChildItem(e, c);
+            }
+        }
+    }
+
+    oglWidget->doneCurrent();
 
     this->close();
 }

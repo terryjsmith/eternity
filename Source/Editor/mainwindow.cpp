@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_assetLocationDropdown = ui->assetLocationDropdown;
     m_propertiesGroupBox = ui->propertiesLayout;
     m_entityTreeView = ui->sceneTreeView;
+    m_openglWidget = ui->openGLWidget;
 
     // Set up our default asset locations
     QStringList assetTypes;

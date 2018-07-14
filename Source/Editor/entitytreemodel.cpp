@@ -18,6 +18,27 @@ void EntityTreeModel::addItem(Entity* entity) {
     endInsertRows();
 }
 
+void EntityTreeModel::addChildItem(Entity* entity, Component* component) {
+    // Find the entity
+    for(int i = 0; i < m_rootItem->childCount(); i++) {
+        TreeItem* item = m_rootItem->child(i);
+        Entity* pointer = (Entity*)item->GetInternalPointer();
+        if(pointer == entity) {
+            QList<QVariant> rootData;
+            rootData << QString::fromStdString(component->GetGigaName());
+
+            TreeItem* childItem = new TreeItem(rootData, item);
+            childItem->SetInternalPointer((void*)component);
+
+            beginInsertRows(QModelIndex(), m_rootItem->childCount(), m_rootItem->childCount() + 1);
+            item->appendChild(childItem);
+            endInsertRows();
+
+            return;
+        }
+    }
+}
+
 bool EntityTreeModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     if (role != Qt::EditRole) {
         return(false);

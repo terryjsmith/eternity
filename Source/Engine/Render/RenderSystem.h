@@ -36,6 +36,11 @@ public:
     virtual ShaderProgram* CreateShaderProgram();
 
 	/**
+	 * Update scene graph and stuff
+	 */
+	void Update(float delta);
+
+	/**
 	 * Draw things on the screen
 	 */
 	virtual void Render() { }

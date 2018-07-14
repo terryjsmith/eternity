@@ -30,6 +30,9 @@ void EternityOpenGLWidget::initializeGL() {
 
     m_scene = new View();
 
+    m_updateTimer = new QTime;
+    m_updateTimer->start();
+
     CameraComponent* camera = new CameraComponent();
     m_scene->SetCamera(camera);
 }
@@ -45,8 +48,11 @@ void EternityOpenGLWidget::resizeGL(int w, int h) {
 }
 
 void EternityOpenGLWidget::paintGL() {
-    OpenGLRenderSystem* renderSystem = GetSystem<OpenGLRenderSystem>();
-    renderSystem->Render();
+    float delta = m_updateTimer->elapsed() / 1000.0f;
+    m_updateTimer->restart();
+
+    World* world = Application::GetInstance()->GetWorld();
+    world->Update(delta);
 
     QTimer::singleShot(10, this, SLOT(update()));
 }

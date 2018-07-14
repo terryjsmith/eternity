@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "entitytreemodel.h"
+#include "eternityopenglwidget.h"
 
 #include <QMainWindow>
 #include <QComboBox>
@@ -27,6 +28,7 @@ public:
 
     // Getters for view models
     EntityTreeModel* GetEntityTreeModel() { return m_entityTreeModel; }
+    EternityOpenGLWidget* GetOpenGLWidget() { return m_openglWidget; }
 
     // Menu item handlers
     void btnOpenProject_clicked();
@@ -36,7 +38,11 @@ private slots:
     void on_propertiesLayout_clicked();
 
 private:
+    // UI
     Ui::MainWindow *ui;
+
+    // OpenGL window
+    EternityOpenGLWidget* m_openglWidget;
 
     // Singleton
     static MainWindow* m_instance;

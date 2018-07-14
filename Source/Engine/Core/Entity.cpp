@@ -38,7 +38,14 @@ Component* Entity::FindComponent(std::string name) {
 }
 
 void Entity::AddComponent(Component* component, bool notify) {
-    component->m_parent = this;
+    // Register with appropriate system
+	World* world = Application::GetInstance()->GetWorld();
+	std::vector<ComponentSystemBase*> systems = world->GetComponentSystems();
+	std::vector<ComponentSystemBase*>::iterator it = systems.begin();
+
+	for (; it != systems.end(); it++) {
+		(*it)->AddComponent(component);
+	}
     
     // Send message to other components
     if(notify) {
@@ -48,6 +55,7 @@ void Entity::AddComponent(Component* component, bool notify) {
         }
     }
     
+	component->m_parent = this;
     component->OnEntityAssigned();
     m_components.push_back(component);
 }
@@ -78,5 +86,5 @@ Component* Entity::Assign(std::string className) {
 }
 
 void Entity::PostDeserialize() {
-    
+	
 }
