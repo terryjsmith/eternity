@@ -9,7 +9,7 @@
 #include <Render/Texture.h>
 #include <Render/DepthPass.h>
 
-class Scene;
+class View;
 
 /**
  * Base light class
@@ -52,7 +52,7 @@ public:
     /**
      * Generate depth texture
      */
-    virtual void GenerateDepthTexture(Scene* scene) = 0;
+    virtual void GenerateDepthTexture(View* scene) = 0;
     
     /**
      * Get depth texture

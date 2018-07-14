@@ -58,7 +58,7 @@ void GBuffer::Initialize(int windowWidth, int windowHeight) {
 	}
 }
 
-void GBuffer::Render(Scene* scene) {
+void GBuffer::Render(View* scene) {
     // Use our program
     m_program->Bind();
 

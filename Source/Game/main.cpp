@@ -4,7 +4,7 @@
 #include <Render/OpenGL/OpenGLRenderSystem.h>
 #include <Render/Shader.h>
 #include <Render/OpenGL/OpenGLShaderProgram.h>
-#include <Render/Scene.h>
+#include <Render/View.h>
 #include <Render/MaterialSystem.h>
 #include <IO/ResourceSystem.h>
 #include <IO/InputSystem.h>
@@ -57,11 +57,11 @@ int main(int argc, char** argv) {
 	renderSystem->Setup(framebufferWidth, framebufferHeight);
 
 	// Create a scene
-	Scene* scene = new Scene();
-	renderSystem->SetCurrentScene(scene);
+	View* scene = new View();
+	renderSystem->SetCurrentView(scene);
     
     // Load some data
-    SQLiteDataLoader* loader = new SQLiteDataLoader();
+    SQLiteDataLoader* loader = application->CreateAppService<SQLiteDataLoader>();
     loader->Open("game.db");
     std::vector<DataRecord*> meshes = loader->GetRecords("MeshComponent");
     

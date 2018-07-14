@@ -25,7 +25,7 @@ void SpotLightComponent::Initialize() {
     m_camera->SetNear(0.1f);
 }
 
-void SpotLightComponent::GenerateDepthTexture(Scene* scene) {
+void SpotLightComponent::GenerateDepthTexture(View* scene) {
     // Get our 2D texture
     Texture2D* texture = dynamic_cast<Texture2D*>(m_depthTexture);
     RenderSystem* renderSystem = GetSystem<RenderSystem>();

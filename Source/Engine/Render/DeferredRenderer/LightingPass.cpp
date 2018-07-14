@@ -74,7 +74,7 @@ void LightingPass::Initialize(int windowWidth, int windowHeight) {
 	}
 }
 
-void LightingPass::Render(Scene* scene) {
+void LightingPass::Render(View* scene) {
     m_framebuffers[0]->Bind();
     
     // Disable depth read/write, clear

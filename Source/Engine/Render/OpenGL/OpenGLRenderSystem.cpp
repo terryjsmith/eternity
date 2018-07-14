@@ -79,16 +79,16 @@ void OpenGLRenderSystem::Render() {
     /**
      * Depth pass (per light)
      */
-    std::vector<LightComponent*> lights = m_currentScene->GetLights();
+    std::vector<LightComponent*> lights = m_currentView->GetLights();
     std::vector<LightComponent*>::iterator li = lights.begin();
     for(; li != lights.end(); li++) {
-        (*li)->GenerateDepthTexture(m_currentScene);
+        (*li)->GenerateDepthTexture(m_currentView);
     }
     
     /**
      * G-buffer pass
      */
-	m_gbufferRenderPass->Render(m_currentScene);
+	m_gbufferRenderPass->Render(m_currentView);
     Framebuffer* gbuffer = m_gbufferRenderPass->GetFramebuffer(0);
     
     /**
@@ -99,7 +99,7 @@ void OpenGLRenderSystem::Render() {
     m_lightingRenderPass->SetNormalTexture((Texture2D*)gbuffer->GetTexture(2));
     m_lightingRenderPass->SetMaterialTexture((Texture2D*)gbuffer->GetTexture(3));
     
-    m_lightingRenderPass->Render(m_currentScene);
+    m_lightingRenderPass->Render(m_currentView);
     
     /**
      * Combine pass
@@ -109,7 +109,7 @@ void OpenGLRenderSystem::Render() {
     m_combineRenderPass->SetNormalTexture((Texture2D*)gbuffer->GetTexture(2));
     m_combineRenderPass->SetLightingTexture((Texture2D*)m_lightingRenderPass->GetFramebuffer(0)->GetTexture(0));
     
-    m_combineRenderPass->Render(m_currentScene);
+    m_combineRenderPass->Render(m_currentView);
     
     /**
      * Post-processing

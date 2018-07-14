@@ -120,6 +120,9 @@ protected:
 
 	// Updated in the last frame
 	bool m_updated;
+
+	// Which scene ID is this entity in?
+	GIGA_VARIABLE(Serialize) int m_sceneID;
 };
 
 #endif

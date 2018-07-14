@@ -27,7 +27,7 @@ public:
     /**
      * Create depth textures
      */
-    void GenerateDepthTexture(Scene* scene);
+    void GenerateDepthTexture(View* scene);
     
 protected:
     // A cached set of "look" vectors for the 6 directions

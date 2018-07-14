@@ -4,7 +4,7 @@
 
 #include <eternity.h>
 #include <Core/ComponentSystem.h>
-#include <Render/Scene.h>
+#include <Render/View.h>
 #include <Render/RenderPass.h>
 #include <Render/Texture2D.h>
 #include <Render/VertexBuffer.h>
@@ -14,7 +14,7 @@
 GIGA_CLASS()
 class GIGA_API RenderSystem : public ComponentSystem<RenderComponent> {
 public:
-	RenderSystem() : m_currentScene(0) { }
+	RenderSystem() : m_currentView(0) { }
 	virtual ~RenderSystem() = default;
 
 	GIGA_CLASS_NAME("RenderSystem");
@@ -78,8 +78,8 @@ public:
 	/**
 	 * Get/set current scene
 	 */
-	void SetCurrentScene(Scene* scene) { m_currentScene = scene; }
-	GIGA_FUNCTION() Scene* GetCurrentScene() { return m_currentScene; }
+	void SetCurrentView(View* scene) { m_currentView = scene; }
+	GIGA_FUNCTION() View* GetCurrentView() { return m_currentView; }
 
 protected:
     // Post processing passes
@@ -89,7 +89,7 @@ protected:
     int m_windowWidth, m_windowHeight;
     
     // Current scene
-	Scene* m_currentScene;
+	View* m_currentView;
 };
 
 #endif

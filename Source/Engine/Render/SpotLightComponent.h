@@ -27,7 +27,7 @@ public:
     /**
      * Create depth textures
      */
-    void GenerateDepthTexture(Scene* scene);
+    void GenerateDepthTexture(View* scene);
     
     /**
      * Set FOV for spot light

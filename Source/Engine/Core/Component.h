@@ -84,6 +84,9 @@ protected:
     
     // Registered type IDs
     static std::map<std::string, ComponentType*> m_types;
+
+	// Which scene ID is this component in?
+	GIGA_VARIABLE(Serialize) int m_sceneID;
 };
 
 #endif

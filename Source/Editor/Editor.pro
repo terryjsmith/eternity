@@ -25,12 +25,19 @@ DEFINES += QT_DEPRECATED_WARNINGS GLEW_STATIC "GIGA_API="
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    eternityopenglwidget.cpp
+    eternityopenglwidget.cpp \
+    treeitem.cpp \
+    treemodel.cpp \
+    openscenedialog.cpp
 
 HEADERS  += mainwindow.h \
-    eternityopenglwidget.h
+    eternityopenglwidget.h \
+    treeitem.h \
+    treemodel.h \
+    openscenedialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    openscenedialog.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L'C:/Program Files (x86)/Windows Kits/8.1/Lib/winv6.3/um/x86'
 win32:CONFIG(release, debug|release): DEPENDPATH += 'C:/Program Files (x86)/Windows Kits/8.1/Lib/winv6.3/um/x86'

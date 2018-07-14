@@ -61,7 +61,7 @@ void CombinePass::Initialize(int windowWidth, int windowHeight) {
 	}
 }
 
-void CombinePass::Render(Scene *scene) {
+void CombinePass::Render(View *scene) {
     // Get render system
     RenderSystem* renderSystem = GetSystem<RenderSystem>();
     

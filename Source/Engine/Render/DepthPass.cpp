@@ -35,7 +35,7 @@ void DepthPass::SetTexture(Texture3D* tex, int slot) {
     m_framebuffer->SetTexture(tex, FRAMEBUFFER_SLOT_DEPTH, slot);
 }
 
-void DepthPass::Render(Scene* scene) {
+void DepthPass::Render(View* scene) {
     // Use our program
     m_program->Bind();
     

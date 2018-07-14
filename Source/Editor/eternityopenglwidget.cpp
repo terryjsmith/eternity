@@ -28,7 +28,7 @@ void EternityOpenGLWidget::initializeGL() {
     }
 #endif
 
-    m_scene = new Scene();
+    m_scene = new View();
 
     CameraComponent* camera = new CameraComponent();
     m_scene->SetCamera(camera);
@@ -41,7 +41,7 @@ void EternityOpenGLWidget::resizeGL(int w, int h) {
 
     OpenGLRenderSystem* renderSystem = GetSystem<OpenGLRenderSystem>();
     renderSystem->Setup(m_framebufferWidth, m_framebufferHeight);
-    renderSystem->SetCurrentScene(m_scene);
+    renderSystem->SetCurrentView(m_scene);
 }
 
 void EternityOpenGLWidget::paintGL() {

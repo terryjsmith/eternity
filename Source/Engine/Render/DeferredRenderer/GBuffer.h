@@ -11,7 +11,7 @@ public:
     ~GBuffer() = default;
     
     void Initialize(int windowWidth, int windowHeight);
-    void Render(Scene* scene);
+    void Render(View* scene);
     
 protected:
     void RecursiveRender(MeshComponent* mesh, matrix4 view, matrix4 parent);

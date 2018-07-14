@@ -54,7 +54,7 @@ void PointLightComponent::Initialize() {
     m_vectors[5].right = vector3(-1, 0, 0);
 }
 
-void PointLightComponent::GenerateDepthTexture(Scene* scene) {
+void PointLightComponent::GenerateDepthTexture(View* scene) {
     // Get our 3D texture
     Texture3D* texture = (Texture3D*)m_depthTexture;
     RenderSystem* renderSystem = GetSystem<RenderSystem>();

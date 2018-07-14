@@ -38,7 +38,7 @@ public:
      * Find a service
      */
     template<class T>
-    T* GetService() {
+    T* GetAppService() {
         std::vector<Service*>::iterator it = m_services.begin();
         for(; it != m_services.end(); it++) {
             T* obj = dynamic_cast<T*>(*it);
@@ -49,6 +49,17 @@ public:
         
         return(0);
     }
+
+	/**
+	 * Create a new locatable service
+	 */
+	template<class T>
+	T* CreateAppService() {
+		T* obj = new T();
+		m_services.push_back(obj);
+
+		return(obj);
+	}
 
 	/**
 	* Get singleton instance
@@ -75,8 +86,8 @@ template<class T> T* GetSystem() {
     return(world->GetSystem<T>());
 }
 
-template<class T> T* GetService() {
-    return(Application::GetInstance()->GetService<T>());
+template<class T> T* GetAppService() {
+    return(Application::GetInstance()->GetAppService<T>());
 }
 
 #endif

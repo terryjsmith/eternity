@@ -1,6 +1,6 @@
 
-#ifndef scene_h
-#define scene_h
+#ifndef scenegraph_h
+#define scenegraph_h
 
 #include <eternity.h>
 #include <Render/CameraComponent.h>
@@ -8,15 +8,15 @@
 #include <Render/LightComponent.h>
 
 /**
- * A scene contains all of the visible objects in the player's area
+ * A view contains all of the visible objects in the player's area
  */
 GIGA_CLASS()
-class GIGA_API Scene : public GigaObject {
+class GIGA_API View : public GigaObject {
 public:
-	Scene() = default;
-	~Scene() = default;
+	View() = default;
+	~View() = default;
 
-	GIGA_CLASS_NAME("Scene");
+	GIGA_CLASS_NAME("SceneGraph");
 
 	GIGA_FUNCTION() void AddMesh(MeshComponent* mesh);
 	std::vector<MeshComponent*>& GetMeshes() { return m_meshes; }

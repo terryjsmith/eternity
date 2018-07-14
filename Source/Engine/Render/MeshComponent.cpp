@@ -2,7 +2,6 @@
 #include <Render/MeshComponent.h>
 #include <Core/Entity.h>
 #include <Render/RenderSystem.h>
-#include <Render/Scene.h>
 #include <Core/Application.h>
 
 void MeshComponent::Instantiate(Mesh* mesh) {

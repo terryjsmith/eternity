@@ -7,7 +7,7 @@
 #include <QSurface>
 
 #include <eternity.h>
-#include <Render/Scene.h>
+#include <Render/View.h>
 
 class EternityOpenGLWidget : public QOpenGLWidget
 {
@@ -22,7 +22,7 @@ protected:
     int m_framebufferWidth, m_framebufferHeight;
 
     // Current scene
-    Scene* m_scene;
+    View* m_scene;
 };
 
 #endif // ETERNITYOPENGLWIDGET_H

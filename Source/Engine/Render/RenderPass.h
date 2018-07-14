@@ -3,7 +3,7 @@
 #define renderpass_h
 
 #include <eternity.h>
-#include <Render/Scene.h>
+#include <Render/View.h>
 #include <Render/ShaderProgram.h>
 #include <Render/Framebuffer.h>
 
@@ -13,7 +13,7 @@ public:
     ~RenderPass();
 
     virtual void Initialize(int windowWidth, int windowHeight);
-	virtual void Render(Scene* scene) = 0;
+	virtual void Render(View* scene) = 0;
 
     /**
      * Get a framebuffer

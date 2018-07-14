@@ -24,6 +24,7 @@ public:
 
     // Menu item handlers
     void btnOpenProject_clicked();
+    void btnOpenScene_clicked();
 
 private slots:
     void on_propertiesLayout_clicked();

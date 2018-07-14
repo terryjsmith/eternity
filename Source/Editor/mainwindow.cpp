@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
+#include "openscenedialog.h"
 
 #include <IO/SQLiteDataLoader.h>
 #include <IO/ResourceSystem.h>
@@ -30,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Connect menu items to functions
     connect(ui->actionOpen_Project, &QAction::triggered, this, &MainWindow::btnOpenProject_clicked);
+    connect(ui->actionOpen_Scene, &QAction::triggered, this, &MainWindow::btnOpenScene_clicked);
 }
 
 MainWindow::~MainWindow() {
@@ -56,14 +58,6 @@ void MainWindow::OpenProject(QString directory) {
     m_currentProjectDirectory = directory;
     QDir::setCurrent(m_currentProjectDirectory);
 
-    SQLiteDataLoader* dataloader = new SQLiteDataLoader();
-
-    // Look for a game.db file
-    QString gamedbFile = directory + "/game.db";
-    if(QFile::exists(gamedbFile)) {
-        dataloader->Open(gamedbFile.toStdString());
-    }
-
     // Load a game.js file if one exists
     QString gamejsFile = directory + "/game.js";
     ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
@@ -81,10 +75,24 @@ void MainWindow::OpenProject(QString directory) {
         scriptingSystem->Unlock();
     }
 
+    Application* application = Application::GetInstance();
+    SQLiteDataLoader* dataloader = application->CreateAppService<SQLiteDataLoader>();
+
+    // Look for a game.db file
+    QString gamedbFile = directory + "/game.db";
+    if(QFile::exists(gamedbFile)) {
+        dataloader->Open(gamedbFile.toStdString());
+    }
+
     // Enable menu items
     ui->actionClose_Project->setEnabled(true);
     ui->actionNew_Scene->setEnabled(true);
     ui->actionOpen_Scene->setEnabled(true);
+}
+
+void MainWindow::btnOpenScene_clicked() {
+    OpenSceneDialog* dlg = new OpenSceneDialog(this);
+    dlg->show();
 }
 
 void MainWindow::on_propertiesLayout_clicked() {

@@ -5,8 +5,9 @@
 #include <eternity.h>
 #include <Core/GigaObject.h>
 #include <Core/DataRecord.h>
+#include <Core/Service.h>
 
-class GIGA_API DataLoader {
+class GIGA_API DataLoader : public Service {
 public:
     ~DataLoader();
     

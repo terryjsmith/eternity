@@ -9,7 +9,7 @@
 #include <Render/Framebuffer.h>
 #include <Render/ShaderProgram.h>
 
-class Scene;
+class View;
 
 class GIGA_API DepthPass {
 public:
@@ -29,7 +29,7 @@ public:
     /**
      * Render
      */
-    void Render(Scene* scene);
+    void Render(View* scene);
     
     /**
      * Get/set texture

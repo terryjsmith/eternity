@@ -11,7 +11,7 @@ public:
     ~LightingPass() = default;
     
     void Initialize(int windowWidth, int windowHeight);
-    void Render(Scene* scene);
+    void Render(View* scene);
     
     /**
      * Set textures
