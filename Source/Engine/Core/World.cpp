@@ -83,3 +83,12 @@ Entity* World::GetEntity(int id) {
 
 	return(0);
 }
+
+void World::Clear() {
+	std::vector<Entity*>::iterator it = m_entities.begin();
+	for (; it != m_entities.end(); it++) {
+		delete (*it);
+	}
+
+	m_entities.clear();
+}

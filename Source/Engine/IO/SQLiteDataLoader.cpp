@@ -32,7 +32,7 @@ void SQLiteDataLoader::Close() {
     }
 }
 
-std::vector<DataRecord*> SQLiteDataLoader::GetRecords(std::string type) {
+std::vector<DataRecord*> SQLiteDataLoader::GetRecords(std::string type, std::map<std::string, std::string> search) {
     m_currentClassName = type;
     std::vector<DataRecord*> ret;
     
@@ -51,6 +51,15 @@ std::vector<DataRecord*> SQLiteDataLoader::GetRecords(std::string type) {
     }
     
     std::string query = "SELECT " + fieldList + " FROM " + type;
+
+	// Add where clauses
+	if (search.size()) {
+		query += " WHERE 1=1 ";
+		std::map<std::string, std::string>::iterator it = search.begin();
+		for (; it != search.end(); it++) {
+			query += " AND " + it->first + " = '" + it->second + "'";
+		}
+	}
     
     if(sqlite3_exec(m_handle, query.c_str(), InternalDataCallback, this, 0) != 0) {
         Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to get record list from SQLite.", (char*)sqlite3_errmsg(m_handle)));

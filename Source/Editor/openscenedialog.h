@@ -2,6 +2,7 @@
 #define OPENSCENEDIALOG_H
 
 #include <QDialog>
+#include <Core/DataRecord.h>
 
 namespace Ui {
 class OpenSceneDialog;
@@ -20,6 +21,9 @@ private slots:
 
 private:
     Ui::OpenSceneDialog *ui;
+
+    // Cached loaded scenes
+    std::vector<DataRecord*> m_scenes;
 };
 
 #endif // OPENSCENEDIALOG_H

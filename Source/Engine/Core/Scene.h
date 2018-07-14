@@ -13,6 +13,7 @@ public:
 	~Scene() = default;
 
 	GIGA_CLASS_NAME("Scene");
+
 	GIGA_CLASS_BODY();
 
 	int GetSceneID();

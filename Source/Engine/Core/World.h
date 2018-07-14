@@ -46,6 +46,11 @@ public:
     void AddEntity(Entity* entity);
 
 	/**
+	 * Clear out all entities
+	 */
+	void Clear();
+
+	/**
 	 * Registered system with update tick rate
 	 */
 	struct RegisteredSystem {

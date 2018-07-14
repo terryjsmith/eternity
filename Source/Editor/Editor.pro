@@ -28,13 +28,15 @@ SOURCES += main.cpp\
     eternityopenglwidget.cpp \
     treeitem.cpp \
     treemodel.cpp \
-    openscenedialog.cpp
+    openscenedialog.cpp \
+    entitytreemodel.cpp
 
 HEADERS  += mainwindow.h \
     eternityopenglwidget.h \
     treeitem.h \
     treemodel.h \
-    openscenedialog.h
+    openscenedialog.h \
+    entitytreemodel.h
 
 FORMS    += mainwindow.ui \
     openscenedialog.ui

@@ -1,9 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "entitytreemodel.h"
+
 #include <QMainWindow>
 #include <QComboBox>
 #include <QGroupBox>
+#include <QTreeView>
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +24,9 @@ public:
 
     // Open a project from a directory
     void OpenProject(QString directory);
+
+    // Getters for view models
+    EntityTreeModel* GetEntityTreeModel() { return m_entityTreeModel; }
 
     // Menu item handlers
     void btnOpenProject_clicked();
@@ -43,6 +49,10 @@ private:
 
     QGroupBox* m_propertiesGroupBox;
     bool m_propertiesExpanded;
+
+    // Entity view
+    QTreeView* m_entityTreeView;
+    EntityTreeModel* m_entityTreeModel;
 };
 
 #endif // MAINWINDOW_H

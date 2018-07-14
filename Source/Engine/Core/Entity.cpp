@@ -78,6 +78,5 @@ Component* Entity::Assign(std::string className) {
 }
 
 void Entity::PostDeserialize() {
-    World* world = Application::GetInstance()->GetWorld();
-    world->AddEntity(this);
+    
 }

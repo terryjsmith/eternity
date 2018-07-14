@@ -39,8 +39,8 @@ public:
     /**
      * Get/set name
      */
-    GIGA_FUNCTION() std::string Name() { return entityName; }
-    void Name(std::string name) { entityName = name; }
+    GIGA_FUNCTION() std::string Name() { return m_entityName; }
+    void Name(std::string name) { m_entityName = name; }
     
     /**
      * Find component by name
@@ -104,11 +104,10 @@ public:
 
 	friend class World;
 
-public:
-	// Identifier (string)
-	std::string entityName;
-
 protected:
+	// Identifier (string)
+	GIGA_VARIABLE(Serialize) std::string m_entityName;
+
 	// Identifer (int)
 	GIGA_VARIABLE(Serialize) int m_entityID;
 

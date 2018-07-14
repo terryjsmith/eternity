@@ -25,7 +25,7 @@ public:
     /**
      * Query for records
      */
-    std::vector<DataRecord*> GetRecords(std::string type);
+    std::vector<DataRecord*> GetRecords(std::string type, std::map<std::string, std::string> search = std::map<std::string, std::string>());
     
     /**
      * Save records

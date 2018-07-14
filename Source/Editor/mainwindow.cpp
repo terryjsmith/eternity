@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Get UI components
     m_assetLocationDropdown = ui->assetLocationDropdown;
     m_propertiesGroupBox = ui->propertiesLayout;
+    m_entityTreeView = ui->sceneTreeView;
 
     // Set up our default asset locations
     QStringList assetTypes;
@@ -28,6 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->contentBrowser->setTabText(0, "Content Browser");
     ui->contentBrowser->setTabText(1, "Console");
+
+    // Initialize our views
+    m_entityTreeModel = new EntityTreeModel(0);
+    m_entityTreeView->setModel(m_entityTreeModel);
 
     // Connect menu items to functions
     connect(ui->actionOpen_Project, &QAction::triggered, this, &MainWindow::btnOpenProject_clicked);
