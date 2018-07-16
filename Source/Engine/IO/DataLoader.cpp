@@ -22,3 +22,14 @@ void DataLoader::AddRecord(GigaObject *record) {
     
     m_records[record->GetGigaName()].push_back(sr);
 }
+
+
+DataRecord* DataLoader::FindDataRecord(GigaObject* object) {
+	std::string className = object->GetGigaName();
+	std::vector<DataRecord*>::iterator it = m_records[className].begin();
+	for (; it != m_records[className].end(); it++) {
+		if ((*it)->GetObject() == object) {
+			return(*it);
+		}
+	}
+}

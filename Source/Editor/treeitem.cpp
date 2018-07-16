@@ -3,6 +3,7 @@
 TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent) {
     m_parentItem = parent;
     m_itemData = data;
+    m_editable = false;
 }
 
 TreeItem::~TreeItem() {

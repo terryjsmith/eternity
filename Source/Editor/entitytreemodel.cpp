@@ -12,6 +12,7 @@ void EntityTreeModel::addItem(Entity* entity) {
     rootData << QString::fromStdString(entity->Name());
     TreeItem* item = new TreeItem(rootData, m_rootItem);
     item->SetInternalPointer((void*)entity);
+    item->SetEditable(true);
 
     beginInsertRows(QModelIndex(), m_rootItem->childCount(), m_rootItem->childCount() + 1);
     m_rootItem->appendChild(item);

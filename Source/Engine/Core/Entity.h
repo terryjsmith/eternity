@@ -106,22 +106,22 @@ public:
 
 protected:
 	// Identifier (string)
-	GIGA_VARIABLE(Serialize) std::string m_entityName;
+	GIGA_VARIABLE(Serialize, NonEditable) std::string m_entityName;
 
 	// Identifer (int)
-	GIGA_VARIABLE(Serialize) int m_entityID;
+	GIGA_VARIABLE(Serialize, NonEditable) int m_entityID;
 
 	// Components assigned to this entity
 	std::vector<Component*> m_components;
 
 	// Active status
-	GIGA_VARIABLE(Serialize) bool m_active;
+	GIGA_VARIABLE(Serialize, NonEditable) bool m_active;
 
 	// Updated in the last frame
 	bool m_updated;
 
 	// Which scene ID is this entity in?
-	GIGA_VARIABLE(Serialize) int m_sceneID;
+	GIGA_VARIABLE(Serialize, NonEditable) int m_sceneID;
 };
 
 #endif

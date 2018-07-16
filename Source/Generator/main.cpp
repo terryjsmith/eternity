@@ -40,6 +40,7 @@ bool markSingleton = false;
 bool markGet = false;
 bool markSet = false;
 bool markSerialize = false;
+bool markNonEditable = false;
 
 bool grabNextFunction = false;
 bool grabNextVar = false;
@@ -129,6 +130,10 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 
 		if (strcmp("Serialize", name.c_str()) == 0) {
 			markSerialize = true;
+		}
+
+		if (strcmp("NonEditable", name.c_str()) == 0) {
+			markNonEditable = true;
 		}
 
 		//pullOptions = false;
@@ -277,7 +282,7 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
             var->name = name;
             var->type = internalType;
             var->objectType = typestr;
-			var->get = var->set = var->serialize = false;
+			var->get = var->set = var->serialize = var->noneditable = false;
 
 			if (markGet) {
 				var->get = true;
@@ -292,6 +297,11 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 			if (markSerialize) {
 				var->serialize = true;
 				markSerialize = false;
+			}
+
+			if (markNonEditable) {
+				var->noneditable = true;
+				markNonEditable = false;
 			}
             
             currentMetaClass->variables[name] = var;
@@ -760,7 +770,8 @@ int main(int argc, char** argv) {
             output += "\t" + objectName + "->SetPrimaryKey(\"" + cl->name + "_id\");\n";
             vi = serialized.begin();
             for (; vi != serialized.end(); vi++) {
-                output += "\t" + objectName + "->AddKey(\"" + vi->second->name + "\", " + std::to_string(vi->second->type) + ");\n";
+                output += "\t" + objectName + "->AddKey(\"" + vi->second->name + "\", " + std::to_string(vi->second->type) + ", " +
+					std::string((vi->second->noneditable == true) ? "false" : "true") + ");\n";
             }
             
             output += "\n\tDataRecordType::Register(\"" + cl->name + "\", " + objectName + ");\n";

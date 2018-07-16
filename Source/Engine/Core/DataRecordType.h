@@ -9,6 +9,13 @@ public:
     DataRecordType() = default;
     DataRecordType(std::string typeName) : m_typeName(typeName) { }
     ~DataRecordType() = default;
+
+	struct DataRecordField {
+		std::string name;
+		int type;
+		bool editable;
+		std::string friendly_name;
+	};
     
     /**
      * Get/set type name
@@ -25,9 +32,16 @@ public:
     /**
      * Add/get keys/types
      */
-    void AddKey(std::string name, int type);
+    void AddKey(std::string name, int type, bool editable = true);
     int GetKeyType(std::string name);
-    
+	DataRecordField* GetKeyDetail(std::string name);
+
+	/**
+	 * Set key properties
+	 */
+	void SetKeyNonEditable(std::string key);
+	void SetKeyFriendlyName(std::string key, std::string name);
+
     /**
      * Get all keys
      */
@@ -56,7 +70,10 @@ protected:
     std::string m_primaryKey;
     
     // Listing of keys and types (from Variant::Type)
-    std::map<std::string, int> m_keys;
+	std::map<std::string, int> m_keys;
+
+	// Key details
+	std::map<std::string, DataRecordField*> m_details;
     
     // All registered types
     static std::map<std::string, DataRecordType*> m_types;

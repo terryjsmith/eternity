@@ -35,6 +35,11 @@ public:
      * Save records
      */
     virtual void SaveRecords() = 0;
+	 
+	/**
+	 * Find a data record for an object
+	 */
+	DataRecord* FindDataRecord(GigaObject* object);
     
 protected:
     // No direct creation

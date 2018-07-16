@@ -29,14 +29,18 @@ SOURCES += main.cpp\
     treeitem.cpp \
     treemodel.cpp \
     openscenedialog.cpp \
-    entitytreemodel.cpp
+    entitytreemodel.cpp \
+    sceneentitytreeview.cpp \
+    propertycheckbox.cpp
 
 HEADERS  += mainwindow.h \
     eternityopenglwidget.h \
     treeitem.h \
     treemodel.h \
     openscenedialog.h \
-    entitytreemodel.h
+    entitytreemodel.h \
+    sceneentitytreeview.h \
+    propertycheckbox.h
 
 FORMS    += mainwindow.ui \
     openscenedialog.ui

@@ -76,7 +76,13 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const {
         return Qt::ItemIsDropEnabled;
     }
 
-    return Qt::ItemIsEditable | Qt::ItemIsDropEnabled | QAbstractItemModel::flags(index);
+    Qt::ItemFlags flags = Qt::ItemIsDropEnabled | QAbstractItemModel::flags(index);
+    TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+    if(item->GetEditable()) {
+        flags |= Qt::ItemIsEditable;
+    }
+
+    return flags;
 }
 
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int role) const {

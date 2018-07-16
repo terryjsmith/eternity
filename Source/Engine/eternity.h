@@ -42,6 +42,8 @@
     void Deserialize(DataRecord* record);
 #endif
 
+#define FNAME(var) FriendlyName, var
+
 enum ClassOptions {
 	Singleton = 1
 };
@@ -49,7 +51,8 @@ enum ClassOptions {
 enum VarOptions {
     Get = 1,
     Set,
-    Serialize
+    Serialize,
+	NonEditable
 };
 
 // STD library

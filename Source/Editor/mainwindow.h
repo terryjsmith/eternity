@@ -3,11 +3,16 @@
 
 #include "entitytreemodel.h"
 #include "eternityopenglwidget.h"
+#include <Core/DataRecord.h>
 
 #include <QMainWindow>
 #include <QComboBox>
 #include <QGroupBox>
 #include <QTreeView>
+#include <QFormLayout>
+#include <QItemSelection>
+
+Q_DECLARE_METATYPE(DataRecord*);
 
 namespace Ui {
 class MainWindow;
@@ -29,10 +34,15 @@ public:
     // Getters for view models
     EntityTreeModel* GetEntityTreeModel() { return m_entityTreeModel; }
     EternityOpenGLWidget* GetOpenGLWidget() { return m_openglWidget; }
+    QGroupBox* GetPropertiesWidget() { return m_propertiesGroupBox; }
 
     // Menu item handlers
     void btnOpenProject_clicked();
     void btnOpenScene_clicked();
+    void btnSaveScene_clicked();
+
+    // Create properties window from meta data fields
+    QFormLayout* GetFormLayout(std::string className, GigaObject* object, QWidget* parent = 0);
 
 private slots:
     void on_propertiesLayout_clicked();

@@ -80,13 +80,13 @@ protected:
 	uint32_t m_typeID;
 
 	// Parent entity
-	GIGA_VARIABLE(Serialize) Entity* m_parent;
+	GIGA_VARIABLE(Serialize, NonEditable) Entity* m_parent;
     
     // Registered type IDs
     static std::map<std::string, ComponentType*> m_types;
 
 	// Which scene ID is this component in?
-	GIGA_VARIABLE(Serialize) int m_sceneID;
+	GIGA_VARIABLE(Serialize, NonEditable) int m_sceneID;
 };
 
 #endif

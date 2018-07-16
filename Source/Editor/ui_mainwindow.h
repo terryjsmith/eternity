@@ -14,11 +14,9 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -30,6 +28,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "eternityopenglwidget.h"
+#include "sceneentitytreeview.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -85,34 +84,10 @@ public:
     QVBoxLayout *sceneInspectorLayout;
     QGroupBox *sceneLayout;
     QVBoxLayout *verticalLayout_5;
-    QTreeView *sceneTreeView;
+    SceneEntityTreeView *sceneTreeView;
     QVBoxLayout *propertiesInspectorLayout;
     QGroupBox *propertiesLayout;
     QVBoxLayout *verticalLayout_6;
-    QFormLayout *formLayout;
-    QLabel *label;
-    QHBoxLayout *horizontalLayout_4;
-    QPlainTextEdit *plainTextEdit_3;
-    QPlainTextEdit *plainTextEdit_2;
-    QPlainTextEdit *plainTextEdit;
-    QLabel *label_2;
-    QPlainTextEdit *plainTextEdit_4;
-    QLabel *label_3;
-    QFormLayout *formLayout_2;
-    QLabel *label_4;
-    QComboBox *comboBox;
-    QLabel *label_5;
-    QLabel *label_6;
-    QHBoxLayout *horizontalLayout_5;
-    QPlainTextEdit *plainTextEdit_5;
-    QPlainTextEdit *plainTextEdit_6;
-    QPlainTextEdit *plainTextEdit_7;
-    QPlainTextEdit *plainTextEdit_11;
-    QHBoxLayout *horizontalLayout_6;
-    QPlainTextEdit *plainTextEdit_8;
-    QPlainTextEdit *plainTextEdit_9;
-    QPlainTextEdit *plainTextEdit_10;
-    QLabel *label_7;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuScene;
@@ -360,22 +335,27 @@ public:
         sceneInspectorLayout->setObjectName(QStringLiteral("sceneInspectorLayout"));
         sceneLayout = new QGroupBox(centralWidget);
         sceneLayout->setObjectName(QStringLiteral("sceneLayout"));
-        sceneLayout->setMaximumSize(QSize(250, 16777215));
+        QSizePolicy sizePolicy4(QSizePolicy::Preferred, QSizePolicy::Minimum);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(sceneLayout->sizePolicy().hasHeightForWidth());
+        sceneLayout->setSizePolicy(sizePolicy4);
+        sceneLayout->setMaximumSize(QSize(250, 325));
         sceneLayout->setFlat(true);
         verticalLayout_5 = new QVBoxLayout(sceneLayout);
         verticalLayout_5->setSpacing(0);
         verticalLayout_5->setContentsMargins(11, 11, 11, 11);
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
         verticalLayout_5->setContentsMargins(0, -1, 0, -1);
-        sceneTreeView = new QTreeView(sceneLayout);
+        sceneTreeView = new SceneEntityTreeView(sceneLayout);
         sceneTreeView->setObjectName(QStringLiteral("sceneTreeView"));
-        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(sceneTreeView->sizePolicy().hasHeightForWidth());
-        sceneTreeView->setSizePolicy(sizePolicy4);
-        sceneTreeView->setMinimumSize(QSize(0, 250));
-        sceneTreeView->setMaximumSize(QSize(16777215, 400));
+        QSizePolicy sizePolicy5(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(sceneTreeView->sizePolicy().hasHeightForWidth());
+        sceneTreeView->setSizePolicy(sizePolicy5);
+        sceneTreeView->setMinimumSize(QSize(0, 300));
+        sceneTreeView->setMaximumSize(QSize(16777215, 300));
         sceneTreeView->setBaseSize(QSize(0, 0));
 
         verticalLayout_5->addWidget(sceneTreeView);
@@ -391,6 +371,11 @@ public:
         propertiesInspectorLayout->setObjectName(QStringLiteral("propertiesInspectorLayout"));
         propertiesLayout = new QGroupBox(centralWidget);
         propertiesLayout->setObjectName(QStringLiteral("propertiesLayout"));
+        QSizePolicy sizePolicy6(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(propertiesLayout->sizePolicy().hasHeightForWidth());
+        propertiesLayout->setSizePolicy(sizePolicy6);
         propertiesLayout->setMaximumSize(QSize(250, 16777215));
         propertiesLayout->setFlat(true);
         propertiesLayout->setCheckable(false);
@@ -399,144 +384,6 @@ public:
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
         verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
         verticalLayout_6->setContentsMargins(0, -1, 0, -1);
-        formLayout = new QFormLayout();
-        formLayout->setSpacing(6);
-        formLayout->setObjectName(QStringLiteral("formLayout"));
-        label = new QLabel(propertiesLayout);
-        label->setObjectName(QStringLiteral("label"));
-
-        formLayout->setWidget(1, QFormLayout::LabelRole, label);
-
-        horizontalLayout_4 = new QHBoxLayout();
-        horizontalLayout_4->setSpacing(6);
-        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        plainTextEdit_3 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_3->setObjectName(QStringLiteral("plainTextEdit_3"));
-        plainTextEdit_3->setMaximumSize(QSize(40, 25));
-
-        horizontalLayout_4->addWidget(plainTextEdit_3);
-
-        plainTextEdit_2 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_2->setObjectName(QStringLiteral("plainTextEdit_2"));
-        plainTextEdit_2->setMinimumSize(QSize(40, 0));
-        plainTextEdit_2->setMaximumSize(QSize(25, 25));
-
-        horizontalLayout_4->addWidget(plainTextEdit_2);
-
-        plainTextEdit = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit->setObjectName(QStringLiteral("plainTextEdit"));
-        plainTextEdit->setMaximumSize(QSize(40, 25));
-
-        horizontalLayout_4->addWidget(plainTextEdit);
-
-
-        formLayout->setLayout(1, QFormLayout::FieldRole, horizontalLayout_4);
-
-        label_2 = new QLabel(propertiesLayout);
-        label_2->setObjectName(QStringLiteral("label_2"));
-
-        formLayout->setWidget(2, QFormLayout::LabelRole, label_2);
-
-        plainTextEdit_4 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_4->setObjectName(QStringLiteral("plainTextEdit_4"));
-        plainTextEdit_4->setMaximumSize(QSize(16777215, 25));
-        plainTextEdit_4->setInputMethodHints(Qt::ImhNone);
-
-        formLayout->setWidget(2, QFormLayout::FieldRole, plainTextEdit_4);
-
-        label_3 = new QLabel(propertiesLayout);
-        label_3->setObjectName(QStringLiteral("label_3"));
-
-        formLayout->setWidget(3, QFormLayout::LabelRole, label_3);
-
-        formLayout_2 = new QFormLayout();
-        formLayout_2->setSpacing(6);
-        formLayout_2->setObjectName(QStringLiteral("formLayout_2"));
-        label_4 = new QLabel(propertiesLayout);
-        label_4->setObjectName(QStringLiteral("label_4"));
-
-        formLayout_2->setWidget(0, QFormLayout::LabelRole, label_4);
-
-        comboBox = new QComboBox(propertiesLayout);
-        comboBox->setObjectName(QStringLiteral("comboBox"));
-
-        formLayout_2->setWidget(0, QFormLayout::FieldRole, comboBox);
-
-        label_5 = new QLabel(propertiesLayout);
-        label_5->setObjectName(QStringLiteral("label_5"));
-
-        formLayout_2->setWidget(1, QFormLayout::LabelRole, label_5);
-
-        label_6 = new QLabel(propertiesLayout);
-        label_6->setObjectName(QStringLiteral("label_6"));
-
-        formLayout_2->setWidget(2, QFormLayout::LabelRole, label_6);
-
-        horizontalLayout_5 = new QHBoxLayout();
-        horizontalLayout_5->setSpacing(6);
-        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        plainTextEdit_5 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_5->setObjectName(QStringLiteral("plainTextEdit_5"));
-        plainTextEdit_5->setMaximumSize(QSize(40, 25));
-
-        horizontalLayout_5->addWidget(plainTextEdit_5);
-
-        plainTextEdit_6 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_6->setObjectName(QStringLiteral("plainTextEdit_6"));
-        plainTextEdit_6->setMaximumSize(QSize(40, 25));
-
-        horizontalLayout_5->addWidget(plainTextEdit_6);
-
-        plainTextEdit_7 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_7->setObjectName(QStringLiteral("plainTextEdit_7"));
-        plainTextEdit_7->setMaximumSize(QSize(40, 25));
-
-        horizontalLayout_5->addWidget(plainTextEdit_7);
-
-        plainTextEdit_11 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_11->setObjectName(QStringLiteral("plainTextEdit_11"));
-        plainTextEdit_11->setMaximumSize(QSize(40, 25));
-
-        horizontalLayout_5->addWidget(plainTextEdit_11);
-
-
-        formLayout_2->setLayout(1, QFormLayout::FieldRole, horizontalLayout_5);
-
-        horizontalLayout_6 = new QHBoxLayout();
-        horizontalLayout_6->setSpacing(6);
-        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        plainTextEdit_8 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_8->setObjectName(QStringLiteral("plainTextEdit_8"));
-        plainTextEdit_8->setMaximumSize(QSize(40, 25));
-
-        horizontalLayout_6->addWidget(plainTextEdit_8);
-
-        plainTextEdit_9 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_9->setObjectName(QStringLiteral("plainTextEdit_9"));
-        plainTextEdit_9->setMaximumSize(QSize(40, 25));
-
-        horizontalLayout_6->addWidget(plainTextEdit_9);
-
-        plainTextEdit_10 = new QPlainTextEdit(propertiesLayout);
-        plainTextEdit_10->setObjectName(QStringLiteral("plainTextEdit_10"));
-        plainTextEdit_10->setMaximumSize(QSize(40, 25));
-
-        horizontalLayout_6->addWidget(plainTextEdit_10);
-
-
-        formLayout_2->setLayout(2, QFormLayout::FieldRole, horizontalLayout_6);
-
-
-        formLayout->setLayout(3, QFormLayout::FieldRole, formLayout_2);
-
-        label_7 = new QLabel(propertiesLayout);
-        label_7->setObjectName(QStringLiteral("label_7"));
-
-        formLayout->setWidget(4, QFormLayout::LabelRole, label_7);
-
-
-        verticalLayout_6->addLayout(formLayout);
-
 
         propertiesInspectorLayout->addWidget(propertiesLayout);
 
@@ -623,14 +470,6 @@ public:
         contentBrowser->setTabText(contentBrowser->indexOf(consoleTab), QApplication::translate("MainWindow", "Tab 2", Q_NULLPTR));
         sceneLayout->setTitle(QApplication::translate("MainWindow", "Scene", Q_NULLPTR));
         propertiesLayout->setTitle(QApplication::translate("MainWindow", "Properties", Q_NULLPTR));
-        label->setText(QApplication::translate("MainWindow", "Position", Q_NULLPTR));
-        plainTextEdit_3->setPlaceholderText(QApplication::translate("MainWindow", "X", Q_NULLPTR));
-        label_2->setText(QApplication::translate("MainWindow", "Mesh", Q_NULLPTR));
-        label_3->setText(QApplication::translate("MainWindow", "Shape", Q_NULLPTR));
-        label_4->setText(QApplication::translate("MainWindow", "Type", Q_NULLPTR));
-        label_5->setText(QApplication::translate("MainWindow", "Extents", Q_NULLPTR));
-        label_6->setText(QApplication::translate("MainWindow", "Offset", Q_NULLPTR));
-        label_7->setText(QApplication::translate("MainWindow", "TextLabel", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", Q_NULLPTR));
         menuScene->setTitle(QApplication::translate("MainWindow", "Scene", Q_NULLPTR));
         menuEntity->setTitle(QApplication::translate("MainWindow", "Entity", Q_NULLPTR));

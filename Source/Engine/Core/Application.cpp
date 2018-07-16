@@ -17,6 +17,7 @@
 #include <Render/PointLightComponent.h>
 #include <Physics/PhysicsCollision.h>
 #include <Physics/RigidBodyComponent.h>
+#include <Core/DataRecordType.h>
 
 Application* Application::m_instance = 0;
 
@@ -157,6 +158,16 @@ void Application::Initialize() {
     // Collision notifications
     scriptingSystem->SetGlobal("COLLISION_START", new Variant(PhysicsCollision::COLLISION_START));
     scriptingSystem->SetGlobal("COLLISION_END", new Variant(PhysicsCollision::COLLISION_END));
+
+	// Friendly names
+	DataRecordType* transformType = DataRecordType::GetType("Transform");
+	transformType->SetKeyFriendlyName("m_root", "Root");
+	transformType->SetKeyFriendlyName("m_position", "Position");
+	transformType->SetKeyFriendlyName("m_rotation", "Rotation");
+	transformType->SetKeyFriendlyName("m_scaling", "Scaling");
+
+	DataRecordType* resourceType = DataRecordType::GetType("Resource");
+	resourceType->SetKeyFriendlyName("filename", "File");
 }
 
 void Application::Shutdown() {
