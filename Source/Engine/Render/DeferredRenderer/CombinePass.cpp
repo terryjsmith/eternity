@@ -65,13 +65,16 @@ void CombinePass::Render(View *scene) {
     // Get render system
     RenderSystem* renderSystem = GetSystem<RenderSystem>();
     
-    // Get the camera
-    renderSystem->SetViewport(m_windowWidth, m_windowHeight);
-    
     // Bind our FBO and set the viewport to the proper size
     if(m_framebuffer) {
         m_framebuffer->Bind();
     }
+	else {
+		renderSystem->UseDefaultFramebuffer();
+	}
+
+    // Get the camera
+    renderSystem->SetViewport(m_windowWidth, m_windowHeight);
     
     m_program->Bind();
     m_buffer->Bind();

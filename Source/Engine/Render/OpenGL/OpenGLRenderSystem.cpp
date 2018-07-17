@@ -160,3 +160,7 @@ void OpenGLRenderSystem::SetViewport(int width, int height) {
 void OpenGLRenderSystem::SetDrawBuffer(int buffer) {
     GL_CHECK(glDrawBuffer(buffer));
 }
+
+void OpenGLRenderSystem::UseDefaultFramebuffer() {
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer));
+}

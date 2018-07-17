@@ -26,6 +26,8 @@ protected:
 
     // Our update time (for retrieving frame delta)
     QTime* m_updateTimer;
+
+    bool m_initialized;
 };
 
 #endif // ETERNITYOPENGLWIDGET_H

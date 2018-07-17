@@ -44,10 +44,10 @@ std::string Resource::GetString() {
 }
 
 void Resource::Initialize(std::string filename, int mode) {
-	// If it's already open, throw an error
+	// If it's already open, close
 	if (m_fp) {
-		// Error
-		return;
+		fclose(m_fp);
+		m_fp = 0;
 	}
 
 	// Save file mode

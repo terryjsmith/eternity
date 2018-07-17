@@ -14,7 +14,7 @@
 GIGA_CLASS()
 class GIGA_API RenderSystem : public ComponentSystem<RenderComponent> {
 public:
-	RenderSystem() : m_currentView(0) { }
+	RenderSystem() : m_currentView(0), m_framebuffer(0) { }
 	virtual ~RenderSystem() = default;
 
 	GIGA_CLASS_NAME("RenderSystem");
@@ -86,6 +86,12 @@ public:
 	void SetCurrentView(View* scene) { m_currentView = scene; }
 	GIGA_FUNCTION() View* GetCurrentView() { return m_currentView; }
 
+	/**
+	 * Set/get default framebuffer
+	 */
+	void SetDefaultFramebuffer(int framebuffer) { m_framebuffer = framebuffer; }
+	virtual void UseDefaultFramebuffer() { }
+
 protected:
     // Post processing passes
 	std::vector<RenderPass*> m_renderPasses;
@@ -95,6 +101,9 @@ protected:
     
     // Current scene
 	View* m_currentView;
+
+	// default framebuffer
+	int m_framebuffer;
 };
 
 #endif

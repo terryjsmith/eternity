@@ -66,6 +66,11 @@ public:
      */
     void SetDrawBuffer(int buffer);
 
+	/**
+	 * Use default framebuffer
+	 */
+	void UseDefaultFramebuffer();
+
 protected:
 	// Default render passes
 	GBuffer* m_gbufferRenderPass;

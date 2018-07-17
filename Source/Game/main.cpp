@@ -63,15 +63,13 @@ int main(int argc, char** argv) {
     // Load some data
     SQLiteDataLoader* loader = application->CreateAppService<SQLiteDataLoader>();
     loader->Open("game.db");
-    std::vector<DataRecord*> meshes = loader->GetRecords("MeshComponent");
-    
-    loader->GetRecords("TransformComponent");
-    
-    // Add meshes
-    std::vector<DataRecord*>::iterator ri = meshes.begin();
-    for(; ri != meshes.end(); ri++) {
-        scene->AddMesh((MeshComponent*)(*ri)->GetObject());
-    }
+
+	std::map<std::string, std::string> args;
+	args["m_sceneID"] = std::to_string(1);
+	std::vector<std::string> componentTypes = Component::GetComponentTypes();
+	for (size_t i = 0; i < componentTypes.size(); i++) {
+		std::vector<DataRecord*> components = loader->GetRecords(componentTypes[i], args);
+	}
     
     //loader->SaveRecords();
     
@@ -117,14 +115,14 @@ int main(int argc, char** argv) {
     spotLight->SetFOV(90.0f);
     spotLight->SetAttenuation(25.0f);
     
-    scene->AddLight(spotLight);*/
+    scene->AddLight(spotLight);
     
     PointLightComponent* pointLight = light->Assign<PointLightComponent>();
     pointLight->Initialize();
     pointLight->GetTransform()->SetWorldPosition(vector3(-1, 3, 2));
     pointLight->SetAttenuation(20.0f);
     
-    scene->AddLight(pointLight);
+    scene->AddLight(pointLight);*/
 
     // Create a keyboard
     Keyboard* keyboard = new Keyboard();

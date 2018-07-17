@@ -10,7 +10,6 @@
 #include <QHBoxLayout>
 #include "openscenedialog.h"
 #include "sceneentitytreeview.h"
-#include "propertycheckbox.h"
 
 #include <IO/SQLiteDataLoader.h>
 #include <IO/ResourceSystem.h>
@@ -170,11 +169,9 @@ QFormLayout* MainWindow::GetFormLayout(std::string className, GigaObject *object
         }
 
         if(it->second == Variant::VAR_BOOL) {
-            PropertyCheckBox* cb = new PropertyCheckBox(parent);
+            QCheckBox* cb = new QCheckBox(parent);
             cb->setChecked(record->GetString(it->first).compare("true") == 0);
-            cb->record = record;
-            cb->field = it->first;
-
+            connect(cb, SIGNAL(stateChanged(int)), this, SLOT(cbStateChange(int)));
             widget = cb;
         }
 
@@ -319,6 +316,8 @@ QFormLayout* MainWindow::GetFormLayout(std::string className, GigaObject *object
         }
 
         if(added == false) {
+            widget->setProperty("fieldName", QString::fromStdString(it->first));
+            widget->setProperty("fieldRecord", QVariant::fromValue(record));
             layout->insertRow(0, QString::fromStdString(field_name), widget);
         }
     }
@@ -335,4 +334,17 @@ void MainWindow::on_propertiesLayout_clicked() {
         m_propertiesGroupBox->setMaximumHeight(0);
         m_propertiesExpanded = true;
     }
+}
+
+void MainWindow::cbStateChange(int value) {
+    QCheckBox* cb = (QCheckBox*)QObject::sender();
+    QString fieldName = cb->property("fieldName").toString();
+    DataRecord* record = qvariant_cast<DataRecord*>(cb->property("fieldRecord"));
+
+    GigaObject* obj = record->GetObject();
+    std::string className = obj->GetGigaName();
+    DataRecordType* type = DataRecordType::GetType(className);
+
+    record->Set(fieldName.toStdString(), value == Qt::Checked ? "true" : "false");
+    obj->Deserialize(record);
 }

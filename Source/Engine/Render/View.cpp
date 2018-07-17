@@ -1,6 +1,10 @@
 
 #include <Render/View.h>
 
+View::View() {
+	m_ambient = vector3(1, 1, 1);
+}
+
 void View::AddMesh(MeshComponent* mesh) {
 	std::vector<MeshComponent*>::iterator it = std::find(m_meshes.begin(), m_meshes.end(), mesh);
 	if (it != m_meshes.end()) {

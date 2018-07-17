@@ -13,7 +13,7 @@
 GIGA_CLASS()
 class GIGA_API View : public GigaObject {
 public:
-	View() = default;
+	View();
 	~View() = default;
 
 	GIGA_CLASS_NAME("SceneGraph");
