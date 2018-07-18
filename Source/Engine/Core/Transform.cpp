@@ -102,7 +102,7 @@ void Transform::SetWorldRotation(quaternion rotation) {
 matrix4 Transform::GetMatrix() {
 	matrix4 t = glm::translate(glm::mat4(1.0), GetWorldPosition());
 	matrix4 s = glm::scale(glm::mat4(1.0), GetWorldScaling());
-	matrix4 r = glm::mat4_cast(GetWorldRotation());
+        matrix4 r = glm::toMat4(GetWorldRotation());
 
 	matrix4 modelMatrix = t * r * s;
 

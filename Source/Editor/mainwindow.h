@@ -47,6 +47,7 @@ public:
 private slots:
     void on_propertiesLayout_clicked();
     void cbStateChange(int value);
+    void textEditFinished();
 
 private:
     // UI

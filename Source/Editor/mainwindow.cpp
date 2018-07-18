@@ -156,6 +156,7 @@ QFormLayout* MainWindow::GetFormLayout(std::string className, GigaObject *object
 
         DataRecordType::DataRecordField* details = type->GetKeyDetail(it->first);
         std::string field_name = details->friendly_name.empty() ? it->first : details->friendly_name;
+        QString qFieldName = QString::fromStdString(it->first);
 
         if(details->editable == false)
             continue;
@@ -211,19 +212,32 @@ QFormLayout* MainWindow::GetFormLayout(std::string className, GigaObject *object
             x->setText(QString::number(vec3.x, 'f', 2));
             x->setMaximumWidth(40);
             x->setValidator(new QDoubleValidator(layout));
+            x->setObjectName(qFieldName + ".x");
             hbox->addWidget(x);
+
+            x->setProperty("fieldRecord", QVariant::fromValue(record));
 
             QLineEdit* y = new QLineEdit(parent);
             y->setText(QString::number(vec3.y, 'f', 2));
             y->setMaximumWidth(40);
             y->setValidator(new QDoubleValidator(layout));
+            y->setObjectName(qFieldName + ".y");
             hbox->addWidget(y);
+
+            y->setProperty("fieldRecord", QVariant::fromValue(record));
 
             QLineEdit* z = new QLineEdit(parent);
             z->setText(QString::number(vec3.z, 'f', 2));
             z->setMaximumWidth(40);
             z->setValidator(new QDoubleValidator(layout));
+            z->setObjectName(qFieldName + ".z");
             hbox->addWidget(z);
+
+            z->setProperty("fieldRecord", QVariant::fromValue(record));
+
+            connect(x, SIGNAL(editingFinished()), this, SLOT(textEditFinished()));
+            connect(y, SIGNAL(editingFinished()), this, SLOT(textEditFinished()));
+            connect(z, SIGNAL(editingFinished()), this, SLOT(textEditFinished()));
 
             layout->addRow(QString::fromStdString(field_name),hbox);
             added = true;
@@ -265,29 +279,38 @@ QFormLayout* MainWindow::GetFormLayout(std::string className, GigaObject *object
             QHBoxLayout* hbox = new QHBoxLayout();
             quaternion quat = record->Get(it->first)->AsQuaternion();
 
-            QLineEdit* w = new QLineEdit(parent);
-            w->setText(QString::number(quat.w, 'f', 2));
-            w->setMaximumWidth(40);
-            w->setValidator(new QDoubleValidator(layout));
-            hbox->addWidget(w);
+            vector3 angles = glm::degrees(glm::eulerAngles(quat));
 
             QLineEdit* x = new QLineEdit(parent);
-            x->setText(QString::number(quat.x, 'f', 2));
+            x->setText(QString::number(angles.x, 'f', 2));
             x->setMaximumWidth(40);
             x->setValidator(new QDoubleValidator(layout));
+            x->setObjectName(qFieldName + ".x");
             hbox->addWidget(x);
 
+            x->setProperty("fieldRecord", QVariant::fromValue(record));
+
             QLineEdit* y = new QLineEdit(parent);
-            y->setText(QString::number(quat.y, 'f', 2));
+            y->setText(QString::number(angles.y, 'f', 2));
             y->setMaximumWidth(40);
             y->setValidator(new QDoubleValidator(layout));
+            y->setObjectName(qFieldName + ".y");
             hbox->addWidget(y);
 
+            y->setProperty("fieldRecord", QVariant::fromValue(record));
+
             QLineEdit* z = new QLineEdit(parent);
-            z->setText(QString::number(quat.z, 'f', 2));
+            z->setText(QString::number(angles.z, 'f', 2));
             z->setMaximumWidth(40);
             z->setValidator(new QDoubleValidator(layout));
+            z->setObjectName(qFieldName + ".z");
             hbox->addWidget(z);
+
+            z->setProperty("fieldRecord", QVariant::fromValue(record));
+
+            connect(x, SIGNAL(editingFinished()), this, SLOT(textEditFinished()));
+            connect(y, SIGNAL(editingFinished()), this, SLOT(textEditFinished()));
+            connect(z, SIGNAL(editingFinished()), this, SLOT(textEditFinished()));
 
             layout->addRow(QString::fromStdString(field_name),hbox);
             added = true;
@@ -346,5 +369,53 @@ void MainWindow::cbStateChange(int value) {
     DataRecordType* type = DataRecordType::GetType(className);
 
     record->Set(fieldName.toStdString(), value == Qt::Checked ? "true" : "false");
+    obj->Deserialize(record);
+}
+
+void MainWindow::textEditFinished() {
+    QLineEdit* edit = (QLineEdit*)QObject::sender();
+    QWidget* parent = edit->parentWidget();
+    QString fieldName = edit->objectName();
+    if(fieldName.indexOf(".") != -1) {
+        fieldName = fieldName.mid(0, fieldName.indexOf("."));
+    }
+
+    DataRecord* record = qvariant_cast<DataRecord*>(edit->property("fieldRecord"));
+
+    GigaObject* obj = record->GetObject();
+    std::string className = obj->GetGigaName();
+    DataRecordType* type = record->GetType();
+    int fieldType = type->GetKeyType(fieldName.toStdString());
+
+    if(fieldType == Variant::VAR_VECTOR3) {
+        float x, y, z;
+
+        QLineEdit* tx = parent->findChild<QLineEdit*>(fieldName + ".x");
+        QLineEdit* ty = parent->findChild<QLineEdit*>(fieldName + ".y");
+        QLineEdit* tz = parent->findChild<QLineEdit*>(fieldName + ".z");
+
+        x = tx->text().toFloat();
+        y = ty->text().toFloat();
+        z = tz->text().toFloat();
+
+        vector3 vec3 = vector3(x, y, z);
+        record->Set(fieldName.toStdString(), new Variant(vec3));
+    }
+
+    if(fieldType == Variant::VAR_QUATERNION) {
+        float x, y, z;
+
+        QLineEdit* tx = parent->findChild<QLineEdit*>(fieldName + ".x");
+        QLineEdit* ty = parent->findChild<QLineEdit*>(fieldName + ".y");
+        QLineEdit* tz = parent->findChild<QLineEdit*>(fieldName + ".z");
+
+        x = tx->text().toFloat();
+        y = ty->text().toFloat();
+        z = tz->text().toFloat();
+
+        quaternion quat = glm::quat(glm::radians(vector3(x, y, z)));
+        record->Set(fieldName.toStdString(), new Variant(quat));
+    }
+
     obj->Deserialize(record);
 }

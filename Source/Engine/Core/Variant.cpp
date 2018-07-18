@@ -439,7 +439,7 @@ vector4 Variant::AsVector4() {
 
 quaternion Variant::AsQuaternion() {
 	if (m_type == VAR_QUATERNION) {
-		return quaternion(m_data.f4, m_data.f2, m_data.f3, m_data.f1);
+		return quaternion(m_data.f4, m_data.f1, m_data.f2, m_data.f3);
 	}
 
 	return(quaternion(1, 0, 0, 0));
