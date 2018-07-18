@@ -8,6 +8,13 @@ void MeshComponent::Instantiate(Mesh* mesh) {
 	// Save base mesh
 	m_mesh = mesh;
 
+	// Remove previous children
+	std::vector<MeshComponent*>::iterator ci = m_children.begin();
+	for (; ci != m_children.end(); ci++) {
+		delete *ci;
+	}
+	m_children.clear();
+
 	// Instatiate children
     std::vector<Mesh*> children = mesh->children;
 	std::vector<Mesh*>::iterator it = children.begin();

@@ -38,6 +38,11 @@ Component* Entity::FindComponent(std::string name) {
 }
 
 void Entity::AddComponent(Component* component, bool notify) {
+	std::vector<Component*>::iterator ci = std::find(m_components.begin(), m_components.end(), component);
+	if (ci != m_components.end()) {
+		return;
+	}
+
     // Register with appropriate system
 	World* world = Application::GetInstance()->GetWorld();
 	std::vector<ComponentSystemBase*> systems = world->GetComponentSystems();

@@ -8,6 +8,7 @@
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QHBoxLayout>
+#include <QFontComboBox>
 #include "openscenedialog.h"
 #include "sceneentitytreeview.h"
 
@@ -322,19 +323,47 @@ QFormLayout* MainWindow::GetFormLayout(std::string className, GigaObject *object
             widget = edit;
         }
 
+        bool isResource = false; // Special case for resource objects
         if(it->second == Variant::VAR_OBJECT) {
             GigaObject* obj = record->Get(it->first)->AsObject();
-            QVBoxLayout* vbox = new QVBoxLayout;
+            ResourceObject* resourceObj = dynamic_cast<ResourceObject*>(obj);
+            if(resourceObj == 0) {
+                QVBoxLayout* vbox = new QVBoxLayout;
 
-            QFormLayout* form = (QFormLayout*)GetFormLayout(obj->GetGigaName(), obj, widget);
-            if(form->rowCount() > 1) {
-                QLabel* label = new QLabel(QString::fromStdString(obj->GetGigaName()));
-                label->setStyleSheet("font-weight: bold;");
-                vbox->addWidget(label);
+                QFormLayout* form = (QFormLayout*)GetFormLayout(obj->GetGigaName(), obj, widget);
+                if(form->rowCount() > 1) {
+                    QLabel* label = new QLabel(QString::fromStdString(obj->GetGigaName()));
+                    label->setStyleSheet("font-weight: bold;");
+                    vbox->addWidget(label);
+                }
+                vbox->addLayout(form);
+
+                layout->addRow(vbox);
             }
-            vbox->addLayout(form);
+            else {
+                QHBoxLayout* hbox = new QHBoxLayout();
 
-            layout->addRow(vbox);
+                QLineEdit* edit = new QLineEdit(parent);
+                QString filename = QString::fromStdString(resourceObj->GetResource()->filename);
+                QString extension = QString::fromStdString(resourceObj->GetResource()->extension);
+                edit->setText(filename);
+                edit->setObjectName(QString::fromStdString(it->first) + "_edit");
+                edit->setProperty("type", QString::fromStdString(resourceObj->GetResource()->type));
+                edit->setProperty("fieldRecord", QVariant::fromValue(record));
+                edit->setDisabled(true);
+                connect(edit, SIGNAL(textChanged(QString)), this, SLOT(textResourceChange(QString)));
+
+                QPushButton* button = new QPushButton("...");
+                button->setProperty("extension", extension);
+                button->setProperty("type", QString::fromStdString(resourceObj->GetResource()->type));
+                button->setObjectName(QString::fromStdString(it->first));
+                connect(button, SIGNAL(clicked()), this, SLOT(browseAssets()));
+
+                hbox->addWidget(edit);
+                hbox->addWidget(button);
+
+                layout->addRow(QString::fromStdString(resourceObj->GetResource()->GetGigaName()), hbox);
+            }
             added = true;
         }
 
@@ -418,4 +447,37 @@ void MainWindow::textEditFinished() {
     }
 
     obj->Deserialize(record);
+    obj->PostDeserialize();
+}
+
+void MainWindow::browseAssets() {
+    QPushButton* sender = (QPushButton*)QObject::sender();
+    QString fieldName = sender->objectName();
+    QString extension = sender->property("extension").toString();
+    QString type = sender->property("type").toString();
+    QString filePath = QFileDialog::getOpenFileName(this, "Open Project", QDir::currentPath(), type + " (*." + extension + ")");
+
+    QLineEdit* edit = sender->parentWidget()->findChild<QLineEdit*>(fieldName + "_edit");
+    edit->setText(filePath);
+}
+
+void MainWindow::textResourceChange(QString path) {
+    QLineEdit* sender = (QLineEdit*)QObject::sender();
+    QString fieldName = sender->objectName();
+    if(fieldName.indexOf("_") != -1) {
+        fieldName = fieldName.mid(0, fieldName.lastIndexOf("_"));
+    }
+
+    QString type = sender->property("type").toString();
+    QString filePath = sender->text();
+
+    DataRecord* record = qvariant_cast<DataRecord*>(sender->property("fieldRecord"));
+    GigaObject* obj = record->GetObject();
+
+    ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
+    ResourceObject* resourceObject = resourceSystem->LoadResource(filePath.toStdString(), type.toStdString());
+
+    record->Set(fieldName.toStdString(), new Variant(resourceObject));
+    obj->Deserialize(record);
+    obj->PostDeserialize();
 }

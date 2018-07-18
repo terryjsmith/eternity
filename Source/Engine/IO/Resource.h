@@ -108,6 +108,9 @@ public:
 	// The size of the file/data
 	GIGA_VARIABLE(Get) unsigned int filesize;
 
+	// Loaded resource type
+	GIGA_VARIABLE(Get, Serialize) std::string type;
+
 protected:
 	// Loaded data
 	unsigned char* m_data;

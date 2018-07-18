@@ -22,6 +22,7 @@ ResourceObject* ResourceSystem::LoadResource(std::string filename, std::string t
 		
 		std::shared_ptr<Resource> resource = std::make_shared<Resource>();
 		resource->Initialize(fullpath, FILEMODE_READ | FILEMODE_BINARY);
+		resource->type = type;
 
 		m_resources.push_back(resource);
 	}

@@ -48,6 +48,8 @@ private slots:
     void on_propertiesLayout_clicked();
     void cbStateChange(int value);
     void textEditFinished();
+    void browseAssets();
+    void textResourceChange(QString path);
 
 private:
     // UI
