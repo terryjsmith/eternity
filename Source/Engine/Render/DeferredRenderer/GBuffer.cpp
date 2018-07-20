@@ -84,8 +84,11 @@ void GBuffer::Render(View* scene) {
     
     std::vector<MeshComponent*> meshes = scene->GetMeshes();
     std::vector<MeshComponent*>::iterator it = meshes.begin();
+	int counter = 0;
     for (; it != meshes.end(); it++) {
+		m_program->Set("sceneIndex", (float)counter);
         RecursiveRender(*it, view, matrix4(1.0));
+		counter++;
     }
     
     renderSystem->DisableDepthTest();

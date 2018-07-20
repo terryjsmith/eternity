@@ -92,6 +92,15 @@ public:
 	void SetDefaultFramebuffer(int framebuffer) { m_framebuffer = framebuffer; }
 	virtual void UseDefaultFramebuffer() { }
 
+	/**
+	 * References to textures
+	 */
+	virtual Texture2D* GetPositionTexture() { return(0); }
+	virtual Texture2D* GetNormalTexture() { return(0); }
+	virtual Texture2D* GetLightingTexture() { return(0); }
+	virtual Texture2D* GetDiffuseTexture() { return(0); }
+	virtual Texture2D* GetIndexTexture() { return(0); }
+
 protected:
     // Post processing passes
 	std::vector<RenderPass*> m_renderPasses;

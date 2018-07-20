@@ -43,6 +43,31 @@ void OpenGLRenderSystem::Initialize() {
     resourceSystem->RegisterResourceType<OpenGLTexture2D>("Texture2D");
 }
 
+Texture2D* OpenGLRenderSystem::GetIndexTexture() {
+	Texture2D* texture = (Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(3);
+	return(texture);
+}
+
+Texture2D* OpenGLRenderSystem::GetPositionTexture() {
+	Texture2D* texture = (Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(1);
+	return(texture);
+}
+
+Texture2D* OpenGLRenderSystem::GetNormalTexture() {
+	Texture2D* texture = (Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(2);
+	return(texture);
+}
+
+Texture2D* OpenGLRenderSystem::GetLightingTexture() {
+	Texture2D* texture = (Texture2D*)m_lightingRenderPass->GetFramebuffer(0)->GetTexture(0);
+	return(texture);
+}
+
+Texture2D* OpenGLRenderSystem::GetDiffuseTexture() {
+	Texture2D* texture = (Texture2D*)m_gbufferRenderPass->GetFramebuffer(0)->GetTexture(0);
+	return(texture);
+}
+
 VertexBuffer* OpenGLRenderSystem::CreateVertexBuffer() {
 	return(new OpenGLVertexBuffer());
 }

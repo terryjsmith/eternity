@@ -11,6 +11,7 @@
 #include <QTreeView>
 #include <QFormLayout>
 #include <QItemSelection>
+#include <QStatusBar>
 
 Q_DECLARE_METATYPE(DataRecord*);
 
@@ -35,6 +36,7 @@ public:
     EntityTreeModel* GetEntityTreeModel() { return m_entityTreeModel; }
     EternityOpenGLWidget* GetOpenGLWidget() { return m_openglWidget; }
     QGroupBox* GetPropertiesWidget() { return m_propertiesGroupBox; }
+    QStatusBar* GetStatusBar() { return m_statusBar; }
 
     // Menu item handlers
     void btnOpenProject_clicked();
@@ -73,6 +75,9 @@ private:
     // Entity view
     QTreeView* m_entityTreeView;
     EntityTreeModel* m_entityTreeModel;
+
+    // Status bar
+    QStatusBar* m_statusBar;
 };
 
 #endif // MAINWINDOW_H

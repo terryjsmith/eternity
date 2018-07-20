@@ -494,6 +494,7 @@
    <addaction name="menuEntity"/>
    <addaction name="menuView"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_Project">
    <property name="text">
     <string>New Project...</string>

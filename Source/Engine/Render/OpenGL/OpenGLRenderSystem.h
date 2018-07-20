@@ -71,6 +71,15 @@ public:
 	 */
 	void UseDefaultFramebuffer();
 
+	/**
+	 * References to textures
+	 */
+	Texture2D* GetPositionTexture();
+	Texture2D* GetNormalTexture();
+	Texture2D* GetLightingTexture();
+	Texture2D* GetDiffuseTexture();
+	Texture2D* GetIndexTexture();
+
 protected:
 	// Default render passes
 	GBuffer* m_gbufferRenderPass;
