@@ -41,6 +41,7 @@ bool markGet = false;
 bool markSet = false;
 bool markSerialize = false;
 bool markNonEditable = false;
+bool markOptional = false;
 
 bool grabNextFunction = false;
 bool grabNextVar = false;
@@ -135,6 +136,10 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 		if (strcmp("NonEditable", name.c_str()) == 0) {
 			markNonEditable = true;
 		}
+        
+        if (strcmp("Optional", name.c_str()) == 0) {
+            markOptional = true;
+        }
 
 		//pullOptions = false;
         return CXChildVisit_Continue;
@@ -304,6 +309,11 @@ CXChildVisitResult visitor(CXCursor c, CXCursor parent, CXClientData client_data
 				markNonEditable = false;
 			}
             
+            if (markOptional) {
+                var->optional = true;
+                markOptional = false;
+            }
+            
             currentMetaClass->variables[name] = var;
         }
         else {
@@ -358,8 +368,41 @@ void ProcessDirectory(Directory* dir) {
 			nullptr, 0,
 			flags, &unit);
 		if (unit == nullptr) {
-			cerr << "Unable to parse translation unit. Quitting." << endl;
-			exit(-1);
+            // First, try again without the precompiled header
+            cerr << "Failed with precompiled header, trying without " << args.size() << endl;
+            remove(precompiled_header.c_str());
+            
+            bool success = false;
+            std::vector<const char*>::iterator it = args.begin();
+            for(; it != args.end(); it++) {
+                if(strcmp(*it, "-include-pch") == 0)
+                    break;
+            }
+            
+            if(it != args.end()) {
+                args.erase(it, it + 2);
+                
+                cerr << "Removed arguments " << args.size() << endl;
+                flags = CXTranslationUnit_ForSerialization;
+                
+                clang_parseTranslationUnit2(
+                                            cindex,
+                                            filename.c_str(), args.data(), (int)args.size(),
+                                            nullptr, 0,
+                                            flags, &unit);
+                
+                if(unit != nullptr) {
+                    success = true;
+                    
+                    args.push_back("-include-pch");
+                    args.push_back(precompiled_header.c_str());
+                }
+            }
+            
+            if(success == false) {
+                cerr << "Unable to parse translation unit. Quitting." << endl;
+                exit(-1);
+            }
 		}
 
 		CXCursor cursor = clang_getTranslationUnitCursor(unit);
@@ -662,7 +705,11 @@ int main(int argc, char** argv) {
 				output += ";\n\treturn(new Variant(0));";
 			}
 			else {
-				output += "));";
+                if (fi->second->isStatic == false) {
+                    output += "));";
+                } else {
+                    output += ";";
+                }
 			}
 
 			output += "\n}\n\n";
@@ -712,12 +759,22 @@ int main(int argc, char** argv) {
             output += "void " + cl->name + "::Deserialize(DataRecord* record) {\n";
             vi = serialized.begin();
             for(; vi != serialized.end(); vi++) {
-                output += "\t" + vi->first + " = record->Get(\"" + vi->first + "\")->As";
+                output += "\t";
+                if(vi->second->optional) {
+                    output += "if(record->Get(\"" + vi->first + "\")) { ";
+                }
+                output += "" + vi->first + " = record->Get(\"" + vi->first + "\")->As";
                 output += functionMappings[vi->second->type];
                 if (vi->second->type == VAR_OBJECT) {
                     output += "<" + vi->second->objectType + ">";
                 }
-                output += "();\n";
+                output += "();";
+                
+                if(vi->second->optional) {
+                    output += "}";
+                }
+                
+                output += "\n";
             }
             output += "}\n\n";
         }
@@ -774,7 +831,7 @@ int main(int argc, char** argv) {
 					std::string((vi->second->noneditable == true) ? "false" : "true") + ");\n";
             }
             
-            output += "\n\tDataRecordType::Register(\"" + cl->name + "\", " + objectName + ");\n";
+            output += "\n\tDataRecordType::Register<" + cl->name + ">(\"" + cl->name + "\", " + objectName + ");\n";
         }
         
         if(cl->functions.size()) {

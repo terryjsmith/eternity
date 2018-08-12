@@ -20,7 +20,7 @@ void Entity::ID(int id) {
 	// Make sure another entity does not exist with this ID
 	World* world = Application::GetInstance()->GetWorld();
 
-	Entity* e = world->GetEntity(id);
+	Entity* e = world->FindEntity(id);
 	assert(e == 0);
 
 	m_entityID = id;
@@ -30,6 +30,17 @@ Component* Entity::FindComponent(std::string name) {
     std::vector<Component*>::iterator it = m_components.begin();
     for(; it != m_components.end(); it++) {
         if((*it)->GetGigaName() == name) {
+            return(*it);
+        }
+    }
+    
+    return(0);
+}
+
+Component* Entity::FindComponent(uint32_t typeID) {
+    std::vector<Component*>::iterator it = m_components.begin();
+    for(; it != m_components.end(); it++) {
+        if((*it)->GetTypeID() == typeID) {
             return(*it);
         }
     }
@@ -60,7 +71,7 @@ void Entity::AddComponent(Component* component, bool notify) {
         }
     }
     
-	component->m_parent = this;
+	component->SetParent(this);
     component->OnEntityAssigned();
     m_components.push_back(component);
 }
@@ -82,7 +93,7 @@ Component* Entity::Assign(std::string className) {
         (*ci)->OnComponentAdded(component);
     }
     
-    component->m_parent = this;
+    component->SetParent(this);
     component->OnEntityAssigned();
     m_components.push_back(component);
     

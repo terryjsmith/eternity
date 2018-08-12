@@ -29,7 +29,7 @@ public:
 	struct MetaVariable {
 		std::string name;
 		int type;
-		bool get, set, serialize, noneditable;
+		bool get, set, serialize, noneditable, optional;
         std::string objectType;
 	};
 

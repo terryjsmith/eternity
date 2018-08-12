@@ -6,6 +6,8 @@ std::map<std::string, Component::ComponentType*> Component::m_types;
 Component::Component() {
     m_typeID = 0;
     m_parent = 0;
+    m_updated = false;
+    m_active = false;
 }
 
 uint32_t Component::GetTypeID() {
@@ -24,6 +26,17 @@ Component* Component::CreateComponent(std::string className) {
     GIGA_ASSERT(it != m_types.end(), "Component type not registered.");
 
     return(it->second->ctor());
+}
+
+Component* Component::CreateComponent(uint32_t type) {
+    std::map<std::string, ComponentType*>::iterator it = m_types.begin();
+    for(; it != m_types.end(); it++) {
+        if(it->second->typeID == type) {
+            return(it->second->ctor());
+        }
+    }
+    
+    return(0);
 }
 
 std::vector<std::string> Component::GetComponentTypes() {

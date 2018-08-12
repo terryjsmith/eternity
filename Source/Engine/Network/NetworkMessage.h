@@ -10,7 +10,7 @@
 class GIGA_API NetworkMessage {
 public:
     NetworkMessage();
-    ~NetworkMessage();
+    virtual ~NetworkMessage();
     
     enum Flags {
         FLAG_ACK = 1,

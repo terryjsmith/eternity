@@ -79,7 +79,12 @@ void NetworkMessage::ReadPayload(void* bytes, int size) {
 }
 
 void NetworkMessage::SetPayload(unsigned char* bytes, int size) {
-    m_payload = bytes;
+    if(m_payload) {
+        free(m_payload);
+    }
+    
+    m_payload = (unsigned char*)malloc(size);
+    memcpy(m_payload, bytes, size);
     m_envelope.bytes = size;
 }
 

@@ -28,6 +28,11 @@ public:
     int GetPosition() { return m_offset; }
     
     /**
+     * Set position
+     */
+    void SetPosition(int position) { m_offset = position; m_current = m_start + m_offset; }
+    
+    /**
      * Get current position
      */
     unsigned char* GetCurrent() { return m_current; }

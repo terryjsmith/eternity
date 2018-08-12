@@ -1,8 +1,10 @@
 
 #include <Core/Variant.h>
+#include <Core/DataRecordType.h>
 
 Variant::Variant() {
 	m_type = 0;
+    m_size = 0;
 }
 
 Variant::~Variant() {
@@ -66,36 +68,42 @@ Variant::Variant(const Variant& value) {
 Variant& Variant::operator =(int32_t rhs) {
 	m_type = VAR_INT32;
 	m_data.i32 = rhs;
+    m_size = sizeof(int32_t);
 	return *this;
 }
 
 Variant& Variant::operator =(uint32_t rhs) {
 	m_type = VAR_UINT32;
 	m_data.ui32 = rhs;
+    m_size = sizeof(uint32_t);
 	return *this;
 }
 
 Variant& Variant::operator =(int64_t rhs) {
 	m_type = VAR_INT64;
 	m_data.i64 = rhs;
+    m_size = sizeof(int64_t);
 	return *this;
 }
 
 Variant& Variant::operator =(uint64_t rhs) {
 	m_type = VAR_UINT64;
 	m_data.ui64 = rhs;
+    m_size = sizeof(uint64_t);
 	return *this;
 }
 
 Variant& Variant::operator =(bool rhs) {
 	m_type = VAR_BOOL;
 	m_data.b = rhs;
+    m_size = sizeof(bool);
 	return *this;
 }
 
 Variant& Variant::operator =(float rhs) {
 	m_type = VAR_FLOAT;
 	m_data.f1 = rhs;
+    m_size = sizeof(float);
 	return *this;
 }
 
@@ -103,6 +111,7 @@ Variant& Variant::operator =(vector2 rhs) {
 	m_type = VAR_VECTOR2;
 	m_data.f1 = rhs.x;
 	m_data.f2 = rhs.y;
+    m_size = sizeof(float) * 2;
 	return *this;
 }
 
@@ -111,6 +120,7 @@ Variant& Variant::operator =(vector3 rhs) {
 	m_data.f1 = rhs.x;
 	m_data.f2 = rhs.y;
 	m_data.f3 = rhs.z;
+    m_size = sizeof(float) * 3;
 	return *this;
 }
 
@@ -120,6 +130,7 @@ Variant& Variant::operator =(vector4 rhs) {
 	m_data.f2 = rhs.y;
 	m_data.f3 = rhs.z;
 	m_data.f4 = rhs.w;
+    m_size = sizeof(float) * 4;
 	return *this;
 }
 
@@ -129,6 +140,7 @@ Variant& Variant::operator =(quaternion rhs) {
 	m_data.f2 = rhs.y;
 	m_data.f3 = rhs.z;
 	m_data.f4 = rhs.w;
+    m_size = sizeof(float) * 4;
 	return *this;
 }
 
@@ -136,18 +148,22 @@ Variant& Variant::operator =(std::string rhs) {
 	m_type = VAR_STRING;
 	m_data.str = (char*)malloc(rhs.length() + 1);
 	strcpy(m_data.str, rhs.data());
+    m_size = rhs.length() + 1;
 	return *this;
 }
 
 Variant& Variant::operator =(GigaObject* rhs) {
 	m_type = VAR_OBJECT;
 	m_data.obj = rhs;
+    
+    // what to do about m_size here?
 	return *this;
 }
 
 Variant& Variant::operator =(const Variant& rhs) {
 	m_type = rhs.m_type;
 	m_data = rhs.m_data;
+    m_size = rhs.m_size;
 	return *this;
 }
 

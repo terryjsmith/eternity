@@ -6,6 +6,8 @@ MemoryWriter::MemoryWriter() {
     m_current = 0;
     m_offset = 0;
     m_size = 0;
+    m_chunkSize = 0;
+    m_resizable = false;
 }
 
 void MemoryWriter::Initialize(unsigned char* block, int bytes) {
@@ -16,9 +18,27 @@ void MemoryWriter::Initialize(unsigned char* block, int bytes) {
 }
 
 void MemoryWriter::Write(void* ptr, int bytes) {
-    GIGA_ASSERT(m_offset + bytes <= m_size, "Overflow error.");
+    if(m_resizable == false) {
+        GIGA_ASSERT(m_offset + bytes <= m_size, "Overflow error.");
+    }
+    else {
+        if(m_offset + bytes >= m_size) {
+            unsigned char* newbytes = (unsigned char*)malloc(m_size + m_chunkSize);
+            memcpy(newbytes, m_start, m_offset);
+            free(m_start);
+            
+            m_start = newbytes;
+            m_current = newbytes + m_offset;
+            m_size = m_size + m_chunkSize;
+        }
+    }
     
     memcpy(m_current, ptr, bytes);
     m_current += bytes;
     m_offset += bytes;
+}
+
+void MemoryWriter::Resizable(bool resize, int chunkSize) {
+    m_chunkSize = chunkSize;
+    m_resizable = resize;
 }

@@ -6,6 +6,15 @@
 #include <IO/MemoryReader.h>
 #include <Core/Application.h>
 
+Mesh::Mesh() {
+    vertexBuffer = 0;
+    indexBuffer = 0;
+    diffuseTexture = 0;
+    normalTexture = 0;
+    material = 0;
+    numTriangles = 0;
+}
+
 Mesh::~Mesh() {
 	if (vertexBuffer) {
 		delete(vertexBuffer);

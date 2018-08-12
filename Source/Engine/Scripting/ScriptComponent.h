@@ -40,9 +40,14 @@ public:
      */
 	void SetGlobal(std::string name, Variant* value);
     
+    /**
+     * When deserialized
+     */
+    void PostSerialize();
+    
 protected:
     // Our script
-    Script* m_scriptSource;
+    GIGA_VARIABLE(Serialize) Script* m_scriptSource;
 
 	// The thread this script was created on
 	ScriptThread* m_thread;

@@ -139,9 +139,15 @@ public:
 
 		return(0);
 	}
+    
+    /**
+     * Get binary size
+     */
+    uint32_t Size() { return m_size; }
 
 protected:
 	int m_type;
+    uint32_t m_size;
 	Value m_data;
 };
 

@@ -99,7 +99,21 @@ void UDPSocketPosix::Listen(int port) {
     servaddr.sin_port = htons(port);
     servaddr.sin_addr.s_addr = INADDR_ANY;
     
+    int enable = 1;
+    if (setsockopt(m_socket, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0) {
+        GIGA_ASSERT(false, "Unable to re-use socket address.");
+        Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to re-use socket address."));
+        return;
+    }
+    
+    if (setsockopt(m_socket, SOL_SOCKET, SO_REUSEPORT, &enable, sizeof(int)) < 0) {
+        GIGA_ASSERT(false, "Unable to re-use socket address.");
+        Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to re-use socket address."));
+        return;
+    }
+    
     if(bind(m_socket, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {
+        GIGA_ASSERT(false, "Unable to bind socket.");
         Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to bind socket."));
         return;
     }

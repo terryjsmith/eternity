@@ -10,7 +10,7 @@
 class GIGA_API MetaSystem : public System {
 public:
 	MetaSystem() = default;
-	~MetaSystem() = default;
+	~MetaSystem();
     
     typedef GigaObject* (*MetaConstructor)(void);
     typedef void (*SetterFunction)(GigaObject* obj, Variant* value);

@@ -32,4 +32,6 @@ DataRecord* DataLoader::FindDataRecord(GigaObject* object) {
 			return(*it);
 		}
 	}
+    
+    return(0);
 }

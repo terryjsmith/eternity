@@ -156,6 +156,10 @@ void SQLiteDataLoader::ProcessRecord(SQLiteDataLoader* loader, DataRecord* recor
         if(colType == Variant::VAR_OBJECT) {
             // Expand object, currently stored as a string with format TableName:ID
             std::string recordStr = record->GetString(f->first);
+            if(recordStr.size() == 0) {
+                continue;
+            }
+            
             std::string className = recordStr.substr(0, recordStr.find(":"));
             std::string recordID = recordStr.substr(recordStr.find(":") + 1);
             

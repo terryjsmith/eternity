@@ -18,6 +18,14 @@
 #include <Physics/PhysicsCollision.h>
 #include <Physics/RigidBodyComponent.h>
 #include <Core/DataRecordType.h>
+#include <Network/NetworkSystem.h>
+#include <Network/Messages/NetworkMessageTypes.h>
+#include <Network/Messages/EchoRequestMessage.h>
+#include <Network/Messages/EchoResponseMessage.h>
+#include <Network/Messages/AckMessage.h>
+#include <Network/Messages/EntitySnapshotMessage.h>
+#include <Network/Messages/CommandMessage.h>
+#include <Network/Messages/ResendPartialMessage.h>
 
 Application* Application::m_instance = 0;
 
@@ -33,12 +41,14 @@ void Application::Initialize() {
     MessageSystem* messageSystem = GetSystem<MessageSystem>();
     ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
     MetaSystem* metaSystem = GetSystem<MetaSystem>();
+    NetworkSystem* networkSystem = GetSystem<NetworkSystem>();
     
 	// Register messages
 	messageSystem->RegisterMessageType<Error>("Error");
 	messageSystem->RegisterMessageType<KeyboardMessage>("KeyboardMessage");
 	messageSystem->RegisterMessageType<Command>("Command");
     messageSystem->RegisterMessageType<PhysicsCollision>("PhysicsCollision");
+    messageSystem->RegisterMessageType<Command>("Command");
 
 	// Register resource types
 	resourceSystem->RegisterResourceType<Shader>("Shader");
@@ -49,6 +59,15 @@ void Application::Initialize() {
 	metaSystem->RegisterSingleton("ResourceSystem", resourceSystem);
 	metaSystem->RegisterSingleton("InputSystem", inputSystem);
     metaSystem->RegisterSingleton("ScriptingSystem", scriptingSystem);
+    metaSystem->RegisterSingleton("NetworkSystem", networkSystem);
+    
+    // Message types
+    networkSystem->RegisterMessageType<EchoRequestMessage>(NetworkMessages::idEchoRequestMessage);
+    networkSystem->RegisterMessageType<EchoResponseMessage>(NetworkMessages::idEchoResponseMessage);
+    networkSystem->RegisterMessageType<AckMessage>(NetworkMessages::idAckMessage);
+    networkSystem->RegisterMessageType<EntitySnapshotMessage>(NetworkMessages::idEntitySnapshotMessage);
+    networkSystem->RegisterMessageType<CommandMessage>(NetworkMessages::idCommandMessage);
+    networkSystem->RegisterMessageType<ResendPartialMessage>(NetworkMessages::idResendPartialMessage);
     
     // Component types
     Component::RegisterComponentType<TransformComponent>("TransformComponent", 5);
@@ -63,6 +82,9 @@ void Application::Initialize() {
     // Device types
     scriptingSystem->SetGlobal("INPUTDEVICE_MOUSE", new Variant(INPUTDEVICE_MOUSE));
     scriptingSystem->SetGlobal("INPUTDEVICE_KEYBOARD", new Variant(INPUTDEVICE_KEYBOARD));
+    
+    // World global
+    scriptingSystem->SetGlobal("World", new Variant(m_world));
     
     // Keyboard keys
     scriptingSystem->SetGlobal("KEY_0", new Variant(KEY_0));

@@ -52,7 +52,8 @@ enum VarOptions {
     Get = 1,
     Set,
     Serialize,
-	NonEditable
+	NonEditable,
+    Optional
 };
 
 // STD library

@@ -19,14 +19,14 @@ public:
     GIGA_CLASS_BODY();
 
 	/**
-	* Get/set active status
-	*/
+	 * Get/set active status
+	 */
 	bool IsActive() { return m_active; }
 	void IsActive(bool active);
 
 	/**
-	* Get/set updated status
-	*/
+	 * Get/set updated status
+	 */
 	bool IsUpdated() { return m_updated; }
 	void IsUpdated(bool updated);
 
@@ -46,6 +46,7 @@ public:
      * Find component by name
      */
     GIGA_FUNCTION() Component* FindComponent(std::string name);
+    Component* FindComponent(uint32_t typeID);
     
     /**
      * Add component
@@ -87,7 +88,7 @@ public:
             (*ci)->OnComponentAdded(component);
         }
         
-        component->m_parent = this;
+        component->SetParent(this);
         component->OnEntityAssigned();
         m_components.push_back(component);
         
@@ -96,6 +97,11 @@ public:
     }
     
     GIGA_FUNCTION() Component* Assign(std::string className);
+    
+    /**
+     * Get all components
+     */
+    std::vector<Component*>& GetComponents() { return m_components; }
     
     /**
      * After deserialization
