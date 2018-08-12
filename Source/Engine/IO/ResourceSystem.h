@@ -46,8 +46,7 @@ public:
 		if (m_resourceTypes.size() > 0) {
 			for (int i = (int)m_resourceTypes.size() - 1; i >= 0; i--) {
 				if (m_resourceTypes[i]->name == className) {
-					delete (m_resourceTypes[i]);
-					m_resourceTypes.erase(m_resourceTypes.begin() + i);
+                    return;
 				}
 			}
 		}

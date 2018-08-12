@@ -10,12 +10,14 @@ DataRecord::DataRecord() {
 }
 
 DataRecord::~DataRecord() {
-    std::map<std::string, Variant*>::iterator it = m_values.begin();
-    for(; it != m_values.end(); it++) {
-        delete it->second;
+    if(m_values.size()) {
+        std::map<std::string, Variant*>::iterator it = m_values.begin();
+        for(; it != m_values.end(); it++) {
+            delete it->second;
+        }
+        
+        m_values.clear();
     }
-    
-    m_values.clear();
 }
 
 Variant* DataRecord::Get(std::string key) {
@@ -41,7 +43,7 @@ std::string DataRecord::GetString(std::string key) {
 void DataRecord::Set(std::string key, Variant* value) {
     std::map<std::string, Variant*>::iterator it = m_values.find(key);
     if(it != m_values.end()) {
-        delete it->second;
+        //delete it->second;
     }
     
     m_values[key] = value;

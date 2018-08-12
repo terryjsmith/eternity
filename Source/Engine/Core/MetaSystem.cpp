@@ -1,6 +1,10 @@
 
 #include <Core/MetaSystem.h>
 
+MetaSystem::~MetaSystem() {
+    // Destroy all the things
+}
+
 void MetaSystem::Initialize() {
     RegisterMetaFunctions();
 }

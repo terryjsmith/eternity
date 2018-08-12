@@ -15,7 +15,7 @@
 GIGA_CLASS()
 class GIGA_API Mesh : public ResourceObject {
 public:
-	Mesh() = default;
+	Mesh();
 	~Mesh();
 
 	GIGA_CLASS_NAME("Mesh");
@@ -53,10 +53,10 @@ public:
     IndexBuffer* indexBuffer;
     
     // Diffuse texture
-    Texture2D* diffuseTexture;
+    GIGA_VARIABLE(Serialize, Optional) Texture2D* diffuseTexture;
     
     // Additional (optional) textures
-    Texture2D* normalTexture;
+    GIGA_VARIABLE(Serialize, Optional) Texture2D* normalTexture;
     
     // Material
     Material* material;

@@ -20,6 +20,8 @@
 #include <Physics/PhysicsSystem.h>
 #include <Physics/RigidBodyComponent.h>
 #include <IO/SQLiteDataLoader.h>
+#include <Network/NetworkSystem.h>
+#include <Network/ReplicationSystem.h>
 
 int main(int argc, char** argv) {
 	Application* application = Application::GetInstance();
@@ -33,6 +35,8 @@ int main(int argc, char** argv) {
     MetaSystem* metaSystem = world->CreateSystem<MetaSystem>();
     ScriptingSystem* scriptingSystem = world->CreateSystem<ScriptingSystem>(20);
     PhysicsSystem* physicsSystem = world->CreateSystem<PhysicsSystem>(20);
+    NetworkSystem* networkSystem = world->CreateSystem<NetworkSystem>();
+    ReplicationSystem* replicationSystem = world->CreateSystem<ReplicationSystem>(20);
 
 	world->Initialize();
 	application->Initialize();
@@ -41,6 +45,7 @@ int main(int argc, char** argv) {
 	window->Create("Test Window", 800, 600, false);
 
 	application->SetPrimaryWindow(window);
+    replicationSystem->SetType(REPLICATION_CLIENT);
 
 	// Specify resource directories
 	resourceSystem->AddSearchPath("");

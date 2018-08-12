@@ -131,7 +131,7 @@ void Keyboard::ProcessAction(int key, int action) {
 				// Send an applicable command message
 				std::string command = inputSystem->FindInputMapping(this, i);
 				if (command.empty() == false) {
-					Message::Broadcast(new Command(command, true));
+                    Command::Start(command);
 				}
 
 				// Set key state
@@ -150,7 +150,7 @@ void Keyboard::ProcessAction(int key, int action) {
 				// Send an applicable command message
 				std::string command = inputSystem->FindInputMapping(this, i);
 				if (command.empty() == false) {
-					Message::Broadcast(new Command(command, false));
+                    Command::End(command);
 				}
 
 				// Set key state back

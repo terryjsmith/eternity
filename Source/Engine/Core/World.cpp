@@ -73,10 +73,10 @@ void World::AddEntity(Entity* entity) {
     m_entities.push_back(entity);
 }
 
-Entity* World::GetEntity(int id) {
+Entity* World::FindEntity(int entityID) {
 	std::vector<Entity*>::iterator it = m_entities.begin();
 	for (; it != m_entities.end(); it++) {
-		if ((*it)->m_entityID == id) {
+		if ((*it)->m_entityID == entityID) {
 			return((*it));
 		}
 	}
@@ -91,4 +91,15 @@ void World::Clear() {
 	}
 
 	m_entities.clear();
+}
+
+System* World::FindSystem(std::string name) {
+    std::vector<RegisteredSystem*>::iterator it = m_systems.begin();
+    for(; it != m_systems.end(); it++) {
+        if((*it)->system->GetGigaName() == name) {
+            return((*it)->system);
+        }
+    }
+    
+    return(0);
 }

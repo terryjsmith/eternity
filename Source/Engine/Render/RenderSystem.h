@@ -18,6 +18,8 @@ public:
 	virtual ~RenderSystem() = default;
 
 	GIGA_CLASS_NAME("RenderSystem");
+    
+    virtual void Initialize();
 
 	/**
 	 * Separate initialize to setup framebuffers

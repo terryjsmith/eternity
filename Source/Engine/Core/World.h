@@ -10,10 +10,13 @@ class Entity;
 /**
 * ECS World - contains all entities, components, and systems
 */
-class GIGA_API World {
+GIGA_CLASS()
+class GIGA_API World : public GigaObject {
 public:
 	World() = default;
 	~World() = default;
+    
+    GIGA_CLASS_NAME("World");
 
 	/**
 	 * Initialize the world (systems)
@@ -33,12 +36,12 @@ public:
 	/**
 	* Create a new entity
 	*/
-	Entity* CreateEntity();
+	GIGA_FUNCTION() Entity* CreateEntity();
 
 	/**
 	* Find an entity by ID
 	*/
-	Entity* GetEntity(int id);
+	GIGA_FUNCTION() Entity* FindEntity(int entityID);
     
     /**
      * Add an entity
@@ -108,6 +111,16 @@ public:
         
         return(systems);
 	}
+    
+    /**
+     * Find a system by name
+     */
+    GIGA_FUNCTION() System* FindSystem(std::string name);
+    
+    /**
+     * Get all entities
+     */
+    std::vector<Entity*>& GetEntities() { return m_entities; }
 
 protected:
 	// Known system types

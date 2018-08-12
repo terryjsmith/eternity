@@ -1,5 +1,8 @@
 
 #include <Render/RenderSystem.h>
+#include <Render/Texture2D.h>
+#include <IO/ResourceSystem.h>
+#include <Core/Application.h>
 
 void RenderSystem::Setup(int windowWidth, int windowHeight) {
     m_windowWidth = windowWidth;
@@ -9,6 +12,11 @@ void RenderSystem::Setup(int windowWidth, int windowHeight) {
     for(; pi != m_renderPasses.end(); pi++) {
         (*pi)->Initialize(windowWidth, windowHeight);
     }
+}
+
+void RenderSystem::Initialize() {
+    ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
+    resourceSystem->RegisterResourceType<Texture2D>("Texture2D");
 }
 
 VertexBuffer* RenderSystem::CreateVertexBuffer() {
@@ -43,6 +51,10 @@ void RenderSystem::Update(float delta) {
 	// Add components
 	std::vector<RenderComponent*>::iterator it = m_components.begin();
 	for (; it != m_components.end(); it++) {
+        if((*it)->Active() == false) {
+            continue;
+        }
+        
 		MeshComponent* m = dynamic_cast<MeshComponent*>(*it);
 		if (m) {
 			m_currentView->AddMesh(m);

@@ -238,3 +238,7 @@ void ScriptComponent::CallFunction(std::string function, int argc, Variant** arg
     
     m_thread->SetCurrentScript(0);
 }
+
+void ScriptComponent::PostSerialize() {
+    this->Initialize(m_scriptSource);
+}

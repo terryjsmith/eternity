@@ -41,6 +41,11 @@ public:
      * Create a component from a name
      */
     static Component* CreateComponent(std::string className);
+    
+    /**
+     * Create a component from a type ID
+     */
+    static Component* CreateComponent(uint32_t type);
 
 	/**
 	 * Get registered component types
@@ -48,13 +53,27 @@ public:
 	static std::vector<std::string> GetComponentTypes();
     
     /**
+     * Get/set updated status
+     */
+    bool Updated() { return m_updated; }
+    void Updated(bool updated);
+    
+    /**
+     * Set active status
+     */
+    bool Active() { return m_active; }
+    void Active(bool active) { m_active = active; }
+    
+    
+    /**
      * Get type ID (lazy)
      */
     uint32_t GetTypeID();
     
     /**
-     * Get parent entity
+     * Get/set parent entity
      */
+    void SetParent(Entity* entity) { m_parent = entity; }
     Entity* GetParent() { return m_parent; }
     
     /**
@@ -68,8 +87,6 @@ public:
     // Called on the new component when it is added/removed
     virtual void OnEntityAssigned() { }
     virtual void OnEntityUnassigned() { }
-
-    friend class Entity;
     
 protected:
     // Create a new component from a class type
@@ -87,6 +104,12 @@ protected:
 
 	// Which scene ID is this component in?
 	GIGA_VARIABLE(Serialize, NonEditable) int m_sceneID;
+    
+    // Whether this component has been updated or not
+    bool m_updated;
+    
+    // Whether this component is active or not
+    GIGA_VARIABLE(Serialize) bool m_active;
 };
 
 #endif

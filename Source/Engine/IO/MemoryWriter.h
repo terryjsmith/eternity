@@ -18,6 +18,11 @@ public:
     void Initialize(unsigned char* block, int bytes);
     
     /**
+     * Allow dynamic resizing
+     */
+    void Resizable(bool resize, int chunkSize = 0);
+    
+    /**
      * Write some data
      */
     void Write(void* ptr, int bytes);
@@ -39,6 +44,12 @@ protected:
     
     // Total size
     int m_size;
+    
+    // Resize chunk size
+    int m_chunkSize;
+    
+    // Resizable
+    bool m_resizable;
 };
 
 
