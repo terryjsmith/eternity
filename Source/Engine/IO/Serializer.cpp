@@ -259,6 +259,10 @@ void Serializer::Deserialize(unsigned char* data, uint32_t& size, DataRecord* re
             uint32_t nsize = size - reader->GetPosition();
             
             this->Deserialize(newptr, nsize, newRecord);
+
+			newRecord->SetObject(object);
+			object->Deserialize(newRecord);
+			object->PostDeserialize();
             
             record->Set(k->first, new Variant(object));
             reader->SetPosition(reader->GetPosition() + nsize);

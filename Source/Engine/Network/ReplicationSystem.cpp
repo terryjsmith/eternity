@@ -307,6 +307,8 @@ void ReplicationSystem::ApplySnapshot(EntitySnapshot* current, EntitySnapshot* n
     NetworkSession* session = networkSystem->FindSession(0);
     int playerID = session->playerID;
     
+	world->Clear();
+
     std::vector<Entity*> entities;
     if(next) {
         entities = EntitySnapshot::Interpolate(current, next, interpolate);
@@ -314,8 +316,6 @@ void ReplicationSystem::ApplySnapshot(EntitySnapshot* current, EntitySnapshot* n
     else {
         entities = current->GetEntities();
     }
-    
-    world->Clear();
     
     for(size_t j = 0; j < entities.size(); j++) {
         world->AddEntity(entities[j]);

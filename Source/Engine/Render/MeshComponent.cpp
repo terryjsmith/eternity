@@ -27,9 +27,6 @@ void MeshComponent::Instantiate(Mesh* mesh) {
 }
 
 void MeshComponent::PostDeserialize() {
-    // Connect back to parent Entity
-    m_parent->AddComponent(this);
-    
     // Initialize
     this->Instantiate(m_mesh);
 }

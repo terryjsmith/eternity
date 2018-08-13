@@ -78,3 +78,9 @@ enum VarOptions {
 
 #include <errno.h>
 #include <fcntl.h>
+
+// optimize for meta compiler on win32
+#ifdef _WIN32
+#include <WinSock2.h>
+#include <ws2tcpip.h>
+#endif

@@ -90,6 +90,14 @@ void World::Clear() {
 		delete (*it);
 	}
 
+	std::vector<RegisteredSystem*>::iterator si = m_systems.begin();
+	for (; si != m_systems.end(); si++) {
+		ComponentSystemBase* base = dynamic_cast<ComponentSystemBase*>((*si)->system);
+		if (base) {
+			base->Clear();
+		}
+	}
+
 	m_entities.clear();
 }
 
