@@ -86,6 +86,11 @@ protected:
      */
     static void CommandHandler(GigaObject* object, Message* msg);
     
+    /**
+     * Interpolate between two data records
+     */
+    DataRecord* Interpolate(DataRecord* first, DataRecord* second, float interpolate);
+    
 protected:
     // Historical (+ potential future) snapshots
     std::vector<EntitySnapshot*> m_snapshots;

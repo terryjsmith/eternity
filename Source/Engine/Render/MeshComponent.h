@@ -13,7 +13,7 @@ public:
 	~MeshComponent() = default;
 
 	GIGA_CLASS_NAME("MeshComponent");
-    GIGA_CLASS_BODY();
+    
 
 	GIGA_FUNCTION() void Instantiate(Mesh* mesh);
 
@@ -21,14 +21,15 @@ public:
 	Mesh* GetMesh() { return m_mesh; }
     
     /**
-     * After deserialization
+     * Serialization
      */
-    void PostDeserialize();
+    void Deserialize(DataRecord* record);
+    void Serialize(DataRecord* record);
 
 protected:
 	std::vector<MeshComponent*> m_children;
 
-	GIGA_VARIABLE(Serialize) Mesh* m_mesh;
+	 Mesh* m_mesh;
 };
 
 #endif

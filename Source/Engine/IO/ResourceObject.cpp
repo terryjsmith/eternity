@@ -21,7 +21,3 @@ void ResourceObject::Instantiate(Resource* resource) {
 Resource* ResourceObject::GetResource() {
     return(m_resource);
 }
-
-void ResourceObject::PostDeserialize() {
-    this->Instantiate(this->m_resource);
-}

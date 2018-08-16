@@ -46,21 +46,6 @@ public:
 	* Unlock
 	*/
 	void UnlockMutex();
-    
-    /**
-     * Serialize/deserialize from data record
-     */
-    virtual void Serialize(DataRecord* record) { }
-    virtual void Deserialize(DataRecord* record) { }
-    
-    /**
-     * Hooks after de/serializing
-     */
-    virtual void PreSerialize() { }
-    virtual void PostSerialize() { }
-    
-    virtual void PreDeserialize() { }
-    virtual void PostDeserialize() { }
 
 protected:
 	// Lockable mutex (multi-threading)

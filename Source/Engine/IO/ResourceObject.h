@@ -22,11 +22,6 @@ public:
 	 * Get resource
 	 */
 	Resource* GetResource();
-    
-    /**
-     * After deserialization
-     */
-    void PostDeserialize();
 
 protected:
 	/**
@@ -37,7 +32,7 @@ protected:
 	friend class ResourceSystem;
 
 protected:
-	GIGA_VARIABLE(Serialize) Resource* m_resource;
+	 Resource* m_resource;
 };
 
 #endif

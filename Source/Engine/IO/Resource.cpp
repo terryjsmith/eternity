@@ -209,9 +209,3 @@ unsigned char* Resource::ReadFile() {
 void Resource::SetPosition(unsigned int offset) {
 	fseek(m_fp, SEEK_SET, offset);
 }
-
-void Resource::PostDeserialize() {
-    ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
-    std::string fullPath = resourceSystem->FindResourcePath(this->filename);
-    this->Initialize(fullPath, FILEMODE_READ | FILEMODE_BINARY);
-}

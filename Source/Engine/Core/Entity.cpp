@@ -2,6 +2,7 @@
 #include <Core/Entity.h>
 #include <Core/World.h>
 #include <Core/Application.h>
+#include <Core/DataRecord.h>
 
 Entity::Entity() {
 	m_active = false;
@@ -101,6 +102,14 @@ Component* Entity::Assign(std::string className) {
     return(component);
 }
 
-void Entity::PostDeserialize() {
-	
+void Entity::Deserialize(DataRecord* record) {
+    m_entityID = record->Get("id")->AsInt();
+    m_entityName = record->Get("name")->AsString();
+    m_active = record->Get("active")->AsBool();
+}
+
+void Entity::Serialize(DataRecord* record) {
+    record->Set("id", new Variant(m_entityID));
+    record->Set("name", new Variant(m_entityName));
+    record->Set("active", new Variant(m_active));
 }

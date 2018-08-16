@@ -26,6 +26,7 @@
 #include <Network/Messages/EntitySnapshotMessage.h>
 #include <Network/Messages/CommandMessage.h>
 #include <Network/Messages/ResendPartialMessage.h>
+#include <Core/Entity.h>
 
 Application* Application::m_instance = 0;
 
@@ -78,6 +79,31 @@ void Application::Initialize() {
     Component::RegisterComponentType<PointLightComponent>("PointLightComponent", 30);
     // TODO: Cascaded Directional Light
     Component::RegisterComponentType<RigidBodyComponent>("RigidBodyComponent", 40);
+    
+    // Data record types
+    DataRecordType* entityType = new DataRecordType();
+    entityType->SetPrimaryKey("Entity_id");
+    entityType->AddKey("id", Variant::VAR_INT32);
+    entityType->AddKey("name", Variant::VAR_STRING);
+    entityType->AddKey("active", Variant::VAR_BOOL);
+    DataRecordType::Register<Entity>("Entity", entityType);
+    
+    DataRecordType* transformComponentType = new DataRecordType();
+    transformComponentType->SetPrimaryKey("TransformComponent_id");
+    transformComponentType->AddKey("entityID", Variant::VAR_INT32);
+    transformComponentType->AddKey("position", Variant::VAR_VECTOR3);
+    transformComponentType->AddKey("rotation", Variant::VAR_QUATERNION);
+    transformComponentType->AddKey("scale", Variant::VAR_VECTOR3);
+    DataRecordType::Register<TransformComponent>("TransformComponent", transformComponentType);
+    
+    DataRecordType* meshComponentType = new DataRecordType();
+    meshComponentType->SetPrimaryKey("MeshComponent_id");
+    meshComponentType->AddKey("entityID", Variant::VAR_INT32);
+    meshComponentType->AddKey("mesh", Variant::VAR_STRING);
+    meshComponentType->AddKey("position", Variant::VAR_VECTOR3);
+    meshComponentType->AddKey("rotation", Variant::VAR_QUATERNION);
+    meshComponentType->AddKey("scale", Variant::VAR_VECTOR3);
+    DataRecordType::Register<MeshComponent>("MeshComponent", meshComponentType);
     
     // Device types
     scriptingSystem->SetGlobal("INPUTDEVICE_MOUSE", new Variant(INPUTDEVICE_MOUSE));
@@ -181,7 +207,7 @@ void Application::Initialize() {
     scriptingSystem->SetGlobal("COLLISION_START", new Variant(PhysicsCollision::COLLISION_START));
     scriptingSystem->SetGlobal("COLLISION_END", new Variant(PhysicsCollision::COLLISION_END));
 
-	// Friendly names
+	/* Friendly names
 	DataRecordType* transformType = DataRecordType::GetType("Transform");
 	transformType->SetKeyFriendlyName("m_root", "Root");
 	transformType->SetKeyFriendlyName("m_position", "Position");
@@ -189,7 +215,7 @@ void Application::Initialize() {
 	transformType->SetKeyFriendlyName("m_scaling", "Scaling");
 
 	DataRecordType* resourceType = DataRecordType::GetType("Resource");
-	resourceType->SetKeyFriendlyName("filename", "File");
+	resourceType->SetKeyFriendlyName("filename", "File");*/
 }
 
 void Application::Shutdown() {

@@ -59,6 +59,7 @@ public:
     template<class T>
     static void Register(std::string name, DataRecordType* type) {
         int newTypeID = ++m_lastTypeID;
+        type->SetTypeName(name);
         m_types[name] = type;
         m_types[name]->m_typeID = newTypeID;
         m_ctors[newTypeID] = &InternalCreateObject<T>;

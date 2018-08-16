@@ -13,7 +13,6 @@ public:
 	~Transform() = default;
 
 	GIGA_CLASS_NAME("Transform");
-    GIGA_CLASS_BODY();
 
     GIGA_FUNCTION() void SetParent(Transform* transform);
     GIGA_FUNCTION() vector3 GetLocalPosition() { return m_position; }
@@ -59,11 +58,11 @@ protected:
     std::vector<Transform*> m_children;
 
 	// Whether updating this via Move/Rotate/Scale should also update the root
-	GIGA_VARIABLE(Serialize) bool m_root;
+	 bool m_root;
 
-	GIGA_VARIABLE(Serialize) vector3 m_position;
-	GIGA_VARIABLE(Serialize) vector3 m_scaling;
-	GIGA_VARIABLE(Serialize) quaternion m_rotation;
+	 vector3 m_position;
+	 vector3 m_scaling;
+	 quaternion m_rotation;
     
     // Custom look vectors
     vector3 m_up;

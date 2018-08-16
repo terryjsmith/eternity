@@ -132,9 +132,26 @@ void ReplicationSystem::Update(float delta) {
                 EntitySnapshot* snapshot = GetFullEntitySnapshot(m_commandTick);
                 snapshot->Deserialize();
                 
-                std::vector<Entity*> entities = snapshot->GetEntities();
-                for(size_t i = 0; i < entities.size(); i++) {
-                    world->AddEntity(entities[i]);
+                // Load entities
+                std::map<int, DataRecord*>::iterator ei = snapshot->entityRecords.begin();
+                for(; ei != snapshot->entityRecords.end(); ei++) {
+                    Entity* entity = new Entity();
+                    entity->Deserialize(ei->second);
+                    
+                    world->AddEntity(entity);
+                }
+                
+                // Attach components
+                std::map<int, std::map<int, DataRecord*>>::iterator ci = snapshot->componentRecords.begin();
+                for(; ci != snapshot->componentRecords.end(); ci++) {
+                    std::map<int, DataRecord*>::iterator cii = ci->second.begin();
+                    for(; cii != ci->second.end(); cii++) {
+                        Component* c = Component::CreateComponent(cii->first);
+                        c->Deserialize(cii->second);
+                        
+                        Entity* entity = world->FindEntity(ci->first);
+                        entity->AddComponent(c);
+                    }
                 }
                 
                 // Loop over all ticks since then, replaying events
@@ -297,6 +314,72 @@ void ReplicationSystem::Update(float delta) {
     m_lastTick = tick;
 }
 
+DataRecord* ReplicationSystem::Interpolate(DataRecord* first, DataRecord* second, float interpolate) {
+    // New data record
+    DataRecordType* type = first->GetType();
+    DataRecord* newRecord = new DataRecord(type->GetTypeID());
+    
+    std::map<std::string, int> fields = type->GetKeys();
+    std::map<std::string, int>::iterator fi = fields.begin();
+    for(; fi != fields.end(); fi++) {
+        int fieldType = fi->second;
+        if(fieldType == Variant::VAR_INT32 || fieldType == Variant::VAR_INT64 || fieldType == Variant::VAR_UINT32 ||
+           fieldType == Variant::VAR_UINT64) {
+            int i1 = first->Get(fi->first)->AsInt();
+            int i2 = second->Get(fi->first)->AsInt();
+            
+            newRecord->Set(fi->first, new Variant(i1 + ((i2  - i1) * interpolate)));
+            continue;
+        }
+        
+        if(fieldType == Variant::VAR_FLOAT) {
+            float i1 = first->Get(fi->first)->AsFloat();
+            float i2 = second->Get(fi->first)->AsFloat();
+            
+            newRecord->Set(fi->first, new Variant(i1 + ((i2 - i1) * interpolate)));
+            continue;
+        }
+        
+        if(fieldType == Variant::VAR_VECTOR2) {
+            vector2 v1 = first->Get(fi->first)->AsVector2();
+            vector2 v2 = second->Get(fi->first)->AsVector2();
+            
+            newRecord->Set(fi->first, new Variant(v1 + ((v2 - v1)  * interpolate)));
+            continue;
+        }
+        
+        if(fieldType == Variant::VAR_VECTOR3) {
+            vector3 v1 = first->Get(fi->first)->AsVector3();
+            vector3 v2 = second->Get(fi->first)->AsVector3();
+            
+            newRecord->Set(fi->first, new Variant(v1 + ((v2 - v1)  * interpolate)));
+            continue;
+        }
+        
+        if(fieldType == Variant::VAR_VECTOR4) {
+            vector4 v1 = first->Get(fi->first)->AsVector4();
+            vector4 v2 = second->Get(fi->first)->AsVector4();
+            
+            newRecord->Set(fi->first, new Variant(v1 + ((v2 - v1)  * interpolate)));
+            continue;
+        }
+        
+        if(fieldType == Variant::VAR_QUATERNION) {
+            quaternion q1 = first->Get(fi->first)->AsQuaternion();
+            quaternion q2 = second->Get(fi->first)->AsQuaternion();
+            
+            quaternion result = glm::lerp(q1, q2, interpolate);
+            newRecord->Set(fi->first, new Variant(result));
+            continue;
+        }
+        
+        // For strings, bool, etc. just set to first value
+        newRecord->Set(fi->first, first->Get(fi->first));
+    }
+    
+    return(newRecord);
+}
+
 void ReplicationSystem::ApplySnapshot(EntitySnapshot* current, EntitySnapshot* next, float interpolate) {
     // Get link to entity system
     Application* application = Application::GetInstance();
@@ -307,22 +390,74 @@ void ReplicationSystem::ApplySnapshot(EntitySnapshot* current, EntitySnapshot* n
     NetworkSession* session = networkSystem->FindSession(0);
     int playerID = session->playerID;
     
-    std::vector<Entity*> entities;
-    if(next) {
-        entities = EntitySnapshot::Interpolate(current, next, interpolate);
-    }
-    else {
-        entities = current->GetEntities();
-    }
-    
     world->Clear();
     
-    for(size_t j = 0; j < entities.size(); j++) {
-        world->AddEntity(entities[j]);
+    // Update entities
+    std::map<int, DataRecord*>::iterator ei = current->entityRecords.begin();
+    for(; ei != current->entityRecords.end(); ei++) {
+        Entity* entity = world->FindEntity(ei->first);
+        if(entity == 0) {
+            entity = new Entity();
+        }
         
-        if (entities[j]->ID() == playerID) {
+        bool interpolated = false;
+        if(next) {
+            // Other entity
+            std::map<int, DataRecord*>::iterator n = next->entityRecords.find(ei->first);
+            if(n != next->entityRecords.end()) {
+                DataRecord* newRecord = this->Interpolate(ei->second, n->second, interpolate);
+                entity->Deserialize(newRecord);
+                delete newRecord;
+                
+                interpolated = true;
+            }
+            
+        }
+        
+        if(interpolated == false) {
+            entity->Deserialize(ei->second);
+        }
+        
+        if (ei->first == playerID) {
             if (m_clientAuthoritative) {
                 continue;
+            }
+        }
+    }
+    
+    // Update components
+    std::map<int, std::map<int, DataRecord*>>::iterator ci = current->componentRecords.begin();
+    for(; ci != current->componentRecords.end(); ci++) {
+        std::map<int, DataRecord*>::iterator cii = ci->second.begin();
+        for(; cii != ci->second.end(); cii++) {
+            // Get entity
+            Entity* entity = world->FindEntity(ci->first);
+            
+            // Try to find component of type
+            Component* c = entity->FindComponent(cii->first);
+            if(c == 0) {
+                c = Component::CreateComponent(cii->first);
+            }
+            
+            bool interpolated = false;
+            if(next) {
+                // Other entity
+                std::map<int, std::map<int, DataRecord*>>::iterator n = next->componentRecords.find(ci->first);
+                if(n != next->componentRecords.end()) {
+                    std::map<int, DataRecord*>::iterator ni = n->second.find(cii->first);
+                    if(ni != n->second.end()) {
+                        DataRecord* newRecord = this->Interpolate(ei->second, ni->second, interpolate);
+                        c->Deserialize(newRecord);
+                        delete newRecord;
+                        
+                        interpolated = true;
+                    }
+                }
+                
+            }
+            
+            if(interpolated == false) {
+                c->Deserialize(cii->second);
             }
         }
     }

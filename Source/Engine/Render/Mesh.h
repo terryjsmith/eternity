@@ -19,7 +19,7 @@ public:
 	~Mesh();
 
 	GIGA_CLASS_NAME("Mesh");
-    GIGA_CLASS_BODY();
+    
     
     /**
      * Load a mesh from a .g3d file
@@ -53,10 +53,10 @@ public:
     IndexBuffer* indexBuffer;
     
     // Diffuse texture
-    GIGA_VARIABLE(Serialize, Optional) Texture2D* diffuseTexture;
+    Texture2D* diffuseTexture;
     
     // Additional (optional) textures
-    GIGA_VARIABLE(Serialize, Optional) Texture2D* normalTexture;
+    Texture2D* normalTexture;
     
     // Material
     Material* material;

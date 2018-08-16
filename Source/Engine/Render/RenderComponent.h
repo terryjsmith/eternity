@@ -20,7 +20,7 @@ public:
     void OnComponentAdded(Component* component);
 
 protected:
-	GIGA_VARIABLE(Serialize) Transform* m_transform;
+	 Transform* m_transform;
 };
 
 #endif

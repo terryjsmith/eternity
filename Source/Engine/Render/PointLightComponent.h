@@ -17,7 +17,7 @@ public:
     ~PointLightComponent() = default;
     
     GIGA_CLASS_NAME("PointLightComponent");
-    GIGA_CLASS_BODY();
+    
     
     /**
      * Initialize

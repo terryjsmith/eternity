@@ -3,6 +3,8 @@
 #include <Core/Entity.h>
 #include <Render/RenderSystem.h>
 #include <Core/Application.h>
+#include <IO/ResourceSystem.h>
+#include <Core/DataRecord.h>
 
 void MeshComponent::Instantiate(Mesh* mesh) {
 	// Save base mesh
@@ -26,10 +28,25 @@ void MeshComponent::Instantiate(Mesh* mesh) {
 	}
 }
 
-void MeshComponent::PostDeserialize() {
-    // Connect back to parent Entity
-    m_parent->AddComponent(this);
+void MeshComponent::Deserialize(DataRecord* record) {
+    ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
     
-    // Initialize
-    this->Instantiate(m_mesh);
+    Mesh* mesh = (Mesh*)resourceSystem->LoadResource(record->Get("mesh")->AsString(), "Mesh");
+    
+    m_transform->SetLocalPosition(record->Get("position")->AsVector3());
+    m_transform->SetLocalScaling(record->Get("scale")->AsVector3());
+    m_transform->SetLocalRotation(record->Get("rotation")->AsQuaternion());
+    
+    if(mesh != m_mesh) {
+        this->Instantiate(mesh);
+        m_mesh = mesh;
+    }
+}
+
+void MeshComponent::Serialize(DataRecord* record) {
+    record->Set("mesh", new Variant(m_mesh->GetResource()->filename));
+    record->Set("position", new Variant(m_transform->GetLocalPosition()));
+    record->Set("rotation", new Variant(m_transform->GetLocalRotation()));
+    record->Set("scale", new Variant(m_transform->GetLocalScaling()));
+    record->Set("entityID", new Variant(m_parent->ID()));
 }

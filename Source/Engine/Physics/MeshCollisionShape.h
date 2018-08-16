@@ -13,7 +13,7 @@ public:
     ~MeshCollisionShape();
     
     GIGA_CLASS_NAME("MeshCollisionShape");
-    GIGA_CLASS_BODY();
+    
     
     /**
      * Initialize from a set of vertices and indices 
@@ -30,7 +30,7 @@ protected:
     btTriangleIndexVertexArray* m_triMesh;
     
     // Our original mesh
-    GIGA_VARIABLE(Serialize) Mesh* m_mesh;
+     Mesh* m_mesh;
 };
 
 #endif

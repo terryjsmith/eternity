@@ -362,6 +362,7 @@ void ProcessDirectory(Directory* dir) {
 
 		int flags = (precompiled_header.empty() ?  CXTranslationUnit_ForSerialization : 0);
 
+        bool savePrecompiledHeader = false;
 		clang_parseTranslationUnit2(
 			cindex,
 			filename.c_str(), args.data(), (int)args.size(),
@@ -393,9 +394,7 @@ void ProcessDirectory(Directory* dir) {
                 
                 if(unit != nullptr) {
                     success = true;
-                    
-                    args.push_back("-include-pch");
-                    args.push_back(precompiled_header.c_str());
+                    savePrecompiledHeader = true;
                 }
             }
             
@@ -408,7 +407,7 @@ void ProcessDirectory(Directory* dir) {
 		CXCursor cursor = clang_getTranslationUnitCursor(unit);
 		clang_visitChildren(cursor, visitor, nullptr);
 
-		if (precompiled_header.empty()) {
+		if (precompiled_header.empty() || savePrecompiledHeader) {
 			clang_saveTranslationUnit(unit, "generator.pch", clang_defaultSaveOptions(unit));
 			precompiled_header = "generator.pch";
 
@@ -716,7 +715,7 @@ int main(int argc, char** argv) {
 		}
 	}
     
-    // Serialization
+    /* Serialization
     it = classes.begin();
     for (; it != classes.end(); it++) {
         MetaClass* cl = it->second;
@@ -778,7 +777,7 @@ int main(int argc, char** argv) {
             }
             output += "}\n\n";
         }
-    }
+    }*/
 
 	// Registration
 	output += "void MetaSystem::RegisterMetaFunctions() {\n\tMetaSystem* metaSystem = GetSystem<MetaSystem>();\n\n";
@@ -821,7 +820,7 @@ int main(int argc, char** argv) {
             output += ");\n";
         }
         
-        if(serialized.size()) {
+        /*if(serialized.size()) {
             std::string objectName = "drt" + cl->name;
             output += "\n\tDataRecordType* " + objectName + " = new DataRecordType(\"" + cl->name + "\");\n";
             output += "\t" + objectName + "->SetPrimaryKey(\"" + cl->name + "_id\");\n";
@@ -832,7 +831,7 @@ int main(int argc, char** argv) {
             }
             
             output += "\n\tDataRecordType::Register<" + cl->name + ">(\"" + cl->name + "\", " + objectName + ");\n";
-        }
+        }*/
         
         if(cl->functions.size()) {
             output += "\n";

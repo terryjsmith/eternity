@@ -61,16 +61,37 @@ int main(int argc, char** argv) {
     loader->Open("game.db");
     
     std::map<std::string, std::string> args;
-    args["m_sceneID"] = std::to_string(1);
+    args["sceneID"] = std::to_string(1);
     std::vector<DataRecord*> entities = loader->GetRecords("Entity", args);
     
     for(size_t i = 0; i < entities.size(); i++) {
-        world->AddEntity((Entity*)entities[i]->GetObject());
+        Entity* entity = new Entity();
+        entity->Deserialize(entities[i]);
+        
+        world->AddEntity(entity);
+        delete entities[i];
     }
+    
+    entities.clear();
     
     std::vector<std::string> componentTypes = Component::GetComponentTypes();
     for (size_t i = 0; i < componentTypes.size(); i++) {
+        DataRecordType* drt = DataRecordType::GetType(componentTypes[i]);
+        if(drt == 0)
+            continue;
+        
         std::vector<DataRecord*> components = loader->GetRecords(componentTypes[i], args);
+        for(size_t j = 0; j < components.size(); j++) {
+            Component* c = Component::CreateComponent(components[j]->GetType()->GetTypeName());
+            c->Deserialize(components[j]);
+            
+            Entity* entity = world->FindEntity(components[j]->Get("entityID")->AsInt());
+            entity->AddComponent(c);
+            
+            delete components[j];
+        }
+        
+        components.clear();
     }
     
     loader->Close();

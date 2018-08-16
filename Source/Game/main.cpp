@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 	View* scene = new View();
 	renderSystem->SetCurrentView(scene);
     
-    // Load some data
+    /* Load some data
     SQLiteDataLoader* loader = application->CreateAppService<SQLiteDataLoader>();
     loader->Open("game.db");
 
@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
     
     //loader->SaveRecords();
     
-    loader->Close();
+    loader->Close();*/
 
 	// Create a camera
     Entity* camera = world->CreateEntity();

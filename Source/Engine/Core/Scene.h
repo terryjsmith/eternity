@@ -12,9 +12,7 @@ public:
 	Scene() = default;
 	~Scene() = default;
 
-	GIGA_CLASS_NAME("Scene");
-
-	GIGA_CLASS_BODY();
+    GIGA_CLASS_NAME("Scene");
 
 	int GetSceneID();
 
@@ -31,8 +29,8 @@ public:
 	std::vector<Entity*> GetEntities();
 
 protected:
-	GIGA_VARIABLE(Serialize) int m_sceneID;
-	GIGA_VARIABLE(Serialize) std::string m_name;
+	 int m_sceneID;
+	 std::string m_name;
 
 	std::vector<Entity*> m_entities;
 };

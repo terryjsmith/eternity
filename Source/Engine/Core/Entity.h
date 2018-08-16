@@ -3,6 +3,7 @@
 #define entity_h
 
 #include <eternity.h>
+#include <Core/DataObject.h>
 #include <Core/GigaObject.h>
 #include <Core/Component.h>
 #include <Core/Application.h>
@@ -10,13 +11,12 @@
 #include <Core/World.h>
 
 GIGA_CLASS()
-class GIGA_API Entity : public GigaObject {
+class GIGA_API Entity : public DataObject {
 public:
     Entity();
 	~Entity() = default;
     
     GIGA_CLASS_NAME("Entity");
-    GIGA_CLASS_BODY();
 
 	/**
 	 * Get/set active status
@@ -104,30 +104,31 @@ public:
     std::vector<Component*>& GetComponents() { return m_components; }
     
     /**
-     * After deserialization
+     * Serialization
      */
-    void PostDeserialize();
+    void Deserialize(DataRecord* record);
+    void Serialize(DataRecord* record);
 
 	friend class World;
 
 protected:
 	// Identifier (string)
-	GIGA_VARIABLE(Serialize, NonEditable) std::string m_entityName;
+	std::string m_entityName;
 
 	// Identifer (int)
-	GIGA_VARIABLE(Serialize, NonEditable) int m_entityID;
+	int m_entityID;
 
 	// Components assigned to this entity
 	std::vector<Component*> m_components;
 
 	// Active status
-	GIGA_VARIABLE(Serialize, NonEditable) bool m_active;
+	bool m_active;
 
 	// Updated in the last frame
 	bool m_updated;
 
 	// Which scene ID is this entity in?
-	GIGA_VARIABLE(Serialize, NonEditable) int m_sceneID;
+	int m_sceneID;
 };
 
 #endif

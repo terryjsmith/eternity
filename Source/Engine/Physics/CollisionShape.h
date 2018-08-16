@@ -4,12 +4,13 @@
 
 #include <eternity.h>
 #include <Core/GigaObject.h>
+#include <Core/DataObject.h>
 #include <Core/MathTypes.h>
 
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 
-class GIGA_API CollisionShape : public GigaObject {
+class GIGA_API CollisionShape : public DataObject {
 public:
     CollisionShape();
     ~CollisionShape();
@@ -27,7 +28,7 @@ public:
 protected:
     // Collision shape
     btCollisionShape* m_collisionShape;
-    GIGA_VARIABLE(Serialize) vector3 m_offset;
+     vector3 m_offset;
 };
 
 #endif

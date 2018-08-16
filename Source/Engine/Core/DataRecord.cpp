@@ -1,12 +1,20 @@
 
 #include <Core/DataRecord.h>
 
-DataRecord::DataRecord() {
+DataRecord::DataRecord(std::string type) {
     m_recordID = 0;
-    m_object = 0;
     m_type = 0;
     m_deserialized = false;
     m_deleted = false;
+    m_type = DataRecordType::GetType(type);
+}
+
+DataRecord::DataRecord(uint32_t type) {
+    m_recordID = 0;
+    m_type = 0;
+    m_deserialized = false;
+    m_deleted = false;
+    m_type = DataRecordType::GetType(type);
 }
 
 DataRecord::~DataRecord() {
@@ -53,11 +61,8 @@ void DataRecord::Set(std::string key, Variant* value) {
 }
 
 void DataRecord::Set(std::string key, std::string value) {
-    // Get record type
-    DataRecordType* type = DataRecordType::GetType(m_object->GetGigaName());
-    
     // Get column type
-    int keyType = type->GetKeyType(key);
+    int keyType = m_type->GetKeyType(key);
     
     std::map<std::string, Variant*>::iterator it = m_values.find(key);
     if(it != m_values.end()) {
@@ -75,9 +80,5 @@ void DataRecord::Set(std::string key, std::string value) {
 }
 
 DataRecordType* DataRecord::GetType() {
-    if(m_type == 0) {
-        m_type = DataRecordType::GetType(m_object->GetGigaName());
-    }
-    
     return(m_type);
 }

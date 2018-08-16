@@ -4,6 +4,7 @@
 
 #include <eternity.h>
 #include <Core/Variant.h>
+#include <Core/DataObject.h>
 #include <Core/DataRecordType.h>
 
 /**
@@ -11,14 +12,9 @@
  */
 class GIGA_API DataRecord {
 public:
-    DataRecord();
+    DataRecord(std::string type);
+    DataRecord(uint32_t type);
     ~DataRecord();
-    
-    /**
-     * Get/set object
-     */
-    void SetObject(GigaObject* object) { m_object = object; m_deserialized = false; }
-    GigaObject* GetObject() { return m_object; }
     
     /**
      * Get/set record ID
@@ -44,7 +40,7 @@ public:
     std::map<std::string, Variant*> GetValues() { return m_values; }
     
     /**
-     * Get data record type (lazy loaded)
+     * Get data record type
      */
     DataRecordType* GetType();
     
@@ -69,9 +65,6 @@ protected:
     
     // Key/value strings
     std::map<std::string, std::string> m_strValues;
-    
-    // The object we're tied to
-    GigaObject* m_object;
     
     // Data record type
     DataRecordType* m_type;

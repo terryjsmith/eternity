@@ -30,12 +30,10 @@ public:
     /**
      * Save records
      */
-    void SaveRecords();
+    void SaveRecords(std::vector<DataRecord*> records);
     
 protected:
     static int InternalDataCallback(void* instance, int count, char** data, char** cols);
-    static void ProcessRecord(SQLiteDataLoader* loader, DataRecord* record);
-    void CreateRecords(DataRecord* record);
     
     /**
      * Update table structures

@@ -13,7 +13,6 @@ public:
     ~BoxCollisionShape() = default;
     
     GIGA_CLASS_NAME("BoxCollisionShape");
-    GIGA_CLASS_BODY();
     
     /**
      * Initialize from a set of width/height/depth and position
@@ -26,7 +25,7 @@ public:
     void PostDeserialize();
     
 protected:
-    GIGA_VARIABLE(Serialize) vector3 m_extents;
+     vector3 m_extents;
 };
 
 #endif

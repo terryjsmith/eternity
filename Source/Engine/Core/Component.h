@@ -3,11 +3,12 @@
 #define component_h
 
 #include <eternity.h>
+#include <Core/DataObject.h>
 #include <Core/GigaObject.h>
 
 class Entity;
 
-class GIGA_API Component : public GigaObject {
+class GIGA_API Component : public DataObject {
 public:
     Component();
 	virtual ~Component() = default;
@@ -97,19 +98,19 @@ protected:
 	uint32_t m_typeID;
 
 	// Parent entity
-	GIGA_VARIABLE(Serialize, NonEditable) Entity* m_parent;
+	Entity* m_parent;
     
     // Registered type IDs
     static std::map<std::string, ComponentType*> m_types;
 
 	// Which scene ID is this component in?
-	GIGA_VARIABLE(Serialize, NonEditable) int m_sceneID;
+	int m_sceneID;
     
     // Whether this component has been updated or not
     bool m_updated;
     
     // Whether this component is active or not
-    GIGA_VARIABLE(Serialize) bool m_active;
+     bool m_active;
 };
 
 #endif

@@ -12,7 +12,6 @@ public:
     ~CapsuleCollisionShape() = default;
     
     GIGA_CLASS_NAME("CapsuleCollisionShape");
-    GIGA_CLASS_BODY();
     
     /**
      * Initialize from a radius and height
@@ -26,10 +25,10 @@ public:
     
 protected:
     // Height of capsule
-    GIGA_VARIABLE(Serialize) float m_height;
+     float m_height;
     
     // Radius of capsule
-    GIGA_VARIABLE(Serialize) float m_radius;
+     float m_radius;
 };
 
 #endif

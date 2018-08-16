@@ -87,33 +87,6 @@ unsigned char* Serializer::Serialize(DataRecord* record, uint32_t& size) {
             free(str);
             continue;
         }
-        
-        if(f->second->IsObject()) {
-            uint32_t size = 0;
-            if(f->second->AsObject() == 0) {
-                uint32_t typeID = 0;
-                writer->Write(&typeID, sizeof(uint32_t));
-                
-                continue;
-            }
-            
-            DataRecord* newRecord = new DataRecord();
-            f->second->AsObject()->Serialize(newRecord);
-            newRecord->SetObject(f->second->AsObject());
-            
-            // Write data record type ID
-            uint32_t typeID = newRecord->GetType()->GetTypeID();
-            writer->Write(&typeID, sizeof(uint32_t));
-            
-            // Then write the record
-            unsigned char* data = this->Serialize(newRecord, size);
-            writer->Write(data, size);
-            
-            delete newRecord;
-            free(data);
-            
-            continue;
-        }
     }
 
     delete writer;
@@ -229,39 +202,6 @@ void Serializer::Deserialize(unsigned char* data, uint32_t& size, DataRecord* re
             reader->Read((void*)s.data(), nsize);
             
             record->Set(k->first, new Variant(s));
-            continue;
-        }
-        
-        if(k->second == Variant::VAR_OBJECT) {
-            // Check for existing object first
-            Variant* v = record->Get(k->first);
-            GigaObject* object = 0;
-            DataRecord* newRecord = new DataRecord();
-            if(v) {
-                object = v->AsObject();
-                object->Serialize(newRecord);
-            }
-            
-            // Read type
-            uint32_t oTypeID = 0;
-            reader->Read(&oTypeID, sizeof(uint32_t));
-            
-            if(oTypeID == 0) {
-                continue;
-            }
-            
-            // Create new object
-            if(object == 0) {
-                object = DataRecordType::CreateObject(oTypeID);
-            }
-            
-            unsigned char* newptr = reader->GetCurrent();
-            uint32_t nsize = size - reader->GetPosition();
-            
-            this->Deserialize(newptr, nsize, newRecord);
-            
-            record->Set(k->first, new Variant(object));
-            reader->SetPosition(reader->GetPosition() + nsize);
             continue;
         }
     }

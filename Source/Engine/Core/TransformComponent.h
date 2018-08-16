@@ -13,17 +13,17 @@ public:
     ~TransformComponent();
     
     GIGA_CLASS_NAME("TransformComponent");
-    GIGA_CLASS_BODY();
     
     GIGA_FUNCTION() Transform* GetTransform() { return m_transform; }
     
     /**
-     * After deserialization
+     * Serialization
      */
-    void PostDeserialize();
+    void Deserialize(DataRecord* record);
+    void Serialize(DataRecord* record);
     
 protected:
-    GIGA_VARIABLE(Serialize) Transform* m_transform;
+     Transform* m_transform;
 };
 
 #endif

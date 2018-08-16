@@ -15,7 +15,7 @@ public:
     ~ScriptComponent() = default;
     
     GIGA_CLASS_NAME("ScriptComponent");
-    GIGA_CLASS_BODY();
+    
     
 	/**
 	 * Initialize from a source script
@@ -47,7 +47,7 @@ public:
     
 protected:
     // Our script
-    GIGA_VARIABLE(Serialize) Script* m_scriptSource;
+     Script* m_scriptSource;
 
 	// The thread this script was created on
 	ScriptThread* m_thread;

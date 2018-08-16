@@ -15,7 +15,7 @@ public:
     ~RigidBodyComponent();
     
     GIGA_CLASS_NAME("RigidBodyComponent");
-    GIGA_CLASS_BODY();
+    
     
     GIGA_FUNCTION() Transform* GetTransform() { return m_transform; }
     
@@ -64,19 +64,19 @@ protected:
     
 protected:
     // Collision shape
-    GIGA_VARIABLE(Serialize) CollisionShape* m_shape;
+     CollisionShape* m_shape;
     
     // Our Bullet world rigid body
     btRigidBody* m_rigidBody;
     
     // Current velocity
-    GIGA_VARIABLE(Serialize) vector3 m_velocity;
+     vector3 m_velocity;
     
     // The mass of our object
-    GIGA_VARIABLE(Serialize) float m_mass;
+     float m_mass;
     
     // Our transform (generally also the parent transform for other components)
-    GIGA_VARIABLE(Serialize) Transform* m_transform;
+     Transform* m_transform;
   
     // Offset from centre to the rest of the world
     vector3 m_offsetPosition;

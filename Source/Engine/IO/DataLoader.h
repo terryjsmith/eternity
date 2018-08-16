@@ -9,7 +9,7 @@
 
 class GIGA_API DataLoader : public Service {
 public:
-    ~DataLoader();
+    ~DataLoader() = default;
     
     /**
      * Open a connection
@@ -22,11 +22,6 @@ public:
     virtual void Close() { }
     
     /**
-     * Add a new record
-     */
-    void AddRecord(GigaObject* record);
-    
-    /**
      * Query for records
      */
     virtual std::vector<DataRecord*> GetRecords(std::string type, std::map<std::string, std::string> search = std::map<std::string, std::string>()) = 0;
@@ -34,12 +29,7 @@ public:
     /**
      * Save records
      */
-    virtual void SaveRecords() = 0;
-	 
-	/**
-	 * Find a data record for an object
-	 */
-	DataRecord* FindDataRecord(GigaObject* object);
+    virtual void SaveRecords(std::vector<DataRecord*> records) = 0;
     
 protected:
     // No direct creation
@@ -48,9 +38,6 @@ protected:
 protected:
     // Open connection
     std::string m_location;
-    
-    // Stored type->records map
-    std::map<std::string, std::vector<DataRecord*>> m_records;
 };
 
 #endif

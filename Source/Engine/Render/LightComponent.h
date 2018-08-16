@@ -70,13 +70,13 @@ protected:
     
 protected:
     // The color of light
-    GIGA_VARIABLE(Serialize) vector3 m_color;
+     vector3 m_color;
     
     // Light type
     unsigned int m_type;
     
     // Attenuation (distance to 0% light)
-    GIGA_VARIABLE(Serialize) float m_attenuation;
+     float m_attenuation;
     
     // Number of passes (textures, matrices, etc.)
     unsigned int m_passes;

@@ -22,7 +22,7 @@ public:
 	~Resource();
 
 	GIGA_CLASS_NAME("Resource");
-    GIGA_CLASS_BODY();
+    
 
 	/**
 	 * Set filename
@@ -89,11 +89,6 @@ public:
 	* Go to a specific position in the file
 	*/
 	void SetPosition(unsigned int offset);
-    
-    /**
-     * After deserialization
-     */
-    void PostDeserialize();
 
 public:
 	// Just the filename + extension

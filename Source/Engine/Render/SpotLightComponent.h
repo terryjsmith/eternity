@@ -17,7 +17,6 @@ public:
     ~SpotLightComponent() = default;
     
     GIGA_CLASS_NAME("SpotLightComponent");
-    GIGA_CLASS_BODY();
     
     /**
      * Initialize
@@ -35,7 +34,7 @@ public:
     GIGA_FUNCTION() void SetFOV(float fov) { m_fov = fov; }
     
 protected:
-    GIGA_VARIABLE(Serialize) float m_fov;
+     float m_fov;
 };
 
 #endif

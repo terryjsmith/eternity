@@ -46,16 +46,6 @@ public:
     void AddComponent(Component* component);
     
     /**
-     * Reconstruct entities and components
-     */
-    std::vector<Entity*> GetEntities();
-    
-    /**
-     * Interpolate between two snapshots
-     */
-    static std::vector<Entity*> Interpolate(EntitySnapshot* first, EntitySnapshot* second, float interpolate);
-    
-    /**
      * Copy into another EntitySnapshot
      */
     void Clone(EntitySnapshot* other);
@@ -67,11 +57,11 @@ public:
     // Snapshot type
     int type;
     
-protected:    
     // Data records (partial deserialization)
-    std::map<int, DataRecord*> m_entityRecords;
-    std::map<int, std::map<int, DataRecord*>> m_componentRecords;
+    std::map<int, DataRecord*> entityRecords;
+    std::map<int, std::map<int, DataRecord*>> componentRecords;
     
+protected:
     // Buffer data
     unsigned char* m_buffer;
     int m_bufferSize;
