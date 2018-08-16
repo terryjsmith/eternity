@@ -22,3 +22,8 @@ void View::AddLight(LightComponent* light) {
 
     m_lights.push_back(light);
 }
+
+void View::Clear() {
+	m_meshes.clear();
+	m_lights.clear();
+}

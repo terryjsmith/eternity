@@ -371,7 +371,10 @@ void ProcessDirectory(Directory* dir) {
 		if (unit == nullptr) {
             // First, try again without the precompiled header
             cerr << "Failed with precompiled header, trying without " << args.size() << endl;
-            remove(precompiled_header.c_str());
+			if (remove(precompiled_header.c_str())) {
+				cerr << "Also failed to remove file " << precompiled_header.c_str() << ", exiting" << endl;
+				exit(0);
+			}
             
             bool success = false;
             std::vector<const char*>::iterator it = args.begin();
@@ -700,7 +703,7 @@ int main(int argc, char** argv) {
 			}
 
 			output += ")";
-			if (fi->second->returnType == -1) {
+			if (fi->second->returnType == -1 || fi->second->isStatic == true) {
 				output += ";\n\treturn(new Variant(0));";
 			}
 			else {

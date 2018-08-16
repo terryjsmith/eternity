@@ -66,3 +66,8 @@ void RenderSystem::Update(float delta) {
 		}
 	}
 }
+
+void RenderSystem::Clear() {
+	m_currentView->Clear();
+	m_components.clear();
+}

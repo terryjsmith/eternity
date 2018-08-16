@@ -12,6 +12,8 @@ public:
     ~ComponentSystemBase() = default;
     
     virtual void AddComponent(Component* component) { }
+
+	virtual void Clear() { }
 };
 
 template<class T>
@@ -23,6 +25,8 @@ public:
             m_components.push_back(obj);
         }
     }
+
+	virtual void Clear() { m_components.clear(); }
 
 protected:
 	std::vector<T*> m_components;

@@ -36,16 +36,25 @@ bool UDPSocketWin32::Connect(std::string server, int port) {
 	hint.ai_family = AF_INET;
 	hint.ai_socktype = SOCK_DGRAM;
 
+	// Create our server structure
+	memset(&m_sockaddr, 0, sizeof(sockaddr_in));
+	m_sockaddr.sin_family = AF_INET;
+
+	bool uses_ip = false;
 	if (getaddrinfo(server.c_str(), "", &hint, &res)) {
-		Message::Broadcast(new Error(Error::ERROR_WARN, (char*)"Unable to get host", server));
-		return(false);
+		// Check for IP address
+		if (inet_pton(AF_INET, server.c_str(), &m_sockaddr.sin_addr) == 0) {
+			GIGA_ASSERT(false, "Connect failed.");
+			Message::Broadcast(new Error(Error::ERROR_WARN, (char*)"Unable to get host", server));
+			return(false);
+		}
+		
+		uses_ip = true;
 	}
     
-    // Create our server structure
-	memset(&m_sockaddr, 0, sizeof(sockaddr_in));
-    m_sockaddr.sin_family = AF_INET;
-	
-	memcpy(&m_sockaddr, res->ai_addr, res->ai_addrlen);
+	if (uses_ip == false) {
+		memcpy(&m_sockaddr, res->ai_addr, res->ai_addrlen);
+	}
     m_sockaddr.sin_port = htons(port);
     
     // Connect

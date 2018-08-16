@@ -20,6 +20,7 @@ public:
 	GIGA_CLASS_NAME("RenderSystem");
     
     virtual void Initialize();
+	void Clear();
 
 	/**
 	 * Separate initialize to setup framebuffers

@@ -417,7 +417,7 @@ void ReplicationSystem::ApplySnapshot(EntitySnapshot* current, EntitySnapshot* n
         if(interpolated == false) {
             entity->Deserialize(ei->second);
         }
-        
+
         if (ei->first == playerID) {
             if (m_clientAuthoritative) {
                 continue;

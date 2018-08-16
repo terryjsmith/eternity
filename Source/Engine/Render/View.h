@@ -30,6 +30,8 @@ public:
     GIGA_FUNCTION() void SetAmbientLight(vector3 ambient) { m_ambient = ambient; }
     GIGA_FUNCTION() vector3 GetAmbientLight() { return m_ambient; }
 
+	void Clear();
+
 protected:
     // The meshes visible to the player
 	std::vector<MeshComponent*> m_meshes;
