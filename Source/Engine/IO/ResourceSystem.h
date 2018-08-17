@@ -66,7 +66,10 @@ protected:
 	std::vector<std::string> m_paths;
 
 	// A list of registered resources
-	std::vector<std::shared_ptr<Resource>> m_resources;
+	std::vector<Resource*> m_resources;
+
+	// Loaded resource objects
+	std::map<Resource*, ResourceObject*> m_resourceObjects;
 
 	// A map of class names to create functions
 	std::vector<ResourceObjectType*> m_resourceTypes;

@@ -396,8 +396,10 @@ void ReplicationSystem::ApplySnapshot(EntitySnapshot* current, EntitySnapshot* n
     std::map<int, DataRecord*>::iterator ei = current->entityRecords.begin();
     for(; ei != current->entityRecords.end(); ei++) {
         Entity* entity = world->FindEntity(ei->first);
+		bool newEntity = false;
         if(entity == 0) {
             entity = new Entity();
+			newEntity = true;
         }
         
         bool interpolated = false;
@@ -423,6 +425,10 @@ void ReplicationSystem::ApplySnapshot(EntitySnapshot* current, EntitySnapshot* n
                 continue;
             }
         }
+
+		if (newEntity) {
+			world->AddEntity(entity);
+		}
     }
     
     // Update components
@@ -459,6 +465,9 @@ void ReplicationSystem::ApplySnapshot(EntitySnapshot* current, EntitySnapshot* n
             if(interpolated == false) {
                 c->Deserialize(cii->second);
             }
+
+			c->Active(true);
+			entity->AddComponent(c);
         }
     }
 }

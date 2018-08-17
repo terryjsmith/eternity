@@ -65,8 +65,8 @@ void World::AddEntity(Entity* entity) {
     std::vector<Entity*>::iterator it = m_entities.begin();
     for(; it != m_entities.end(); it++) {
         if((*it)->ID() == entity->ID()) {
-            GIGA_ASSERT(false, "Trying to add an entity that already exists.");
-            return;
+			GIGA_ASSERT(*it == entity, "Cannot add same entity twice.");
+			return;
         }
     }
     

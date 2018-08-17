@@ -3,15 +3,25 @@
 #include <Core/Error.h>
 
 ResourceObject* ResourceSystem::LoadResource(std::string filename, std::string type) {
+	Resource* resource = 0;
+
 	// Check to see if we've loaded this resource
-	std::vector<std::shared_ptr<Resource>>::iterator it = m_resources.begin();
+	std::vector<Resource*>::iterator it = m_resources.begin();
 	for (; it != m_resources.end(); it++) {
-		if ((*it)->filename == filename)
+		if ((*it)->filename == filename) {
+			resource = *it;
 			break;
+		}
+	}
+
+	// If we have a resource, we probably also have a resource object to return
+	std::map<Resource*, ResourceObject*>::iterator ri = m_resourceObjects.find(resource);
+	if (ri != m_resourceObjects.end()) {
+		return(ri->second);
 	}
 
 	// If not, find and initialize the resource
-	if (it == m_resources.end()) {
+	if (resource == 0) {
 		// First, get the full path by searching out search paths
 		std::string fullpath = FindResourcePath(filename);
 		if (fullpath.empty()) {
@@ -20,11 +30,12 @@ ResourceObject* ResourceSystem::LoadResource(std::string filename, std::string t
 			return(0);
 		}
 		
-		std::shared_ptr<Resource> resource = std::make_shared<Resource>();
-		resource->Initialize(fullpath, FILEMODE_READ | FILEMODE_BINARY);
-		resource->type = type;
+		Resource* r = new Resource();
+		r->Initialize(fullpath, FILEMODE_READ | FILEMODE_BINARY);
+		r->type = type;
 
-		m_resources.push_back(resource);
+		m_resources.push_back(r);
+		resource = r;
 	}
 
 	// Create a new ResourceObject of the necessary type
@@ -39,7 +50,9 @@ ResourceObject* ResourceSystem::LoadResource(std::string filename, std::string t
 	GIGA_ASSERT(obj != 0, "Resource type not found.");
 
 	// Create an instance of the Resource into the ResourceObject
-	obj->Instantiate(m_resources[m_resources.size() - 1].get());
+	obj->Instantiate(resource);
+	m_resourceObjects[resource] = obj;
+
 	return(obj);
 }
 
