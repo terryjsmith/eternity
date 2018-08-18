@@ -676,6 +676,14 @@ int main(int argc, char** argv) {
 					output += "\t";
 				}
 			}
+            else {
+                if (fi->second->returnType != -1) {
+                    output += "\treturn(new Variant(";
+                }
+                else {
+                    output += "\t";
+                }
+            }
 
 			// Function call
 			if (fi->second->isStatic == false) {
@@ -703,14 +711,19 @@ int main(int argc, char** argv) {
 			}
 
 			output += ")";
-			if (fi->second->returnType == -1 || fi->second->isStatic == true) {
+			if (fi->second->returnType == -1) {
 				output += ";\n\treturn(new Variant(0));";
 			}
 			else {
                 if (fi->second->isStatic == false) {
                     output += "));";
                 } else {
-                    output += ";";
+                    if (fi->second->returnType == -1) {
+                        output += ";";
+                    }
+                    else {
+                        output += "));";
+                    }
                 }
 			}
 

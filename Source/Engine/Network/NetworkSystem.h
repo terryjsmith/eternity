@@ -114,6 +114,11 @@ public:
      */
     NetworkSystemInfo* GetSystemInfo() { return &m_info; }
     
+    /**
+     * Set connection info
+     */
+    GIGA_FUNCTION() void SetSessionAuth(std::string sessionCode);
+    
 protected:
     // Internal send function
     void Send(NetworkSession* session, NetworkMessage* msg);
@@ -134,6 +139,9 @@ protected:
     
     // Client/server specific information
     NetworkSystemInfo m_info;
+    
+    // Session auth code
+    std::string m_sessionCode;
     
     // Setup type
     int m_systemType;

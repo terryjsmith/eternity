@@ -8,6 +8,7 @@
 #include <Network/Messages/EchoRequestMessage.h>
 #include <Network/ReplicationSystem.h>
 #include <Core/Application.h>
+#include <Network/Messages/HelloMessage.h>
 
 NetworkSystem::NetworkSystem() {
     m_systemType = 0;
@@ -56,10 +57,11 @@ void NetworkSystem::Connect(std::string host, int port) {
     m_maxSocketID = std::max(m_maxSocketID, session->socket->GetSocket());
     FD_SET(session->socket->GetSocket(), &info->sockets);
     
-    /* Send first echo message request
-     EchoRequestMessage* request = new EchoRequestMessage();
-     Send(request);
-     delete request;*/
+    // Send auth message
+    HelloMessage* msg = new HelloMessage();
+    msg->sessionCode = m_sessionCode;
+    this->Send(msg);
+    delete msg;
 }
 
 void NetworkSystem::Listen(int port) {
@@ -476,4 +478,8 @@ void NetworkSystem::MarkReceived(int sessionID, int messageID) {
             return;
         }
     }
+}
+
+void NetworkSystem::SetSessionAuth(std::string sessionCode) {
+    m_sessionCode = sessionCode;
 }

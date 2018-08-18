@@ -89,6 +89,11 @@ public:
 	* Go to a specific position in the file
 	*/
 	void SetPosition(unsigned int offset);
+    
+    /**
+     * Shortcut to load all file data (mostly for scripting)
+     */
+    GIGA_FUNCTION() static std::string Load(std::string filename);
 
 public:
 	// Just the filename + extension

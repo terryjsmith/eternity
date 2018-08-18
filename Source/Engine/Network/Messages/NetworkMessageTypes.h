@@ -8,7 +8,8 @@ enum NetworkMessages {
     idEntitySnapshotMessage = 30,
     idCommandMessage = 40,
     idResendPartialMessage = 50,
-    idAckMessage = 60
+    idAckMessage = 60,
+    idHelloMessage = 70
 };
 
 #endif

@@ -26,6 +26,7 @@
 #include <Network/Messages/EntitySnapshotMessage.h>
 #include <Network/Messages/CommandMessage.h>
 #include <Network/Messages/ResendPartialMessage.h>
+#include <Network/Messages/HelloMessage.h>
 #include <Core/Entity.h>
 
 Application* Application::m_instance = 0;
@@ -69,6 +70,7 @@ void Application::Initialize() {
     networkSystem->RegisterMessageType<EntitySnapshotMessage>(NetworkMessages::idEntitySnapshotMessage);
     networkSystem->RegisterMessageType<CommandMessage>(NetworkMessages::idCommandMessage);
     networkSystem->RegisterMessageType<ResendPartialMessage>(NetworkMessages::idResendPartialMessage);
+    networkSystem->RegisterMessageType<HelloMessage>(NetworkMessages::idHelloMessage);
     
     // Component types
     Component::RegisterComponentType<TransformComponent>("TransformComponent", 5);

@@ -12,53 +12,54 @@ unsigned char* Serializer::Serialize(DataRecord* record, uint32_t& size) {
     writer->Initialize(data, 8000);
     
     // Write object type
-    uint32_t type = record->GetType()->GetTypeID();
+    DataRecordType* t = record->GetType();
+    uint32_t type = t->GetTypeID();
     writer->Write(&type, sizeof(uint32_t));
     
-    std::map<std::string, Variant*> fields = record->GetValues();
-    std::map<std::string, Variant*>::iterator f = fields.begin();
+    std::map<std::string, int> fields = t->GetKeys();
+    std::map<std::string, int>::iterator f = fields.begin();
     for(; f != fields.end(); f++) {
-        if(f->second->IsInt() || f->second->IsUInt()) {
-            int32_t i = f->second->IsInt() ? f->second->AsInt() : f->second->AsUInt();
+        if(f->second == Variant::VAR_INT32 || f->second == Variant::VAR_UINT32) {
+            int32_t i = record->Get(f->first)->AsInt();
             writer->Write(&i, sizeof(int32_t));
             continue;
         }
         
-        if(f->second->IsInt64() || f->second->IsUInt64()) {
-            int64_t i = f->second->IsInt64() ? f->second->AsInt64() : f->second->AsUInt64();
+        if(f->second == Variant::VAR_INT64 || f->second == Variant::VAR_UINT64) {
+            int64_t i = record->Get(f->first)->AsInt64();
             writer->Write(&i, sizeof(int64_t));
             continue;
         }
         
-        if(f->second->IsBool()) {
-            bool b = f->second->AsBool();
+        if(f->second == Variant::VAR_BOOL) {
+            bool b = record->Get(f->first)->AsBool();
             writer->Write(&b, sizeof(bool));
             continue;
         }
         
-        if(f->second->IsFloat()) {
-            float fl = f->second->AsFloat();
+        if(f->second == Variant::VAR_FLOAT) {
+            float fl = record->Get(f->first)->AsFloat();
             writer->Write(&fl, sizeof(float));
             continue;
         }
         
-        if(f->second->IsVector2()) {
-            vector2 v2 = f->second->AsVector2();
+        if(f->second == Variant::VAR_VECTOR2) {
+            vector2 v2 = record->Get(f->first)->AsVector2();
             writer->Write(&v2.x, sizeof(float));
             writer->Write(&v2.y, sizeof(float));
             continue;
         }
         
-        if(f->second->IsVector3()) {
-            vector3 v3 = f->second->AsVector3();
+        if(f->second == Variant::VAR_VECTOR3) {
+            vector3 v3 = record->Get(f->first)->AsVector3();
             writer->Write(&v3.x, sizeof(float));
             writer->Write(&v3.y, sizeof(float));
             writer->Write(&v3.z, sizeof(float));
             continue;
         }
         
-        if(f->second->IsVector4()) {
-            vector4 v4 = f->second->AsVector4();
+        if(f->second == Variant::VAR_VECTOR4) {
+            vector4 v4 = record->Get(f->first)->AsVector4();
             writer->Write(&v4.x, sizeof(float));
             writer->Write(&v4.y, sizeof(float));
             writer->Write(&v4.z, sizeof(float));
@@ -66,8 +67,8 @@ unsigned char* Serializer::Serialize(DataRecord* record, uint32_t& size) {
             continue;
         }
         
-        if(f->second->IsQuaternion()) {
-            quaternion q = f->second->AsQuaternion();
+        if(f->second == Variant::VAR_QUATERNION) {
+            quaternion q = record->Get(f->first)->AsQuaternion();
             writer->Write(&q.w, sizeof(float));
             writer->Write(&q.x, sizeof(float));
             writer->Write(&q.y, sizeof(float));
@@ -75,8 +76,8 @@ unsigned char* Serializer::Serialize(DataRecord* record, uint32_t& size) {
             continue;
         }
         
-        if(f->second->IsString()) {
-            std::string s = f->second->AsString();
+        if(f->second == Variant::VAR_STRING) {
+            std::string s = record->Get(f->first)->AsString();
             uint32_t nsize = s.size() + 1;
             writer->Write(&nsize, sizeof(uint32_t));
             

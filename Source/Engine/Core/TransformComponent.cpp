@@ -24,4 +24,5 @@ void TransformComponent::Serialize(DataRecord* record) {
     record->Set("position", new Variant(m_transform->GetLocalPosition()));
     record->Set("rotation", new Variant(m_transform->GetLocalRotation()));
     record->Set("scale", new Variant(m_transform->GetLocalScaling()));
+    record->Set("entityID", new Variant(m_parent->ID()));
 }

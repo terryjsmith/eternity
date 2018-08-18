@@ -209,3 +209,16 @@ unsigned char* Resource::ReadFile() {
 void Resource::SetPosition(unsigned int offset) {
 	fseek(m_fp, SEEK_SET, offset);
 }
+
+std::string Resource::Load(std::string filename) {
+    ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
+    std::string fullPath = resourceSystem->FindResourcePath(filename);
+    
+    Resource* resource = new Resource();
+    resource->Initialize(fullPath, FILEMODE_READ);
+    resource->Load();
+    
+    std::string retval = resource->GetString();
+    delete resource;
+    return(retval);
+}

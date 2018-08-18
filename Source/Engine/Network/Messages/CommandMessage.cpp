@@ -47,8 +47,11 @@ void CommandMessage::OnReceive() {
     NetworkSession* session = networkSystem->FindSession(m_envelope.session);
     int tick = networkSystem->GetCurrentTick();
     
+    // Don't let the player tell us which entity
+    entityID = session->playerID;
+    
     int start, end;
-    if (end == 0) {
+    if (state == Command::COMMAND_START) {
         start = tick - floor(NETWORK_TICKS_PER_SECOND * session->info.pingTime) - NETWORK_SNAPSHOT_RENDER_LAG;
         printf("Current tick: %d, setting start to %d\n", tick, start);
     }

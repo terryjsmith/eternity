@@ -1,5 +1,14 @@
 
 #include <IO/Directory.h>
+#include <Core/Error.h>
+
+#ifdef WIN32
+    #include <direct.h>
+    #define GetCurrentDir _getcwd
+#else
+    #include <unistd.h>
+    #define GetCurrentDir getcwd
+#endif
 
 void Directory::Open(std::string path) {
 	this->path = path;
@@ -28,4 +37,16 @@ void Directory::Open(std::string path) {
 	FindClose(handle);
 #else
 #endif
+}
+
+std::string Directory::GetCurrentDirectory() {
+    std::string str;
+    char cCurrentPath[FILENAME_MAX];
+    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath))) {
+        Message::Broadcast(new Error(Error::ERROR_WARN, "Unable to get current working directory."));
+        return(str);
+    }
+    
+    str = cCurrentPath;
+    return(str);
 }
