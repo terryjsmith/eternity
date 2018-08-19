@@ -22,11 +22,55 @@
 #include <IO/SQLiteDataLoader.h>
 #include <Network/NetworkSystem.h>
 #include <Network/ReplicationSystem.h>
+#include <Core/TimeSystem.h>
+#include <Core/Error.h>
+
+Resource* debugLog;
+
+void WriteDebug(GigaObject* obj, Message* msg) {
+    std::string finalout;
+    finalout.resize(8000);
+    
+    Error* err = (Error*)msg;
+    
+    tm t;
+    mktime(&t);
+    
+    std::string levelstr;
+    switch(err->GetErrorLevel()) {
+        case Error::ERROR_INFO:
+            levelstr = "INFO";
+            break;
+        case Error::ERROR_DEBUG:
+            levelstr = "DEBUG";
+            break;
+        case Error::ERROR_WARN:
+            levelstr = "WARN";
+            break;
+        case Error::ERROR_FATAL:
+            levelstr = "FATAL";
+    };
+    
+    std::string datepart;
+    datepart.resize(100);
+    
+    strftime((char*)datepart.data(), 100, "%m/%d/%Y %H:%M", &t);
+    
+    std::string line = err->GetErrorMsg();
+    int length = sprintf((char*)finalout.data(), "[%s %-5s]: %s", datepart.c_str(), levelstr.c_str(), line.c_str());
+    finalout.resize(length);
+    
+    debugLog->WriteLine(finalout);
+}
 
 int main(int argc, char** argv) {
 	Application* application = Application::GetInstance();
 	World* world = application->GetWorld();
 
+    // Open debug log
+    debugLog = new Resource();
+    debugLog->Initialize("client.log", FILEMODE_READWRITE);
+    
 	OpenGLRenderSystem* renderSystem = world->CreateSystem<OpenGLRenderSystem>();
     MaterialSystem* materialSystem = world->CreateSystem<MaterialSystem>();
 	ResourceSystem* resourceSystem = world->CreateSystem<ResourceSystem>();
@@ -40,6 +84,8 @@ int main(int argc, char** argv) {
 
 	world->Initialize();
 	application->Initialize();
+    
+    messageSystem->RegisterCallback(0, "Error", WriteDebug);
 
 	RenderWindow* window = new RenderWindow();
 	window->Create("Test Window", 800, 600, false);
