@@ -24,6 +24,7 @@
 #include <Network/ReplicationSystem.h>
 #include <Core/TimeSystem.h>
 #include <Core/Error.h>
+#include <Render/TerrainSystem.h>
 
 Resource* debugLog;
 
@@ -81,6 +82,7 @@ int main(int argc, char** argv) {
     PhysicsSystem* physicsSystem = world->CreateSystem<PhysicsSystem>(20);
     NetworkSystem* networkSystem = world->CreateSystem<NetworkSystem>();
     ReplicationSystem* replicationSystem = world->CreateSystem<ReplicationSystem>(20);
+    TerrainSystem* terrainSystem = world->CreateSystem<TerrainSystem>();
 
 	world->Initialize();
 	application->Initialize();

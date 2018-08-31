@@ -14,6 +14,7 @@
 void OpenGLRenderSystem::Initialize() {
 	m_renderPasses.clear();
 
+    // GBuffer pass
 	if (m_gbufferRenderPass) {
 		delete m_gbufferRenderPass;
 		m_gbufferRenderPass = 0;
@@ -22,6 +23,7 @@ void OpenGLRenderSystem::Initialize() {
 	m_gbufferRenderPass = new GBuffer();
     m_renderPasses.push_back(m_gbufferRenderPass);
 
+    // Combination pass
 	if (m_combineRenderPass) {
 		delete m_combineRenderPass;
 		m_combineRenderPass = 0;
@@ -30,6 +32,7 @@ void OpenGLRenderSystem::Initialize() {
     m_combineRenderPass = new CombinePass();
     m_renderPasses.push_back(m_combineRenderPass);
     
+    // Lighting pass
 	if (m_lightingRenderPass) {
 		delete m_lightingRenderPass;
 		m_lightingRenderPass = 0;
@@ -37,6 +40,15 @@ void OpenGLRenderSystem::Initialize() {
 
     m_lightingRenderPass = new LightingPass();
     m_renderPasses.push_back(m_lightingRenderPass);
+    
+    // Terrain pass
+    if(m_terrainRenderPass) {
+        delete m_terrainRenderPass;
+        m_terrainRenderPass = 0;
+    }
+    
+    m_terrainRenderPass = new TerrainPass();
+    m_renderPasses.push_back(m_terrainRenderPass);
     
     // Set our texture type to OpenGL
     ResourceSystem* resourceSystem = GetSystem<ResourceSystem>();
@@ -115,6 +127,12 @@ void OpenGLRenderSystem::Render() {
      */
 	m_gbufferRenderPass->Render(m_currentView);
     Framebuffer* gbuffer = m_gbufferRenderPass->GetFramebuffer(0);
+    
+    /**
+     * Terrain pass
+     */
+    m_terrainRenderPass->SetFramebuffer(gbuffer);
+    m_terrainRenderPass->Render(m_currentView);
     
     /**
      * Lighting

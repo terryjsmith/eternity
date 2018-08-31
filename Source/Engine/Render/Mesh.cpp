@@ -16,10 +16,31 @@ Mesh::Mesh() {
 }
 
 Mesh::~Mesh() {
+    for(size_t i = 0; i < children.size(); i++) {
+        delete children[i];
+    }
+    
 	if (vertexBuffer) {
 		delete(vertexBuffer);
 		vertexBuffer = 0;
 	}
+    
+    if(indexBuffer) {
+        delete(indexBuffer);
+        indexBuffer = 0;
+    }
+    
+    for(size_t i = 0; i < bones.size(); i++) {
+        delete bones[i];
+    }
+    bones.clear();
+    
+    for(size_t i = 0; i < animations.size(); i++) {
+        delete animations[i];
+    }
+    animations.clear();
+
+    numTriangles = 0;
 }
 
 /**

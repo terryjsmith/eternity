@@ -26,3 +26,20 @@ bool BoundingBox::Inside(vector3 point) {
     
     return(false);
 }
+
+bool BoundingBox::Intersects(BoundingBox* other) {
+    // Check if any point of the other box is inside our bounding box
+    for(int i = 0; i < 8; i++) {
+        if(this->Inside(other->points[i])) {
+            return(true);
+        }
+    }
+    
+    // Alternatively, check that we're not totally inside the other box
+    if(this->min.x > other->min.x && this->min.y > other->min.y && this->min.z > other->min.z &&
+       this->max.x < other->max.x && this->max.y < other->max.y && this->max.z < other->max.z) {
+        return(true);
+    }
+    
+    return(false);
+}

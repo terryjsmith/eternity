@@ -7,6 +7,7 @@
 #include <Render/DeferredRenderer/GBuffer.h>
 #include <Render/DeferredRenderer/CombinePass.h>
 #include <Render/DeferredRenderer/LightingPass.h>
+#include <Render/DeferredRenderer/TerrainPass.h>
 
 class GIGA_API OpenGLRenderSystem : public RenderSystem {
 public:
@@ -85,6 +86,7 @@ protected:
 	GBuffer* m_gbufferRenderPass;
     CombinePass* m_combineRenderPass;
     LightingPass* m_lightingRenderPass;
+    TerrainPass* m_terrainRenderPass;
 };
 
 #endif

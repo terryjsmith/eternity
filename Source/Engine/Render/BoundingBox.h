@@ -34,6 +34,11 @@ public:
      */
     bool Inside(vector3 point);
     
+    /**
+     * Check to see if this bounding box intersects another one
+     */
+    bool Intersects(BoundingBox* other);
+    
 public:
     // The 8 points that make up this box
     vector3 points[8];

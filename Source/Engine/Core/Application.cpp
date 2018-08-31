@@ -27,6 +27,7 @@
 #include <Network/Messages/CommandMessage.h>
 #include <Network/Messages/ResendPartialMessage.h>
 #include <Network/Messages/HelloMessage.h>
+#include <Render/TerrainSystem.h>
 #include <Core/Entity.h>
 
 Application* Application::m_instance = 0;
@@ -81,6 +82,7 @@ void Application::Initialize() {
     Component::RegisterComponentType<PointLightComponent>("PointLightComponent", 30);
     // TODO: Cascaded Directional Light
     Component::RegisterComponentType<RigidBodyComponent>("RigidBodyComponent", 40);
+    Component::RegisterComponentType<TerrainComponent>("TerrainComponent", 45);
     
     // Data record types
     DataRecordType* entityType = new DataRecordType();
@@ -106,6 +108,14 @@ void Application::Initialize() {
     meshComponentType->AddKey("rotation", Variant::VAR_QUATERNION);
     meshComponentType->AddKey("scale", Variant::VAR_VECTOR3);
     DataRecordType::Register<MeshComponent>("MeshComponent", meshComponentType);
+    
+    DataRecordType* terrainComponentType = new DataRecordType();
+    terrainComponentType->SetPrimaryKey("TerrainComponent_id");
+    terrainComponentType->AddKey("entityID", Variant::VAR_INT32);
+    terrainComponentType->AddKey("heightmap", Variant::VAR_STRING);
+    terrainComponentType->AddKey("startX", Variant::VAR_FLOAT);
+    terrainComponentType->AddKey("startZ", Variant::VAR_FLOAT);
+    DataRecordType::Register<TerrainComponent>("TerrainComponent", terrainComponentType);
     
     // Device types
     scriptingSystem->SetGlobal("INPUTDEVICE_MOUSE", new Variant(INPUTDEVICE_MOUSE));

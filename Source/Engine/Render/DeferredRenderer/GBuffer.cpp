@@ -4,7 +4,6 @@
 #include <Render/Defines.h>
 #include <IO/ResourceSystem.h>
 #include <Core/Application.h>
-#include <Core/Application.h>
 
 void GBuffer::Initialize(int windowWidth, int windowHeight) {
     m_windowWidth = windowWidth;

@@ -25,7 +25,7 @@ public:
             m_components.push_back(obj);
         }
     }
-
+    
 	virtual void Clear() { m_components.clear(); }
 
 protected:
