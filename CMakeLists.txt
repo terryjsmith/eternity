@@ -22,6 +22,8 @@ find_library(LIBRARY_BULLET_COLLISION BulletCollision "${CMAKE_SOURCE_DIR}/Sourc
 find_library(LIBRARY_BULLET_DYNAMICS BulletDynamics "${CMAKE_SOURCE_DIR}/Source/ThirdParty/bullet/lib" NO_DEFAULT_PATH)
 find_library(LIBRARY_BULLET_LINEARMATH LinearMath "${CMAKE_SOURCE_DIR}/Source/ThirdParty/bullet/lib" NO_DEFAULT_PATH)
 find_library(LIBRARY_LIBCURL curl "${CMAKE_SOURCE_DIR}/Source/ThirdParty/libcurl/lib" NO_DEFAULT_PATH)
+find_library(LIBRARY_SSL ssl32 "${CMAKE_SOURCE_DIR}/Source/ThirdParty/openssl/lib" NO_DEFAULT_PATH)
+find_library(LIBRARY_CRYPTO crypto32 "${CMAKE_SOURCE_DIR}/Source/ThirdParty/openssl/lib" NO_DEFAULT_PATH)
 
 # set the output directory without the /Debug/ and /Release/ equivalents
 foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
@@ -92,8 +94,10 @@ list (APPEND ETERNITY_INCLUDE_DIRS "Source/ThirdParty/glew/include")
 list (APPEND ETERNITY_INCLUDE_DIRS "Source/ThirdParty/soil/include")
 list (APPEND ETERNITY_INCLUDE_DIRS "Source/ThirdParty/bullet/include")
 list (APPEND ETERNITY_INCLUDE_DIRS "Source/ThirdParty/sqlite/include")
+list (APPEND ETERNITY_INCLUDE_DIRS "Source/ThirdParty/libcurl/include")
 
 set (ETERNITY_LIBS "")
+
 list (APPEND ETERNITY_LIBS ${LIBRARY_GLFW})
 list (APPEND ETERNITY_LIBS ${LIBRARY_V8_ICUI8N})
 list (APPEND ETERNITY_LIBS ${LIBRARY_V8_ICUUC})
@@ -107,6 +111,8 @@ list (APPEND ETERNITY_LIBS ${LIBRARY_BULLET_COLLISION})
 list (APPEND ETERNITY_LIBS ${LIBRARY_BULLET_DYNAMICS})
 list (APPEND ETERNITY_LIBS ${LIBRARY_BULLET_LINEARMATH})
 list (APPEND ETERNITY_LIBS ${LIBRARY_LIBCURL})
+list (APPEND ETERNITY_LIBS ${LIBRARY_SSL})
+list (APPEND ETERNITY_LIBS ${LIBRARY_CRYPTO})
 
 IF(WIN32)
 	list (APPEND ETERNITY_LIBS "legacy_stdio_definitions.lib")
@@ -117,6 +123,7 @@ IF(WIN32)
 	list (APPEND ETERNITY_LIBS "Crypt32.Lib")
 	list (APPEND ETERNITY_LIBS "Dbghelp.lib")
 	list (APPEND ETERNITY_LIBS "ShLwApi.Lib")
+	list (APPEND ETERNITY_LIBS "Wldap32.Lib")
 ENDIF()
 
 IF(APPLE)
@@ -144,6 +151,7 @@ group_source_files("Physics" "Source/Engine/Physics")
 
 set_property(TARGET eternity APPEND PROPERTY COMPILE_DEFINITIONS "GIGA_API=")
 set_property(TARGET eternity APPEND PROPERTY COMPILE_DEFINITIONS "GLEW_STATIC")
+set_property(TARGET eternity APPEND PROPERTY COMPILE_DEFINITIONS "CURL_STATICLIB")
 set_property(TARGET eternity APPEND PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
 
 target_link_libraries(eternity ${ETERNITY_LIBS})
@@ -157,9 +165,10 @@ add_executable(game Source/Game/main.cpp)
 
 set_property(TARGET game APPEND PROPERTY COMPILE_DEFINITIONS "GIGA_API=")
 set_property(TARGET game APPEND PROPERTY COMPILE_DEFINITIONS "GLEW_STATIC")
+set_property(TARGET game APPEND PROPERTY COMPILE_DEFINITIONS "CURL_STATICLIB")
 set_property(TARGET game APPEND PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
 
-target_link_libraries(game "eternity" ${ETERNITY_LIBS})
+target_link_libraries(game ${ETERNITY_LIBS} "eternity")
 target_include_directories(game PRIVATE ${ETERNITY_INCLUDE_DIRS})
 add_dependencies(game eternity)
 
@@ -178,6 +187,7 @@ add_executable(server Source/Server/main.cpp ${ETERNITY_SOURCE_FILES} Source/Aut
 
 set_property(TARGET server APPEND PROPERTY COMPILE_DEFINITIONS "GIGA_API=")
 set_property(TARGET server APPEND PROPERTY COMPILE_DEFINITIONS "GLEW_STATIC")
+set_property(TARGET server APPEND PROPERTY COMPILE_DEFINITIONS "CURL_STATICLIB")
 set_property(TARGET server APPEND PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
 
 target_link_libraries(server "eternity" ${ETERNITY_LIBS})

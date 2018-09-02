@@ -90,11 +90,13 @@ void Application::Initialize() {
     entityType->AddKey("id", Variant::VAR_INT32);
     entityType->AddKey("name", Variant::VAR_STRING);
     entityType->AddKey("active", Variant::VAR_BOOL);
+	entityType->AddKey("sceneID", Variant::VAR_INT32);
     DataRecordType::Register<Entity>("Entity", entityType);
     
     DataRecordType* transformComponentType = new DataRecordType();
     transformComponentType->SetPrimaryKey("TransformComponent_id");
     transformComponentType->AddKey("entityID", Variant::VAR_INT32);
+	transformComponentType->AddKey("sceneID", Variant::VAR_INT32);
     transformComponentType->AddKey("position", Variant::VAR_VECTOR3);
     transformComponentType->AddKey("rotation", Variant::VAR_QUATERNION);
     transformComponentType->AddKey("scale", Variant::VAR_VECTOR3);
@@ -103,6 +105,7 @@ void Application::Initialize() {
     DataRecordType* meshComponentType = new DataRecordType();
     meshComponentType->SetPrimaryKey("MeshComponent_id");
     meshComponentType->AddKey("entityID", Variant::VAR_INT32);
+	meshComponentType->AddKey("sceneID", Variant::VAR_INT32);
     meshComponentType->AddKey("mesh", Variant::VAR_STRING);
     meshComponentType->AddKey("position", Variant::VAR_VECTOR3);
     meshComponentType->AddKey("rotation", Variant::VAR_QUATERNION);
@@ -112,6 +115,7 @@ void Application::Initialize() {
     DataRecordType* terrainComponentType = new DataRecordType();
     terrainComponentType->SetPrimaryKey("TerrainComponent_id");
     terrainComponentType->AddKey("entityID", Variant::VAR_INT32);
+	terrainComponentType->AddKey("sceneID", Variant::VAR_INT32);
     terrainComponentType->AddKey("heightmap", Variant::VAR_STRING);
     terrainComponentType->AddKey("startX", Variant::VAR_FLOAT);
     terrainComponentType->AddKey("startZ", Variant::VAR_FLOAT);
