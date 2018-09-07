@@ -62,7 +62,7 @@ public:
     /**
      * Set active status
      */
-    bool Active() { return m_active; }
+    bool Active();
     void Active(bool active) { m_active = active; }
     
     

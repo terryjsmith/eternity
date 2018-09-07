@@ -8,7 +8,7 @@
 
 class GIGA_API TerrainComponent : public Component {
 public:
-    TerrainComponent() = default;
+    TerrainComponent();
     ~TerrainComponent() = default;
     
     GIGA_CLASS_NAME("TerrainComponent");
@@ -28,6 +28,21 @@ public:
      * Get quads
      */
     TerrainQuad* GetQuad(int index);
+    
+    /**
+     * Add texture
+     */
+    bool AddTexture(Texture2D* tex, int slot = 0);
+    
+public:
+    // The splat map for applying texture
+    Texture2D* splat;
+    
+    // Textures applied
+    Texture2D* textures[4];
+    
+    // Additional (optional) textures
+    Texture2D* normalTexture;
     
 protected:
     // Terrain broken down into a quadtree

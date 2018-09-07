@@ -42,7 +42,7 @@ void TerrainPass::Render(View* scene) {
     
     // Get render system
     RenderSystem* renderSystem = GetSystem<RenderSystem>();
-    renderSystem->EnableDepthTest(TEST_LEQUAL);
+    renderSystem->EnableDepthTest(TEST_LESS);
     
     // Get the camera
     CameraComponent* camera = scene->GetCamera();
@@ -61,7 +61,52 @@ void TerrainPass::Render(View* scene) {
             continue;
         }
         
-        m_program->Set("sceneIndex", (float)i);
+        // Bind textures
+        int textureCounter = 0;
+        if(components[i]->textures[0]) {
+            components[i]->textures[0]->Bind(textureCounter);
+            m_program->Set("diffuseTexture[0]", textureCounter);
+            
+            components[i]->textures[0]->SetAnisotropicFilter(8.0f);
+            textureCounter++;
+        }
+        
+        if(components[i]->textures[1]) {
+            components[i]->textures[1]->Bind(textureCounter);
+            m_program->Set("diffuseTexture[1]", textureCounter);
+            
+            components[i]->textures[1]->SetAnisotropicFilter(8.0f);
+            textureCounter++;
+        }
+        
+        if(components[i]->textures[2]) {
+            components[i]->textures[2]->Bind(textureCounter);
+            m_program->Set("diffuseTexture[2]", textureCounter);
+            
+            components[i]->textures[2]->SetAnisotropicFilter(8.0f);
+            textureCounter++;
+        }
+        
+        if(components[i]->textures[3]) {
+            components[i]->textures[3]->Bind(textureCounter);
+            m_program->Set("diffuseTexture[3]", textureCounter);
+            
+            components[i]->textures[3]->SetAnisotropicFilter(8.0f);
+            textureCounter++;
+        }
+        
+        if(components[i]->splat) {
+            components[i]->splat->Bind(textureCounter);
+            m_program->Set("splatTexture", textureCounter);
+            textureCounter++;
+        }
+        
+        if(components[i]->normalTexture) {
+            components[i]->normalTexture->Bind(textureCounter);
+            m_program->Set("normalTexture", textureCounter);
+            textureCounter++;
+        }
+    
         for(int j = 0; j < 4; j++) {
             TerrainQuad* quad = components[i]->GetQuad(j);
             RecursiveRender(quad, view, matrix4(1.0));
@@ -116,54 +161,8 @@ void TerrainPass::RecursiveRender(MeshComponent* mesh, matrix4 view, matrix4 par
     vertexType->EnableAttribute(3, VERTEXTYPE_ATTRIB_TEXCOORD0);
     vertexType->EnableAttribute(4, VERTEXTYPE_ATTRIB_TEXCOORD1);
     
-    // Bind textures
-    int textureCounter = 0;
-    if(quad->textures[0]) {
-        quad->textures[0]->Bind(textureCounter);
-        m_program->Set("diffuseTexture[0]", textureCounter);
-        
-        // Need to make this platform agnostic
-        // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
-        textureCounter++;
-    }
-    
-    if(quad->textures[1]) {
-        quad->textures[1]->Bind(textureCounter);
-        m_program->Set("diffuseTexture[1]", textureCounter);
-        
-        // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
-        textureCounter++;
-    }
-    
-    if(quad->textures[2]) {
-        quad->textures[2]->Bind(textureCounter);
-        m_program->Set("diffuseTexture[2]", textureCounter);
-        
-        // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
-        textureCounter++;
-    }
-    
-    if(quad->textures[3]) {
-        quad->textures[3]->Bind(textureCounter);
-        m_program->Set("diffuseTexture[3]", textureCounter);
-        
-        // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
-        textureCounter++;
-    }
-    
-    if(quad->splat) {
-        quad->splat->Bind(textureCounter);
-        m_program->Set("splatTexture", textureCounter);
-        textureCounter++;
-    }
-    
-    if(m->normalTexture) {
-        m->normalTexture->Bind(textureCounter);
-        m_program->Set("normalTexture", textureCounter);
-        textureCounter++;
-    }
-    
     // Specify material
+    m_program->Set("sceneIndex", (float)m_terrains.size());
     m_program->Set("materialID", (float)m->material->GetMaterial());
     
     // Get render system
@@ -184,6 +183,8 @@ void TerrainPass::RecursiveRender(MeshComponent* mesh, matrix4 view, matrix4 par
     if(m->normalTexture) {
         m->normalTexture->Unbind();
     }
+    
+    m_terrains.push_back(quad);
     
     vertexBuffer->Unbind();
     vertexType->Unbind();

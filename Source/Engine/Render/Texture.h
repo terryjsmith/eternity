@@ -41,6 +41,11 @@ public:
     virtual void SetTextureFilter(int filter) { }
     
     /**
+     * Use anisotropic texture filtering
+     */
+    void SetAnisotropicFilter(float samples) { }
+    
+    /**
      * Get texture info
      */
     int GetWidth() { return m_width; }

@@ -117,8 +117,13 @@ void Application::Initialize() {
     terrainComponentType->AddKey("entityID", Variant::VAR_INT32);
 	terrainComponentType->AddKey("sceneID", Variant::VAR_INT32);
     terrainComponentType->AddKey("heightmap", Variant::VAR_STRING);
+    terrainComponentType->AddKey("splat", Variant::VAR_STRING);
     terrainComponentType->AddKey("startX", Variant::VAR_FLOAT);
     terrainComponentType->AddKey("startZ", Variant::VAR_FLOAT);
+    terrainComponentType->AddKey("texture1", Variant::VAR_STRING);
+    terrainComponentType->AddKey("texture2", Variant::VAR_STRING);
+    terrainComponentType->AddKey("texture3", Variant::VAR_STRING);
+    terrainComponentType->AddKey("texture4", Variant::VAR_STRING);
     DataRecordType::Register<TerrainComponent>("TerrainComponent", terrainComponentType);
     
     // Device types

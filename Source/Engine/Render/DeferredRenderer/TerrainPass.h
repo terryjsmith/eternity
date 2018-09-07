@@ -4,6 +4,7 @@
 
 #include <eternity.h>
 #include <Render/RenderPass.h>
+#include <Render/TerrainQuad.h>
 
 class GIGA_API TerrainPass : public RenderPass {
 public:
@@ -20,6 +21,9 @@ public:
     
 protected:
     void RecursiveRender(MeshComponent* mesh, matrix4 view, matrix4 parent);
+    
+    // List of terrain quads that were rendered
+    std::vector<TerrainQuad*> m_terrains;
 };
 
 #endif

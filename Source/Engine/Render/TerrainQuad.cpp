@@ -8,9 +8,8 @@ TerrainQuad::TerrainQuad() {
     m_loaded = false;
     m_width = 0;
     m_startX = m_startZ = 0.0f;
-    splat = 0;
     m_heightmap = 0;
-    textures[0] = textures[1] = textures[2] = textures[3] = 0;
+    m_offsetX = m_offsetY = 0;
 }
 
 TerrainQuad::~TerrainQuad() {
@@ -24,43 +23,42 @@ TerrainQuad::~TerrainQuad() {
     }
 }
 
-void TerrainQuad::Initialize(float startX, float startZ, float width, Texture2D* heightmap, Texture2D* splat) {
-    m_aabb.Create(vector3(startX, -256.0f, startZ), vector3(startX + width, 256.0f, startZ + width));
+void TerrainQuad::Initialize(float startX, float startZ, int offsetX, int offsetY, float width, Texture2D* heightmap) {
+    m_aabb.Create(vector3(startX * TERRAIN_SCALE_FACTOR, -256.0f, startZ * TERRAIN_SCALE_FACTOR), vector3((startX + width) * TERRAIN_SCALE_FACTOR, 256.0f, (startZ + width) * TERRAIN_SCALE_FACTOR));
     m_heightmap = heightmap;
-    this->splat = splat;
+    m_width = width;
+    m_startX = startX;
+    m_startZ = startZ;
+    m_offsetX = offsetX;
+    m_offsetY = offsetY;
+    
+    // Set our transform
+    GetTransform()->SetLocalPosition(vector3(m_startX * TERRAIN_SCALE_FACTOR, 0, m_startZ * TERRAIN_SCALE_FACTOR));
     
     if(width > TERRAIN_QUAD_SIZE) {
-        float newWidth = width / 2.0f;
+        int newWidth = (int)width / 2.0f;
         
         TerrainQuad* first = new TerrainQuad();
-        first->Initialize(startX, startZ, newWidth, heightmap, splat);
+        first->Initialize(0, 0, offsetX, offsetY, newWidth, heightmap);
         m_children.push_back(first);
         
         TerrainQuad* second = new TerrainQuad();
-        second->Initialize(startX, startZ + newWidth, newWidth, heightmap, splat);
+        second->Initialize(0, newWidth, offsetX, offsetY + newWidth, newWidth, heightmap);
         m_children.push_back(second);
         
         TerrainQuad* third = new TerrainQuad();
-        third->Initialize(startX + newWidth, startZ, newWidth, heightmap, splat);
+        third->Initialize(newWidth, 0, offsetX + newWidth, offsetY, newWidth, heightmap);
         m_children.push_back(third);
         
         TerrainQuad* fourth = new TerrainQuad();
-        fourth->Initialize(startX + newWidth, startZ + newWidth, newWidth, heightmap, splat);
+        fourth->Initialize(newWidth, newWidth, offsetX + newWidth, offsetY + newWidth, newWidth, heightmap);
         m_children.push_back(fourth);
     }
 }
-
-void TerrainQuad::SetTexture(int slot, Texture2D* texture) {
-    GIGA_ASSERT(slot > 0, "Invalid texture slot.");
-    GIGA_ASSERT(slot < 4, "Invalid texture slot.");
-    
-    textures[slot] = texture;
-}
-
 void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
     // See if the bounding box intersects ours
     if(m_aabb.Intersects(aabb) == false) {
-        return;
+        //return;
     }
     
     if(m_loaded == true) {
@@ -80,44 +78,63 @@ void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
     GIGA_ASSERT(m_width > 0, "Width not set.");
     GIGA_ASSERT(m_heightmap != 0, "Heightmap not set to load from.");
     
+    // Get our render system to create platform-dependent objects
+    RenderSystem* renderSystem = GetSystem<RenderSystem>();
+    
     // Read data from our texture
     unsigned char* data = (unsigned char*)m_heightmap->GetData();
     
     // Get width of source texture
-    int srcWidth = m_heightmap->GetWidth();
+    int srcWidth = m_heightmap->GetWidth() - 1;
+    int srcChannels = m_heightmap->GetChannels();
     
     // Create vertex type
-    VertexType* type = new VertexType();
+    VertexType* type = renderSystem->CreateVertexType();
+    type->Initialize();
+    
     type->AddVertexAttrib(VERTEXTYPE_ATTRIB_POSITION, 3, 0);
     type->AddVertexAttrib(VERTEXTYPE_ATTRIB_NORMAL, 3, 3);
-    type->AddVertexAttrib(VERTEXTYPE_ATTRIB_TEXCOORD0, 2, 5);
-    type->AddVertexAttrib(VERTEXTYPE_ATTRIB_TEXCOORD1, 2, 7);
+    type->AddVertexAttrib(VERTEXTYPE_ATTRIB_TEXCOORD0, 2, 6);
+    type->AddVertexAttrib(VERTEXTYPE_ATTRIB_TEXCOORD1, 2, 8);
     
     // Get vertex size
     int vertexSize = type->GetVertexSize();
     
     // Create vertex data
     int vertexCount = (m_width + 1) * (m_width + 1);
-    vector3* positions = (vector3*)malloc(sizeof(vector3) * vertexCount);
-    vector3* normals = (vector3*)malloc(sizeof(vector3) * vertexCount);
+    //vector3* positions = (vector3*)malloc(sizeof(vector3) * vertexCount);
+    std::vector<vector3> positions;
+    positions.resize(vertexCount);
+    std::vector<vector3> normals;
+    normals.resize(vertexCount);
     
     // Track min/max Y for bounding box
     float minY, maxY;
     
-    for(int z = 0; z <=  m_width; z++) {
-        for(int x = 0; x <= m_width; x++) {
-            int srcOffset = ((z + m_startZ) * srcWidth) + (x + m_startX);
+    m_width = m_width + 1;
+    
+    int srcY = m_offsetY;
+    int srcX = m_offsetX;
+    
+    int counter = 0;
+    for(int z = 0; z < m_width; z++) {
+        for(int x = 0; x < m_width; x++) {
+            int srcOffset = (((z + srcY) * (srcWidth + 1)) + (x + srcX)) * srcChannels;
             int dstOffset = ((z * m_width) + x);
             
+            GIGA_ASSERT(srcOffset < (srcWidth + 1) * (srcWidth + 1) * srcChannels, "Invalid source offset.");
+            GIGA_ASSERT(dstOffset < vertexCount, "Invalid dest offset.");
+            
             // X, Z are offset
-            positions[dstOffset].x = x;
-            positions[dstOffset].z = z;
+            positions[dstOffset].x = x * TERRAIN_SCALE_FACTOR;
+            positions[dstOffset].z = z * TERRAIN_SCALE_FACTOR;
             
             // Y is height
-            positions[dstOffset].y = (float)data[srcOffset];
+            positions[dstOffset].y = (float)data[srcOffset] * TERRAIN_SCALE_FACTOR;
             
             minY = std::min(positions[dstOffset].y, minY);
             maxY = std::max(positions[dstOffset].y, maxY);
+            counter++;
         }
     }
     
@@ -125,13 +142,15 @@ void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
     free(data);
     
     // First pass at normals
-    for(int z = 0; z <=  m_width; z++) {
-        for(int x = 0; x <= m_width; x++) {
+    counter = 0;
+    for(int z = 0; z < m_width; z++) {
+        for(int x = 0; x < m_width; x++) {
             int dstOffset = ((z * m_width) + x);
+            GIGA_ASSERT(dstOffset < vertexCount, "Invalid dest offset.");
             
             // Start with our current normal
             vector3 avg = normals[dstOffset];
-            int counter = 0;
+            int avgcount = 0;
             
             // Iterate over 4 directions in a clockwise manner
             for(int i = 0; i < 4; i++) {
@@ -139,28 +158,36 @@ void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
                 int secondOffset = dstOffset;
                 
                 // Go up and right first
-                if(i == 0 && z < m_width && x < m_width) {
+                if(i == 0 && z < m_width - 1 && x < m_width - 1) {
                     firstOffset = dstOffset + m_width;
                     secondOffset = dstOffset + 1;
+                    avgcount++;
                 }
                 
                 // Then go right and down
-                if(i == 1 && x < m_width && z > 0) {
+                if(i == 1 && x < m_width - 1 && z > 0) {
                     firstOffset = dstOffset + 1;
                     secondOffset = dstOffset - m_width;
+                    avgcount++;
                 }
                 
                 // Then go down and left
                 if(i == 2 && x > 0 && z > 0) {
                     firstOffset = dstOffset - m_width;
                     secondOffset = dstOffset - 1;
+                    avgcount++;
                 }
                 
                 // Finally, left and up
-                if(i == 3 && x > 0 && z < m_width) {
+                if(i == 3 && x > 0 && z < m_width - 1) {
                     firstOffset = dstOffset - 1;
                     secondOffset = dstOffset + m_width;
+                    avgcount++;
                 }
+                
+                GIGA_ASSERT(dstOffset < vertexCount, "Invalid dest offset.");
+                GIGA_ASSERT(firstOffset < vertexCount, "Invalid first offset.");
+                GIGA_ASSERT(secondOffset < vertexCount, "Invalid second offset.");
                 
                 // One = this, two = up, three = right
                 vector3 one = positions[dstOffset];
@@ -172,27 +199,36 @@ void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
                 vector3 second = thr - one;
                 
                 // Get cross product for normal
-                vector3 normal = glm::cross(first, second);
+                if(glm::length(first) == 0 && glm::length(second) == 0) {
+                    continue;
+                }
+                
+                vector3 normal = glm::normalize(glm::cross(first, second));
                 avg += normal;
-                counter++;
             }
             
             // Divide
-            avg /= counter;
+            avg /= avgcount;
+            avg = glm::normalize(avg);
             
             // Save
             normals[dstOffset] = avg;
+            counter++;
         }
     }
     
     // Save/create buffer
-    float* vertexData = (float*)malloc((m_width + 1) * (m_width + 1) * vertexSize);
+    float* vertexData = (float*)malloc(m_width * m_width * vertexSize * sizeof(float));
     
     // Set data
-    for(int z = 0; z <=  m_width; z++) {
-        for(int x = 0; x <= m_width; x++) {
+    counter = 0;
+    for(int z = 0; z < m_width; z++) {
+        for(int x = 0; x < m_width; x++) {
             int srcOffset = ((z * m_width) + x);
             int dstOffset = ((z * m_width) + x) * vertexSize;
+            
+            GIGA_ASSERT(srcOffset < vertexCount, "Invalid source offset.");
+            GIGA_ASSERT(dstOffset < vertexCount * vertexSize, "Invalid dest offset.");
             
             vertexData[dstOffset + 0] = positions[srcOffset].x;
             vertexData[dstOffset + 1] = positions[srcOffset].y;
@@ -207,19 +243,19 @@ void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
             
             vertexData[dstOffset + 8] = (float)x;
             vertexData[dstOffset + 9] = (float)z;
+            counter++;
         }
     }
     
-    // Free data
-    free(positions);
-    free(normals);
-    
     // Create indices
+    counter = 0;
     int indexCount = m_width * m_width * 6; // Normally (width - 1)^2 * 6, but we have one extra
-    unsigned int* indices = (unsigned int*)malloc(indexCount);
-    for(int z = 0; z <  m_width; z++) {
-        for(int x = 0; x < m_width; x++) {
+    unsigned int* indices = (unsigned int*)malloc(indexCount * sizeof(unsigned int));
+    for(int z = 0; z < m_width - 1; z++) {
+        for(int x = 0; x < m_width - 1; x++) {
             int dstOffset = ((z * m_width) + x) * 6;
+            
+            GIGA_ASSERT(dstOffset < indexCount - 5, "Invalid dest offset.");
             
             // First triangle
             indices[dstOffset + 0] = ((z * m_width) + x);
@@ -230,11 +266,9 @@ void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
             indices[dstOffset + 3] = ((z * m_width) + (x+ 1));
             indices[dstOffset + 4] = (((z + 1) * m_width) + x);
             indices[dstOffset + 5] = (((z + 1) * m_width) + (x + 1));
+            counter++;
         }
     }
-    
-    // Get our render system to create platform-dependent objects
-    RenderSystem* renderSystem = GetSystem<RenderSystem>();
     
     // Create mesh
     m_mesh = new Mesh();
@@ -242,6 +276,8 @@ void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
     // Create vertex buffer
     m_mesh->vertexBuffer = renderSystem->CreateVertexBuffer();
     m_mesh->vertexBuffer->Create(type, vertexCount, vertexData, false);
+    
+    free(vertexData);
     
     // Create index buffer
     m_mesh->indexBuffer = renderSystem->CreateIndexBuffer();
@@ -253,17 +289,14 @@ void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
     m_mesh->numTriangles = indexCount / 3;
     
     // Set up bounding box
-    m_mesh->aabb.Create(vector3(0, minY, 0), vector3(m_width, maxY, m_width));
+    m_mesh->aabb.Create(vector3(0, minY, 0), vector3(m_width * TERRAIN_SCALE_FACTOR, maxY, m_width * TERRAIN_SCALE_FACTOR));
     
     // Set a default material
     MaterialSystem* materialSystem = GetSystem<MaterialSystem>();
     m_mesh->material = materialSystem->GetDefaultMaterial();
     
     // Finalize our bounding box
-    m_aabb.Create(vector3(0, minY, 0), vector3(m_width, maxY, m_width));
-    
-    // Set our transform
-    GetTransform()->SetLocalPosition(vector3(m_startX, 0, m_startZ));
+    m_aabb.Create(vector3(0, minY, 0), vector3(m_width * TERRAIN_SCALE_FACTOR, maxY, m_width * TERRAIN_SCALE_FACTOR));
     
     m_loaded = true;
 }
@@ -272,3 +305,4 @@ void TerrainQuad::Unload() {
     delete m_mesh;
     m_loaded = false;
 }
+

@@ -7,7 +7,7 @@
 #include <Render/Texture2D.h>
 
 #define TERRAIN_QUAD_SIZE       64
-#define TERRAIN_SCALE_FACTOR    0.25
+#define TERRAIN_SCALE_FACTOR    0.5
 
 class GIGA_API TerrainQuad : public MeshComponent {
 public:
@@ -17,7 +17,7 @@ public:
     /**
      * Set the area this quad represents
      */
-    void Initialize(float startX, float startZ, float width, Texture2D* heightmap, Texture2D* splat);
+    void Initialize(float startX, float startZ, int offsetX, int offsetY, float width, Texture2D* heightmap);
     
     /**
      * Load or unload streaming textures
@@ -26,21 +26,9 @@ public:
     void Unload();
     
     /**
-     * Set textures
-     */
-    void SetTexture(int slot, Texture2D* texture);
-    
-    /**
      * Whether this is loaded or not
      */
     bool IsLoaded() { return m_loaded; }
-    
-public:
-    // The splat map for applying texture
-    Texture2D* splat;
-    
-    // Textures applied
-    Texture2D* textures[4];
     
 protected:
     // The hieghtmap we will load from
@@ -52,6 +40,9 @@ protected:
     // Area
     float m_width;
     float m_startX, m_startZ;
+    
+    // Offset into heightmap
+    int m_offsetX, m_offsetY;
     
     // Our bounding box
     BoundingBox m_aabb;

@@ -1,5 +1,6 @@
 
 #include <Core/Component.h>
+#include <Core/Entity.h>
 
 std::map<std::string, Component::ComponentType*> Component::m_types;
 
@@ -47,4 +48,13 @@ std::vector<std::string> Component::GetComponentTypes() {
 	}
 
 	return(ret);
+}
+
+bool Component::Active() {
+    bool active = m_active;
+    if(m_parent) {
+        active &= m_parent->IsActive();
+    }
+    
+    return(active);
 }

@@ -60,6 +60,11 @@ public:
      */
     void* GetData();
     
+    /**
+     * Use anisotropic texture filtering
+     */
+    void SetAnisotropicFilter(float samples);
+    
 protected:
     // The internal data type (float or unsigned byte)
     int m_dataType;
