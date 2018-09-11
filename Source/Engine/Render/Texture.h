@@ -46,6 +46,11 @@ public:
     void SetAnisotropicFilter(float samples) { }
     
     /**
+     * Set wrapping
+     */
+    virtual void SetWrapping(bool wrap) { }
+    
+    /**
      * Get texture info
      */
     int GetWidth() { return m_width; }

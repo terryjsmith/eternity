@@ -21,8 +21,20 @@ void TerrainComponent::Deserialize(DataRecord* record) {
     m_startZ = record->Get("startZ")->AsFloat();
     
     // Textures
-    if(record->Get("texture1")->IsString()) {
+    if(record->Get("texture1")) {
         textures[0] = (Texture2D*)resourceSystem->LoadResource(record->Get("texture1")->AsString(), "Texture2D");
+    }
+    
+    if(record->Get("texture2")) {
+        textures[1] = (Texture2D*)resourceSystem->LoadResource(record->Get("texture2")->AsString(), "Texture2D");
+    }
+    
+    if(record->Get("texture3")) {
+        textures[2] = (Texture2D*)resourceSystem->LoadResource(record->Get("texture3")->AsString(), "Texture2D");
+    }
+    
+    if(record->Get("texture4")) {
+        textures[3] = (Texture2D*)resourceSystem->LoadResource(record->Get("texture4")->AsString(), "Texture2D");
     }
     
     float width = m_heightmap->GetWidth() - 1;

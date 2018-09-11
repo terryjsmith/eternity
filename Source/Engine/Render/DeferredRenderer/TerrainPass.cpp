@@ -67,6 +67,7 @@ void TerrainPass::Render(View* scene) {
             components[i]->textures[0]->Bind(textureCounter);
             m_program->Set("diffuseTexture[0]", textureCounter);
             
+            components[i]->textures[0]->SetWrapping(true);
             components[i]->textures[0]->SetAnisotropicFilter(8.0f);
             textureCounter++;
         }
@@ -75,6 +76,7 @@ void TerrainPass::Render(View* scene) {
             components[i]->textures[1]->Bind(textureCounter);
             m_program->Set("diffuseTexture[1]", textureCounter);
             
+            components[i]->textures[1]->SetWrapping(true);
             components[i]->textures[1]->SetAnisotropicFilter(8.0f);
             textureCounter++;
         }
@@ -83,6 +85,7 @@ void TerrainPass::Render(View* scene) {
             components[i]->textures[2]->Bind(textureCounter);
             m_program->Set("diffuseTexture[2]", textureCounter);
             
+            components[i]->textures[2]->SetWrapping(true);
             components[i]->textures[2]->SetAnisotropicFilter(8.0f);
             textureCounter++;
         }
@@ -91,6 +94,7 @@ void TerrainPass::Render(View* scene) {
             components[i]->textures[3]->Bind(textureCounter);
             m_program->Set("diffuseTexture[3]", textureCounter);
             
+            components[i]->textures[3]->SetWrapping(true);
             components[i]->textures[3]->SetAnisotropicFilter(8.0f);
             textureCounter++;
         }

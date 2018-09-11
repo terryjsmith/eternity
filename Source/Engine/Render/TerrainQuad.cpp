@@ -238,11 +238,11 @@ void TerrainQuad::MaybeLoad(BoundingBox* aabb) {
             vertexData[dstOffset + 4] = normals[srcOffset].y;
             vertexData[dstOffset + 5] = normals[srcOffset].z;
             
-            vertexData[dstOffset + 6] = (float)x / m_width;
-            vertexData[dstOffset + 7] = (float)z / m_width;
+            vertexData[dstOffset + 6] = (float)(m_offsetX + x) / srcWidth;
+            vertexData[dstOffset + 7] = (float)(m_offsetY + z) / srcWidth;
             
-            vertexData[dstOffset + 8] = (float)x;
-            vertexData[dstOffset + 9] = (float)z;
+            vertexData[dstOffset + 8] = (float)x * TERRAIN_SCALE_FACTOR;
+            vertexData[dstOffset + 9] = (float)z * TERRAIN_SCALE_FACTOR;
             counter++;
         }
     }

@@ -65,6 +65,11 @@ public:
      */
     void SetAnisotropicFilter(float samples);
     
+    /**
+     * Set wrapping
+     */
+    void SetWrapping(bool wrap);
+    
 protected:
     // The internal data type (float or unsigned byte)
     int m_dataType;
